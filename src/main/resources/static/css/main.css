@@ -1,0 +1,67 @@
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+
+header{
+    background-color: #f5f5f5;
+}
+
+.sudoku-cell1{
+    background-clip: border-box !important;
+    border-radius: 0.15rem !important;
+    border-style: dotted !important;
+    border-width: 1px !important;
+    border-color: black;
+    width:42px;
+    height:42px;
+    text-align:center;
+    margin-left: 2px;
+    margin-top: 2px;
+    /*background: aqua !important;*/
+}
+
+.sudoku-cell2{
+    background-clip: border-box !important;
+    border-radius: 0.15rem !important;
+    border-style: dotted !important;
+    border-width: 1px !important;
+    border-color: black;
+    width:42px;
+    height:42px;
+    text-align:center;
+    margin-left: 2px;
+    /*background: aqua !important;*/
+}
+
+.sudoku-cell3{
+    background-clip: border-box !important;
+    border-radius: 0.15rem !important;
+    border-style: dotted !important;
+    border-width: 1px !important;
+    border-color: black;
+    width:42px;
+    height:42px;
+    text-align:center;
+    margin-top: 2px;
+    /*background: aqua !important;*/
+}
+
+.sudoku-cell4{
+    background-clip: border-box !important;
+    border-radius: 0.15rem !important;
+    border-style: dotted !important;
+    border-width: 1px !important;
+    border-color: black;
+    width:42px;
+    height:42px;
+    text-align:center;
+    /*background: aqua !important;*/
+}
