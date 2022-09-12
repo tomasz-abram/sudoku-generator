@@ -1,4 +1,4 @@
-package com.tabram.sudokusolver;
+package com.tabram.sudokusolver.service;
 
 public class SudokuSolveService {
 

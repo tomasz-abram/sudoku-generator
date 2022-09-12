@@ -1,26 +1,33 @@
 package com.tabram.sudokusolver.controller;
 
-import com.tabram.sudokusolver.SudokuBoard;
+import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping({"/", "/home"})
 public class MainController {
 
-    SudokuBoard sudokuBoard;
+    SudokuBoardRepository sudokuBoardRepository;
 
     @Autowired
-    public MainController(SudokuBoard sudokuBoard){
-        this.sudokuBoard = sudokuBoard;
+    public MainController(SudokuBoardRepository sudokuBoardRepository){
+        this.sudokuBoardRepository = sudokuBoardRepository;
     }
 
-    @GetMapping({"/", "/home"})
+    @GetMapping
     public ModelAndView home() {
         ModelAndView mav = new ModelAndView("home");
-        mav.addObject("board", sudokuBoard.getBoard());
+        mav.addObject("board", sudokuBoardRepository.getSudokuBoard().getBoard());
         return mav;
     }
 
+    @GetMapping("/solve-all")
+    public ModelAndView solveAll() {
+        ModelAndView mav = new ModelAndView("home");
+        return mav;
+    }
 }
