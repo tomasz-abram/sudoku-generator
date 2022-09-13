@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class SudokuBoardRepository {
+public class SudokuBoardRepository{
 
     SudokuBoard sudokuBoard;
 
@@ -16,5 +16,7 @@ public class SudokuBoardRepository {
     public void setSudokuBoard(SudokuBoard sudokuBoard) {
         this.sudokuBoard = sudokuBoard;
     }
+
+
 
 }

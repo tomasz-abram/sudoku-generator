@@ -3,6 +3,8 @@ package com.tabram.sudokusolver.dto;
 public class SudokuBoardDto {
     int[][] board;
 
+    public SudokuBoardDto() {
+    }
 
     public SudokuBoardDto(int[][] board) {
         this.board = board;
