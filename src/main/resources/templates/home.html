@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
     <title>Sudoku solver</title>
 
@@ -16,22 +17,21 @@
     <div class="row align-content-center justify-content-center">
 
         <div class="col-sm bg-dark row align-content-center justify-content-center border border-dark border-3 p-0">
-            <form id="sudokuBoard" class="p-0 m-0" th:method="POST">
+            <form id="sudokuBoard" class="p-0 m-0" th:method="POST" th:action="@{/solve-all}" th:object="${sudokuBoard}">
 
                 <table class=" m-3 d-flex align-content-center justify-content-center" >
 
-                    <tr th:each="row: ${board}">
+                    <tr th:each="row: ${sudokuBoard}">
                         <td class="p-0 m-0" th:each="value: ${row}">
-                            <div th:switch="${value}"
-                                 th:with="divRow=${rowStat.index % 3 == 0 && rowStat.index != 0}, divCol=${valueStat.index % 3 == 0 && valueStat.index != 0}">
+                            <div th:switch="${value}" th:with="divRow=${rowStat.index % 3 == 0 && rowStat.index != 0}, divCol=${valueStat.index % 3 == 0 && valueStat.index != 0}">
                                 <input maxlength="3"
                                        th:case="0"
                                        th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
-                                       type="text" value="">
+                                       type="text" inputmode="numeric" th:value="${value}" >
                                 <input readonly
                                        th:case="*"
                                        th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-warning p-0 fs-5' : 'sudoku-cell2 form-control bg-warning p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-warning p-0 fs-5' : 'sudoku-cell4 form-control bg-warning p-0 fs-5')"
-                                       th:value="${value}" type="text">
+                                       th:value="${value}"  inputmode="numeric" type="text" >
                             </div>
                         </td>
                     </tr>
