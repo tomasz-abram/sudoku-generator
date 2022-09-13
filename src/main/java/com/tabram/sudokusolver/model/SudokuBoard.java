@@ -6,9 +6,6 @@ public class SudokuBoard {
     int quantityBoxesHeight;
     int quantityBoxesWidth;
 
-    public SudokuBoard(int[][] board) {
-        this.board = board;
-    }
 
     public SudokuBoard(int[][] board, int sudokuSize, int quantityBoxesHeight, int quantityBoxesWidth) {
         this.board = board;
