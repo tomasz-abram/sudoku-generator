@@ -4,7 +4,7 @@ body {
 
     /*padding-top: 40px;*/
     /*padding-bottom: 40px;*/
-    /*background-color: #f5f5f5;*/
+    background-color: #21262d;
     /*display: flex;*/
     /*justify-content: center;*/
     /*align-items: center;*/
@@ -69,4 +69,8 @@ header{
 }
 
 .but {
+    background-color: #30363d; !important;
+}
+.butl{
+    background-color: #5e5e5e; !important;
 }
