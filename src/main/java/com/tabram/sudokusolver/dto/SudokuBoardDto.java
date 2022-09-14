@@ -1,20 +1,17 @@
 package com.tabram.sudokusolver.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SudokuBoardDto {
 
-    List<ArrayList<Integer>> board;
+    Integer[][] board;
 
     public SudokuBoardDto() {
     }
 
-    public List<ArrayList<Integer>> getBoard() {
+    public Integer[][] getBoard() {
         return board;
     }
 
-    public void setBoard(List<ArrayList<Integer>> board) {
+    public void setBoard(Integer[][] board) {
         this.board = board;
     }
 }

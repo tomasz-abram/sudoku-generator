@@ -19,7 +19,7 @@ public class ClearBoardService {
         SudokuBoard sudokuBoard = sudokuBoardRepository.getSudokuBoard();
         for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
             for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
-                sudokuBoard.getBoard()[row][column] = 0;
+                sudokuBoard.getBoard()[row][column] = null;
             }
         }
         sudokuBoardRepository.setSudokuBoard(sudokuBoard);

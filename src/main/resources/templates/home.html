@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <title>Sudoku solver</title>
 
@@ -24,7 +24,7 @@
                         <td class="p-0 m-0" th:each="item: ${row}">
                             <div th:switch="${item}" th:with="divRow=${rowStat.index % 3 == 0 && rowStat.index != 0}, divCol=${itemStat.index % 3 == 0 && itemStat.index != 0}">
                                 <input maxlength="3"
-                                       th:case="0"
+                                       th:case="null"
                                        th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
                                        onfocus="value=''" type="text"  th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}" >
                                 <input readonly

@@ -1,11 +1,12 @@
 package com.tabram.sudokusolver.service;
 
+import com.tabram.sudokusolver.dto.SudokuBoardDto;
+import com.tabram.sudokusolver.model.SudokuBoard;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BoardValueManipulation {
@@ -17,21 +18,30 @@ public class BoardValueManipulation {
         this.sudokuBoardRepository = sudokuBoardRepository;
     }
 
-    public List<ArrayList<Integer>> changeNullToZeroOnBoard(List<ArrayList<Integer>> sudokuBoard) {
+    public SudokuBoardDto changeNullToZeroOnBoard(SudokuBoardDto sudokuBoardDto) {
+       Integer [][] sudokuBoard= sudokuBoardDto.getBoard();
         for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
             for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
-                if (sudokuBoard.get(row).get(column) == null) {
-                    Integer zero = 0;
-                    sudokuBoard.get(row).set(column, zero);
+                if (Objects.equals(sudokuBoard[row][column], null)) {
+                    sudokuBoard[row][column] = 0;
                 }
             }
         }
-        return sudokuBoard;
+        sudokuBoardDto.setBoard(sudokuBoard);
+        return sudokuBoardDto;
     }
 
-    public int[][] convert2DArrayListTo2DArray(List<ArrayList<Integer>> sudokuBoard) {
-        //Solution created by Pimp Trizkit and published on stackoverflow.com
-        return sudokuBoard.stream().map(u -> u.stream().mapToInt(i -> i).toArray()).toArray(int[][]::new);
+    public SudokuBoard changeZeroToNullOnBoard(SudokuBoard sudokuBoardInput) {
+        Integer[][] sudokuBoard = sudokuBoardInput.getBoard();
+        for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
+            for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
+                if (Objects.equals(sudokuBoard[row][column], 0)) {
+                    sudokuBoard[row][column] = null;
+                }
+            }
+        }
+        sudokuBoardInput.setBoard(sudokuBoard);
+        return sudokuBoardInput;
     }
 
 }

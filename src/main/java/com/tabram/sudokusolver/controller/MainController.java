@@ -35,15 +35,15 @@ public class MainController {
 
     @GetMapping
     public ModelAndView home() {
+
         ModelAndView mav = new ModelAndView("home");
-        mav.addObject("sudokuBoard", sudokuBoardRepository.getSudokuBoard());
+        mav.addObject("sudokuBoard", boardValueManipulation.changeZeroToNullOnBoard(sudokuBoardRepository.getSudokuBoard()));
         return mav;
     }
 
     @PostMapping("/solve-all")
     public String solveAll(@ModelAttribute("sudokuBoard") SudokuBoardDto sudokuBoardDto) {
-        boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardDto.getBoard());
-        sudokuSolveService.solveBoard(boardValueManipulation.convert2DArrayListTo2DArray(sudokuBoardDto.getBoard()));
+        sudokuSolveService.solveBoard(boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardDto).getBoard());
         return "redirect:/";
     }
 
