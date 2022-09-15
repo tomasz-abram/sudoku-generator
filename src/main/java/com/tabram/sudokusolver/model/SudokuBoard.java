@@ -1,23 +1,23 @@
 package com.tabram.sudokusolver.model;
 
 public class SudokuBoard {
-    Integer[][] board;
+    int[][] board;
     int sudokuSize;
     int quantityBoxesHeight;
     int quantityBoxesWidth;
 
-    public SudokuBoard(Integer[][] board, int sudokuSize, int quantityBoxesHeight, int quantityBoxesWidth) {
+    public SudokuBoard(int[][] board, int sudokuSize, int quantityBoxesHeight, int quantityBoxesWidth) {
         this.board = board;
         this.sudokuSize = sudokuSize;
         this.quantityBoxesHeight = quantityBoxesHeight;
         this.quantityBoxesWidth = quantityBoxesWidth;
     }
 
-    public Integer[][] getBoard() {
+    public int[][] getBoard() {
         return board;
     }
 
-    public void setBoard(Integer[][] board) {
+    public void setBoard(int[][] board) {
         this.board = board;
     }
 

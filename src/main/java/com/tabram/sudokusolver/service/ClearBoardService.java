@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClearBoardService {
-
     SudokuBoardRepository sudokuBoardRepository;
 
     @Autowired
@@ -17,9 +16,10 @@ public class ClearBoardService {
 
     public void clearBoard() {
         SudokuBoard sudokuBoard = sudokuBoardRepository.getSudokuBoard();
-        for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
-            for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
-                sudokuBoard.getBoard()[row][column] = null;
+        int boardSize = sudokuBoardRepository.getSudokuBoard().getSudokuSize();
+        for (int row = 0; row < boardSize; row++) {
+            for (int column = 0; column < boardSize; column++) {
+                sudokuBoard.getBoard()[row][column] = 0;
             }
         }
         sudokuBoardRepository.setSudokuBoard(sudokuBoard);

@@ -18,21 +18,21 @@ public class BoardValueManipulation {
         this.sudokuBoardRepository = sudokuBoardRepository;
     }
 
-    public SudokuBoardDto changeNullToZeroOnBoard(SudokuBoardDto sudokuBoardDto) {
-       Integer [][] sudokuBoard= sudokuBoardDto.getBoard();
-        for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
-            for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
-                if (Objects.equals(sudokuBoard[row][column], null)) {
-                    sudokuBoard[row][column] = 0;
-                }
-            }
-        }
-        sudokuBoardDto.setBoard(sudokuBoard);
-        return sudokuBoardDto;
-    }
+//    public SudokuBoardDto changeNullToZeroOnBoard(SudokuBoardDto sudokuBoardDto) {
+//       Integer [][] sudokuBoard= sudokuBoardDto.getBoard();
+//        for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
+//            for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
+//                if (Objects.equals(sudokuBoard[row][column], null)) {
+//                    sudokuBoard[row][column] = 0;
+//                }
+//            }
+//        }
+//        sudokuBoardDto.setBoard(sudokuBoard);
+//        return sudokuBoardDto;
+//    }
 
-    public SudokuBoard changeZeroToNullOnBoard(SudokuBoard sudokuBoardInput) {
-        Integer[][] sudokuBoard = sudokuBoardInput.getBoard();
+    public Integer[][] changeZeroToNullOnBoard(Integer[][] sudokuBoard) {
+
         for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
             for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
                 if (Objects.equals(sudokuBoard[row][column], 0)) {
@@ -40,8 +40,7 @@ public class BoardValueManipulation {
                 }
             }
         }
-        sudokuBoardInput.setBoard(sudokuBoard);
-        return sudokuBoardInput;
+        return sudokuBoard;
     }
 
 }

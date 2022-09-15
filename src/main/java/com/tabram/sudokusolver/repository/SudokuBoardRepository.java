@@ -17,6 +17,4 @@ public class SudokuBoardRepository{
         this.sudokuBoard = sudokuBoard;
     }
 
-
-
 }
