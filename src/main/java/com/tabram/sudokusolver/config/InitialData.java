@@ -1,6 +1,6 @@
 package com.tabram.sudokusolver.config;
 
-import com.tabram.sudokusolver.model.SudokuBoard;
+import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -24,8 +24,8 @@ public class InitialData {
                     {2, 0, 0, 9, 0, 0, 0, 0, 3},
                     {0, 1, 0, 6, 0, 0, 0, 2, 0}
             };
-            SudokuBoard sudokuBoard = new SudokuBoard(board, 9, 3, 3);
-            sudokuBoardRepository.setSudokuBoard(sudokuBoard);
+            SudokuBoardObject sudokuBoardObject = new SudokuBoardObject(board, 9, 3, 3);
+            sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
         };
     }
 }

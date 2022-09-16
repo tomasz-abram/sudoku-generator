@@ -1,23 +1,23 @@
 package com.tabram.sudokusolver.service;
 
-import com.tabram.sudokusolver.model.SudokuBoard;
+import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class SudokuSolveService {
-private final SudokuBoardRepository sudokuBoardRepository;
-@Autowired
+    private final SudokuBoardRepository sudokuBoardRepository;
+
+    @Autowired
     public SudokuSolveService(SudokuBoardRepository sudokuBoardRepository) {
         this.sudokuBoardRepository = sudokuBoardRepository;
     }
 
     //check row
     private boolean isNumberInRow(int[][] board, int number, int row) {
-        for (int i = 0; i < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); i++) {
+        int sudokuSize = sudokuBoardRepository.getSudokuBoardObject().getSudokuSize();
+        for (int i = 0; i < sudokuSize; i++) {
             if (board[row][i] == number) {
                 return true;
             }
@@ -27,7 +27,8 @@ private final SudokuBoardRepository sudokuBoardRepository;
 
     //check colum
     private boolean isNumberInColum(int[][] board, int number, int column) {
-        for (int j = 0; j < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); j++) {
+        int sudokuSize = sudokuBoardRepository.getSudokuBoardObject().getSudokuSize();
+        for (int j = 0; j < sudokuSize; j++) {
             if (board[j][column] == number) {
                 return true;
             }
@@ -35,12 +36,14 @@ private final SudokuBoardRepository sudokuBoardRepository;
         return false;
     }
 
-    //check grid box 3x3
+    //check grid box
     private boolean isNumberInBox(int[][] board, int number, int row, int column) {
-        int localBoxRow = row - row % sudokuBoardRepository.getSudokuBoard().getQuantityBoxesHeight();
-        int localBoxColum = column - column % sudokuBoardRepository.getSudokuBoard().getQuantityBoxesWidth();
-        for (int i = localBoxRow; i < localBoxRow + sudokuBoardRepository.getSudokuBoard().getQuantityBoxesHeight(); i++) {
-            for (int j = localBoxColum; j < localBoxColum + sudokuBoardRepository.getSudokuBoard().getQuantityBoxesWidth(); j++) {
+        int boxesWidth = sudokuBoardRepository.getSudokuBoardObject().getQuantityBoxesWidth();
+        int boxesHeight = sudokuBoardRepository.getSudokuBoardObject().getQuantityBoxesHeight();
+        int homeBoxRow = row - row % boxesWidth;
+        int homeBoxColum = column - column % boxesHeight;
+        for (int i = homeBoxRow; i < homeBoxRow + boxesWidth; i++) {
+            for (int j = homeBoxColum; j < homeBoxColum + boxesHeight; j++) {
                 if (board[i][j] == number) {
                     return true;
                 }
@@ -54,15 +57,16 @@ private final SudokuBoardRepository sudokuBoardRepository;
         return !isNumberInRow(board, number, row) && !isNumberInColum(board, number, column) && !isNumberInBox(board, number, row, column);
     }
 
-
-    public boolean solveBoard(int[][] board) {
-        for (int row = 0; row <= sudokuBoardRepository.getSudokuBoard().getSudokuSize()-1; row++) {
-            for (int column = 0; column <= sudokuBoardRepository.getSudokuBoard().getSudokuSize()-1; column++) {
+    public boolean solveBoard() {
+        int sudokuSize = sudokuBoardRepository.getSudokuBoardObject().getSudokuSize();
+        int[][] board = sudokuBoardRepository.getSudokuBoardObject().getBoard();
+        for (int row = 0; row < sudokuSize; row++) {
+            for (int column = 0; column < sudokuSize; column++) {
                 if (board[row][column] == 0) {
-                    for (int numberToTry = 1; numberToTry <= sudokuBoardRepository.getSudokuBoard().getSudokuSize(); numberToTry++) {
+                    for (int numberToTry = 1; numberToTry <= sudokuSize; numberToTry++) {
                         if (isValidPlacement(board, numberToTry, row, column)) {
                             board[row][column] = numberToTry;
-                            if (solveBoard(board)) {
+                            if (solveBoard()) {
                                 return true;
                             } else {
                                 board[row][column] = 0;
@@ -73,9 +77,9 @@ private final SudokuBoardRepository sudokuBoardRepository;
                 }
             }
         }
-        SudokuBoard tempBoard = sudokuBoardRepository.getSudokuBoard();
+        SudokuBoardObject tempBoard = sudokuBoardRepository.getSudokuBoardObject();
         tempBoard.setBoard(board);
-        sudokuBoardRepository.setSudokuBoard(tempBoard);
+        sudokuBoardRepository.setSudokuBoardObject(tempBoard);
         return true;
     }
 }

@@ -1,6 +1,6 @@
 package com.tabram.sudokusolver.service;
 
-import com.tabram.sudokusolver.model.SudokuBoard;
+import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +15,13 @@ public class ClearBoardService {
     }
 
     public void clearBoard() {
-        SudokuBoard sudokuBoard = sudokuBoardRepository.getSudokuBoard();
-        int boardSize = sudokuBoardRepository.getSudokuBoard().getSudokuSize();
+        SudokuBoardObject sudokuBoardObject = sudokuBoardRepository.getSudokuBoardObject();
+        int boardSize = sudokuBoardRepository.getSudokuBoardObject().getSudokuSize();
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
-                sudokuBoard.getBoard()[row][column] = 0;
+                sudokuBoardObject.getBoard()[row][column] = 0;
             }
         }
-        sudokuBoardRepository.setSudokuBoard(sudokuBoard);
+        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
     }
 }

@@ -1,11 +1,10 @@
 package com.tabram.sudokusolver.service;
 
-import com.tabram.sudokusolver.model.SudokuBoard;
+import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +22,8 @@ public class BoardSizeService {
     public void generateNewBoard(int size) {
         int[][] newBoard = new int[size][size];
         HashMap<String,Integer> dim = smallBoxSize(divisorsList(size), size);
-        SudokuBoard sudokuBoard = new SudokuBoard(newBoard, size, dim.get("height"), dim.get("width"));
-        sudokuBoardRepository.setSudokuBoard(sudokuBoard);
+        SudokuBoardObject sudokuBoardObject = new SudokuBoardObject(newBoard, size, dim.get("height"), dim.get("width"));
+        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
     }
 
     public List<Integer> divisorsList(int n) {
@@ -57,8 +56,9 @@ public class BoardSizeService {
                     }
                 }
             }
-            dimensions.put("height", temp1);
-            dimensions.put("width" , temp2);
+
+            dimensions.put("width", temp1);
+            dimensions.put("height" , temp2);
         }
         return dimensions;
     }

@@ -1,7 +1,6 @@
 package com.tabram.sudokusolver.controller;
 
-import com.tabram.sudokusolver.dto.SudokuBoardDto;
-import com.tabram.sudokusolver.model.SudokuBoard;
+import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import com.tabram.sudokusolver.service.BoardSizeService;
 import com.tabram.sudokusolver.service.BoardValueManipulation;
@@ -11,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping({"/", "/home"})
@@ -36,32 +32,22 @@ public class MainController {
     }
 
 
-    @ModelAttribute("sudokuBoard")
-    public SudokuBoardDto sudokuBoardDto() {
-        return new SudokuBoardDto();
+    @ModelAttribute("sudokuBoardObject")
+    public SudokuBoardObjectDto sudokuBoardDto() {
+        return new SudokuBoardObjectDto();
     }
 
     @GetMapping
     public ModelAndView home() {
-//        int[][] i = sudokuBoardRepository.getSudokuBoard().getBoard();
-//        Integer[][] result = Stream.of(i)
-//                .map(array -> IntStream.of(array).boxed().toArray(Integer[]::new))
-//                .toArray(Integer[][]::new);
         ModelAndView mav = new ModelAndView("home");
-        mav.addObject("sudokuBoard", sudokuBoardRepository.getSudokuBoard());
+        mav.addObject("sudokuBoardObject", sudokuBoardRepository.getSudokuBoardObject());
         return mav;
     }
 
     @PostMapping("/solve-all")
-    public String solveAll(@ModelAttribute("sudokuBoard") SudokuBoardDto sudokuBoardDto) {
-//        Integer[][] i = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardDto).getBoard();
-
-        sudokuSolveService.solveBoard(sudokuBoardDto.getBoard().clone());
-
-//        SudokuBoard board = sudokuBoardRepository.getSudokuBoard();
-//        board.setBoard(sudokuBoardDto.getBoard().clone());
-//sudokuBoardRepository.setSudokuBoard(board);;
-//        sudokuSolveService.solveBoard(sudokuBoardDto().getBoard());
+    public String solveAll(@ModelAttribute("sudokuBoardObject") SudokuBoardObjectDto sudokuBoardObjectDto) {
+        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectDto);
+        sudokuSolveService.solveBoard();
         return HOME;
     }
 
@@ -72,7 +58,7 @@ public class MainController {
     }
 
     @PutMapping("/change-board-size")
-    public String changeBoardSize(@RequestParam("changeBoardSize") Integer boardSize){
+    public String changeBoardSize(@RequestParam("changeBoardSize") Integer boardSize) {
         boardSizeService.generateNewBoard(boardSize);
         return HOME;
     }

@@ -16,13 +16,15 @@
     <div class="row align-content-center justify-content-center ">
 
         <div class="col-sm butl row align-content-center justify-content-center p-0">
-            <form action="#" id="sudokuBoard" class="p-0 m-0" th:method="POST" th:action="@{/solve-all}" th:object="${sudokuBoard}">
+            <form action="#" id="sudokuBoardObject" class="p-0 m-0" th:method="POST" th:action="@{/solve-all}" th:object="${sudokuBoardObject}">
 
                 <table class=" m-3 d-flex align-content-center justify-content-center" >
-
+                    <input class="invisible overflow-hidden visually-hidden" th:field="*{quantityBoxesHeight}">
+                    <input class="invisible overflow-hidden visually-hidden" th:field="*{quantityBoxesWidth}">
+                    <input class="invisible overflow-hidden visually-hidden" th:field="*{sudokuSize}">
                     <tr th:each="row: *{board}">
                         <td class="p-0 m-0" th:each="item: ${row}">
-                            <div th:switch="${item}" th:with="divRow=${rowStat.index % sudokuBoard.getQuantityBoxesHeight() == 0 && rowStat.index != 0}, divCol=${itemStat.index % sudokuBoard.getQuantityBoxesWidth() == 0 && itemStat.index != 0}">
+                            <div th:switch="${item}" th:with="divRow=${rowStat.index % sudokuBoardObject.getQuantityBoxesWidth() == 0 && rowStat.index != 0}, divCol=${itemStat.index % sudokuBoardObject.getQuantityBoxesHeight() == 0 && itemStat.index != 0}">
                                 <input maxlength="3"
                                        th:case="0"
                                        th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
@@ -51,7 +53,7 @@
                 <h6 style="letter-spacing: 11px">SOLVING</h6>
                 <div aria-label="Basic example" class="btn-group w-100" role="group">
                     <button class="btn btn-sm btn-dark but  border-left border-white text-white fs-6" type="button">Solve cell</button>
-                    <button class="btn btn-sm btn btn-dark but border-right border-white text-white fs-6" type="submit" form="sudokuBoard"> Solve all</button>
+                    <button class="btn btn-sm btn btn-dark but border-right border-white text-white fs-6" type="submit" form="sudokuBoardObject"> Solve all</button>
 
                 </div>
             </div>
@@ -87,18 +89,30 @@
                     <button class="btn btn-sm btn-outline-dark but text-white fs-6" type="button">Hard</button>
                 </div>
 
-                <div class="mt-3 mb-3">
+                    <div class="mt-3 mb-3">
                     <h6 style="letter-spacing: 7px">BOARD SIZE</h6>
-                <div class="btn-group w-100">
-                    <form class="btn-group w-100" th:action="@{/change-board-size}" th:method="PUT">
-                        <button class="btn btn-sm btn-outline-dark but text-white fs-6" type="button">A x A</button>
-                        <input class="btn btn-sm btn-outline-dark but text-white fs-6 m-0 p-0" id="changeBoardSize" name="changeBoardSize"
-                               placeholder="Enter A"
-                               type="text" inputmode="numeric"  maxlength="3">
-                        <button class="btn btn-sm btn-dark but text-white fs-6" type="submit">Change</button>
 
-                    </form>
-                </div>
+                        <div class="btn-group w-100">
+                        <form class="btn-group w-100" th:action="@{/change-board-size}" th:method="PUT">
+                                    <label class="btn btn-sm btn-outline-dark but text-white fs-6 but border-white" for="changeBoardSize" th:text="${sudokuBoardObject.sudokuSize + ' x ' + sudokuBoardObject.sudokuSize}">Options</label>
+                                <select class="btn btn-sm btn-outline-dark but text-white fs-6 m-0 p-0"  id="changeBoardSize" name="changeBoardSize">
+                                    <option selected>Choose</option>
+                                    <option th:value="4">4x4</option>
+                                    <option th:value="6">6x6</option>
+                                    <option th:value="8">8x8</option>
+                                    <option th:value="9">9x9</option>
+                                    <option th:value="10">10x10</option>
+                                    <option th:value="12">12x12</option>
+                                    <option th:value="14">14x14</option>
+                                    <option th:value="15">15x15</option>
+                                    <option th:value="16">16x16</option>
+                                    <option th:value="18">18x18</option>
+                                    <option th:value="20">20x20</option>
+                                </select>
+                                    <button class="btn btn-sm btn-dark but text-white fs-6" type="submit">Change</button>
+                        </form>
+                        </div>
+
 
                 </div>
             </div>
