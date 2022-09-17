@@ -46,7 +46,7 @@ public class MainController {
 
     @PostMapping("/solve-all")
     public String solveAll(@ModelAttribute("sudokuBoardObject") SudokuBoardObjectDto sudokuBoardObjectDto) {
-        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectDto);
+        sudokuBoardRepository.setSudokuBoardObject(boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObjectDto));
         sudokuSolveService.solveBoard();
         return HOME;
     }

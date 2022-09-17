@@ -13,16 +13,16 @@ public class InitialData {
     @Bean
     CommandLineRunner sudokuCommandLineRunner(SudokuBoardRepository sudokuBoardRepository) {
         return args -> {
-            int[][] board = {
-                    {0, 0, 4, 0, 6, 0, 0, 0, 2},
-                    {3, 0, 0, 5, 0, 0, 0, 0, 7},
-                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                    {1, 0, 0, 0, 8, 0, 0, 0, 0},
-                    {0, 3, 0, 0, 4, 0, 7, 0, 8},
-                    {5, 0, 0, 0, 7, 0, 0, 0, 6},
-                    {0, 0, 0, 0, 0, 0, 1, 8, 0},
-                    {2, 0, 0, 9, 0, 0, 0, 0, 3},
-                    {0, 1, 0, 6, 0, 0, 0, 2, 0}
+            Integer[][] board = {
+                    {null, null, 4, null, 6, null, null, null, 2},
+                    {3, null, null, 5, null, null, null, null, 7},
+                    {null, null, null, null, null, null, null, null, null},
+                    {1, null, null, null, 8, null, null, null, null},
+                    {null, 3, null, null, 4, null, 7, null, 8},
+                    {5, null, null, null, 7, null, null, null, 6},
+                    {null, null, null, null, null, null, 1, 8, null},
+                    {2, null, null, 9, null, null, null, null, 3},
+                    {null, 1, null, 6, null, null, null, 2, null}
             };
             SudokuBoardObject sudokuBoardObject = new SudokuBoardObject(board, 9, 3, 3);
             sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BoardSizeService {
@@ -20,8 +21,8 @@ public class BoardSizeService {
     }
 
     public void generateNewBoard(int size) {
-        int[][] newBoard = new int[size][size];
-        HashMap<String,Integer> dim = smallBoxSize(divisorsList(size), size);
+        Integer[][] newBoard = new Integer[size][size];
+        Map<String, Integer> dim = smallBoxSize(divisorsList(size), size);
         SudokuBoardObject sudokuBoardObject = new SudokuBoardObject(newBoard, size, dim.get("height"), dim.get("width"));
         sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
     }
@@ -39,26 +40,24 @@ public class BoardSizeService {
         return divisionList;
     }
 
-    public HashMap<String,Integer> smallBoxSize(List<Integer> divisionList, int n) {
+    public Map<String, Integer> smallBoxSize(List<Integer> divisionList, int n) {
         int temp1 = 0;
         int temp2 = 0;
         int ratio = -1;
-        HashMap<String,Integer> dimensions = new HashMap<>();
+        HashMap<String, Integer> dimensions = new HashMap<>();
         for (int i = 0; i < divisionList.size(); i++) {
             Integer a = divisionList.get(i);
-            for (int j = 0; j < divisionList.size(); j++) {
-                Integer b = divisionList.get(j);
-                if (a * b == n) {
-                    if (ratio > b - a && b - a >= 0 || ratio < 0) {
-                        temp1 = a;
-                        temp2 = b;
-                        ratio = b - a;
-                    }
+            for (Integer b : divisionList) {
+                if (a * b == n && (ratio > b - a && b - a >= 0 || ratio < 0)) {
+                    temp1 = a;
+                    temp2 = b;
+                    ratio = b - a;
+
                 }
             }
 
             dimensions.put("width", temp1);
-            dimensions.put("height" , temp2);
+            dimensions.put("height", temp2);
         }
         return dimensions;
     }

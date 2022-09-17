@@ -1,5 +1,6 @@
 package com.tabram.sudokusolver.service;
 
+import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,30 +17,17 @@ public class BoardValueManipulation {
         this.sudokuBoardRepository = sudokuBoardRepository;
     }
 
-//    public SudokuBoardDto changeNullToZeroOnBoard(SudokuBoardDto sudokuBoardDto) {
-//       Integer [][] sudokuBoard= sudokuBoardDto.getBoard();
-//        for (int row = 0; row < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); row++) {
-//            for (int column = 0; column < sudokuBoardRepository.getSudokuBoard().getSudokuSize(); column++) {
-//                if (Objects.equals(sudokuBoard[row][column], null)) {
-//                    sudokuBoard[row][column] = 0;
-//                }
-//            }
-//        }
-//        sudokuBoardDto.setBoard(sudokuBoard);
-//        return sudokuBoardDto;
-//    }
-
-    public Integer[][] changeZeroToNullOnBoard(Integer[][] sudokuBoard) {
-
+    public SudokuBoardObjectDto changeNullToZeroOnBoard(SudokuBoardObjectDto sudokuBoardDto) {
+        Integer[][] sudokuBoard = sudokuBoardDto.getBoard();
         for (int row = 0; row < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); row++) {
             for (int column = 0; column < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); column++) {
-                if (Objects.equals(sudokuBoard[row][column], 0)) {
-                    sudokuBoard[row][column] = null;
+                if (Objects.equals(sudokuBoard[row][column], null)) {
+                    sudokuBoard[row][column] = 0;
                 }
             }
         }
-        return sudokuBoard;
+        sudokuBoardDto.setBoard(sudokuBoard);
+        return sudokuBoardDto;
     }
-
 }
 

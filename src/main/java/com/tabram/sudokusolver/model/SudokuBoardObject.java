@@ -1,21 +1,26 @@
-package com.tabram.sudokusolver.dto;
+package com.tabram.sudokusolver.model;
 
-public class SudokuBoardDto {
-
-    int[][] board;
-
+public class SudokuBoardObject {
+    Integer[][] board;
     int sudokuSize;
     int quantityBoxesHeight;
     int quantityBoxesWidth;
 
-    public SudokuBoardDto() {
+    public SudokuBoardObject() {
     }
 
-    public int[][] getBoard() {
+    public SudokuBoardObject(Integer[][] board, int sudokuSize, int quantityBoxesHeight, int quantityBoxesWidth) {
+        this.board = board;
+        this.sudokuSize = sudokuSize;
+        this.quantityBoxesHeight = quantityBoxesHeight;
+        this.quantityBoxesWidth = quantityBoxesWidth;
+    }
+
+    public Integer[][] getBoard() {
         return board;
     }
 
-    public void setBoard(int[][] board) {
+    public void setBoard(Integer[][] board) {
         this.board = board;
     }
 
