@@ -53,7 +53,7 @@ public class SudokuSolveService {
     }
 
     // this method check all three row/column/box methods
-    private boolean isValidPlacement(Integer[][] board, Integer number, int row, int column) {
+    public boolean isValidPlacement(Integer[][] board, Integer number, int row, int column) {
         return !isNumberInRow(board, number, row) && !isNumberInColum(board, number, column) && !isNumberInBox(board, number, row, column);
     }
 

@@ -1,6 +1,6 @@
 package com.tabram.sudokusolver.service;
 
-import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
+import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ public class BoardValueManipulation {
         this.sudokuBoardRepository = sudokuBoardRepository;
     }
 
-    public SudokuBoardObjectDto changeNullToZeroOnBoard(SudokuBoardObjectDto sudokuBoardDto) {
-        Integer[][] sudokuBoard = sudokuBoardDto.getBoard();
+    public SudokuBoardObject changeNullToZeroOnBoard(SudokuBoardObject sudokuBoardObject) {
+        Integer[][] sudokuBoard = sudokuBoardObject.getBoard();
         for (int row = 0; row < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); row++) {
             for (int column = 0; column < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); column++) {
                 if (Objects.equals(sudokuBoard[row][column], null)) {
@@ -26,8 +26,8 @@ public class BoardValueManipulation {
                 }
             }
         }
-        sudokuBoardDto.setBoard(sudokuBoard);
-        return sudokuBoardDto;
+        sudokuBoardObject.setBoard(sudokuBoard);
+        return sudokuBoardObject;
     }
 }
 

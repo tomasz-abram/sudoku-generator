@@ -1,6 +1,6 @@
 package com.tabram.sudokusolver.controller;
 
-import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
+import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
 import com.tabram.sudokusolver.service.BoardSizeService;
 import com.tabram.sudokusolver.service.BoardValueManipulation;
@@ -8,8 +8,11 @@ import com.tabram.sudokusolver.service.ClearBoardService;
 import com.tabram.sudokusolver.service.SudokuSolveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping({"/", "/home"})
@@ -33,8 +36,8 @@ public class MainController {
 
 
     @ModelAttribute("sudokuBoardObject")
-    public SudokuBoardObjectDto sudokuBoardDto() {
-        return new SudokuBoardObjectDto();
+    public SudokuBoardObject sudokuBoardDto() {
+        return new SudokuBoardObject();
     }
 
     @GetMapping
@@ -45,8 +48,11 @@ public class MainController {
     }
 
     @PostMapping("/solve-all")
-    public String solveAll(@ModelAttribute("sudokuBoardObject") SudokuBoardObjectDto sudokuBoardObjectDto) {
-        sudokuBoardRepository.setSudokuBoardObject(boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObjectDto));
+    public String solveAll(@ModelAttribute("sudokuBoardObject")@Valid SudokuBoardObject sudokuBoardObject, BindingResult result) {
+        if(result.hasErrors()){
+            return "/home";
+        }
+        sudokuBoardRepository.setSudokuBoardObject(boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject));
         sudokuSolveService.solveBoard();
         return HOME;
     }

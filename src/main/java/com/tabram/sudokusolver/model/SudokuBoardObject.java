@@ -1,5 +1,13 @@
 package com.tabram.sudokusolver.model;
 
+import com.tabram.sudokusolver.validation.NumberInTheRange;
+import com.tabram.sudokusolver.validation.NumberIsValidPlacement;
+
+import javax.validation.constraints.Size;
+import java.util.Arrays;
+
+@NumberInTheRange
+@NumberIsValidPlacement
 public class SudokuBoardObject {
     Integer[][] board;
     int sudokuSize;
@@ -46,5 +54,15 @@ public class SudokuBoardObject {
 
     public void setQuantityBoxesWidth(int quantityBoxesWidth) {
         this.quantityBoxesWidth = quantityBoxesWidth;
+    }
+
+    @Override
+    public String toString() {
+        return "SudokuBoardObject{" +
+                "board=" + Arrays.toString(board) +
+                ", sudokuSize=" + sudokuSize +
+                ", quantityBoxesHeight=" + quantityBoxesHeight +
+                ", quantityBoxesWidth=" + quantityBoxesWidth +
+                '}';
     }
 }
