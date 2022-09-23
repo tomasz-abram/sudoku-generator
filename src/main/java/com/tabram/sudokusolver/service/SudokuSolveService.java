@@ -58,18 +58,17 @@ public class SudokuSolveService {
     }
 
     public boolean solveBoard() {
-        int sudokuSize = sudokuBoardRepository.getSudokuBoardObject().getSudokuSize();
-        Integer[][] board = sudokuBoardRepository.getSudokuBoardObject().getBoard();
-        for (int row = 0; row < sudokuSize; row++) {
-            for (int column = 0; column < sudokuSize; column++) {
-                if (board[row][column].equals(0) ) {
-                    for (int numberToTry = 1; numberToTry <= sudokuSize; numberToTry++) {
-                        if (isValidPlacement(board, numberToTry, row, column)) {
-                            board[row][column] = numberToTry;
+        SudokuBoardObject board = sudokuBoardRepository.getSudokuBoardObject();
+        for (int row = 0; row < board.getSudokuSize(); row++) {
+            for (int column = 0; column < board.getSudokuSize(); column++) {
+                if (board.getValueFromArray(row,column).equals(0) ) {
+                    for (int numberToTry = 1; numberToTry <= board.getSudokuSize(); numberToTry++) {
+                        if (isValidPlacement(board.getBoard(), numberToTry, row, column)) {
+                            board.setValueToArray(row,column,numberToTry);
                             if (solveBoard()) {
                                 return true;
                             } else {
-                                board[row][column] = 0;
+                                board.setValueToArray(row,column,0);
                             }
                         }
                     }
@@ -77,9 +76,7 @@ public class SudokuSolveService {
                 }
             }
         }
-        SudokuBoardObject tempBoard = sudokuBoardRepository.getSudokuBoardObject();
-        tempBoard.setBoard(board);
-        sudokuBoardRepository.setSudokuBoardObject(tempBoard);
+        sudokuBoardRepository.setSudokuBoardObject(board);
         return true;
     }
 }

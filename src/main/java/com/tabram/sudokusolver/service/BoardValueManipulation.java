@@ -21,8 +21,8 @@ public class BoardValueManipulation {
         Integer[][] sudokuBoard = sudokuBoardObject.getBoard();
         for (int row = 0; row < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); row++) {
             for (int column = 0; column < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); column++) {
-                if (Objects.equals(sudokuBoard[row][column], null)) {
-                    sudokuBoard[row][column] = 0;
+                if (Objects.equals(sudokuBoardObject.getValueFromArray(row,column), null)) {
+                    sudokuBoardObject.setValueToArray(row,column,0);
                 }
             }
         }

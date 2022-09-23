@@ -44,7 +44,7 @@ public class BoardSizeService {
         int temp1 = 0;
         int temp2 = 0;
         int ratio = -1;
-        HashMap<String, Integer> dimensions = new HashMap<>();
+        Map<String, Integer> dimensions = new HashMap<>();
         for (int i = 0; i < divisionList.size(); i++) {
             Integer a = divisionList.get(i);
             for (Integer b : divisionList) {
@@ -52,10 +52,8 @@ public class BoardSizeService {
                     temp1 = a;
                     temp2 = b;
                     ratio = b - a;
-
                 }
             }
-
             dimensions.put("width", temp1);
             dimensions.put("height", temp2);
         }

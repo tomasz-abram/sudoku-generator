@@ -3,7 +3,6 @@ package com.tabram.sudokusolver.model;
 import com.tabram.sudokusolver.validation.NumberInTheRange;
 import com.tabram.sudokusolver.validation.NumberIsValidPlacement;
 
-import javax.validation.constraints.Size;
 import java.util.Arrays;
 
 @NumberInTheRange
@@ -30,6 +29,13 @@ public class SudokuBoardObject {
 
     public void setBoard(Integer[][] board) {
         this.board = board;
+    }
+
+    public Integer getValueFromArray(int i, int j) {
+        return board[i][j];
+    }
+    public void setValueToArray(int i, int j, Integer value) {
+        this.board[i][j] = value;
     }
 
     public int getSudokuSize() {
