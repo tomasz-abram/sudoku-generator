@@ -1,15 +1,7 @@
 
 html,
 body {
-
-    /*padding-top: 40px;*/
-    /*padding-bottom: 40px;*/
     background-color: #21262d;
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    /*justify-items: center;*/
-
 }
 
 header{
@@ -19,58 +11,96 @@ header{
 .sudoku-cell1{
     background-clip: border-box !important;
     border-radius: 0.15rem !important;
-    border-style: dotted !important;
-    border-width: 1px !important;
+    border-style: solid !important;
+    border-width: 1px;
     border-color: black;
     width:40px;
     height:40px;
     text-align:center;
     margin-left: 2px;
     margin-top: 2px;
-    /*background: aqua !important;*/
 }
 
 .sudoku-cell2{
     background-clip: border-box !important;
     border-radius: 0.15rem !important;
-    border-style: dotted !important;
-    border-width: 1px !important;
+    border-style: solid !important;
+    border-width: 1px;
     border-color: black;
     width:40px;
     height:40px;
     text-align:center;
     margin-left: 2px;
-    /*background: aqua !important;*/
 }
 
 .sudoku-cell3{
     background-clip: border-box !important;
     border-radius: 0.15rem !important;
-    border-style: dotted !important;
-    border-width: 1px !important;
+    border-style: solid !important;
+    border-width: 1px;
     border-color: black;
     width:40px;
     height:40px;
     text-align:center;
     margin-top: 2px;
-    /*background: aqua !important;*/
 }
 
 .sudoku-cell4{
     background-clip: border-box !important;
     border-radius: 0.15rem !important;
-    border-style: dotted !important;
-    border-width: 1px !important;
+    border-style: solid !important;
+    border-width: 1px ;
     border-color: black;
     width:40px;
     height:40px;
     text-align:center;
-    /*background: aqua !important;*/
 }
 
+@media print {
+    .sudoku-cell1{
+        border-radius: 0 !important;
+        border-width:  5px 1px 1px 5px; !important;
+        margin: 0 !important;
+        width:45px!important;
+        height:45px !important;
+        outline: black solid 1px;
+    }
+
+    .sudoku-cell2{
+        border-radius: 0 !important;
+        border-width: 1px 1px 1px 5px !important;
+        margin: 0 !important;
+        width:45px !important;
+        height:40px !important;
+        outline: black solid 1px;
+    }
+
+    .sudoku-cell3{
+        border-radius: 0 !important;
+        border-width: 5px 1px 1px 1px;
+        margin: 0 !important;
+        width:40px !important;
+        height:45px !important;
+        outline: black solid 1px;
+    }
+
+    .sudoku-cell4{
+        border-radius: 0 !important;
+        border-width: 1px !important;
+        margin: 0 !important;
+        width:40px !important;
+        height:40px !important;
+        outline: black solid 1px;
+    }
+
+
+}
+
+
+
 .but {
-    background-color: #30363d; !important;
+    background: #30363d; !important;
 }
 .butl{
-    background-color: #5e5e5e; !important;
+    background: #5e5e5e; !important;
 }
