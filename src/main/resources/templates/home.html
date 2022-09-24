@@ -33,10 +33,13 @@
 
             <div class="row align-content-center justify-content-center ">
                 <div class="col-sm butl align-content-center justify-content-center p-0" id="printableArea">
-                    <form action="#" class="p-0 m-0 butl" id="sudokuBoardObject" th:action="@{/solve-all}" th:method="POST"
+                    <form action="#" class="p-0 m-0 butl" id="sudokuBoardObject" th:action="@{/solve-all}"
+                          th:method="POST"
                           th:object="${sudokuBoardObject}">
-                        <input class="invisible overflow-hidden visually-hidden" id="boxesHeight" th:field="*{quantityBoxesHeight}">
-                        <input class="invisible overflow-hidden visually-hidden" id="boxesWidth" th:field="*{quantityBoxesWidth}">
+                        <input class="invisible overflow-hidden visually-hidden" id="boxesHeight"
+                               th:field="*{quantityBoxesHeight}">
+                        <input class="invisible overflow-hidden visually-hidden" id="boxesWidth"
+                               th:field="*{quantityBoxesWidth}">
                         <input class="invisible overflow-hidden visually-hidden" id="size" th:field="*{sudokuSize}">
 
                         <table class=" m-3 d-flex align-content-center justify-content-center">
@@ -88,8 +91,7 @@
                         <h6 style="letter-spacing: 11px">SOLVING</h6>
                         <div aria-label="Basic example" class="btn-group w-100" role="group">
                             <button class="btn btn-sm btn-dark but  border-left border-white text-white fs-6"
-                                    type="button">
-                                Solve cell
+                                    type="button"> Solve cell
                             </button>
                             <button class="btn btn-sm btn btn-dark but border-right border-white text-white fs-6"
                                     form="sudokuBoardObject" type="submit"> Solve all
@@ -109,7 +111,8 @@
                                         type="button">Save
                                 </button>
                                 <input class="btn btn-sm btn-outline-dark fs-6 but text-white"
-                                        style="width: 33% ; border-radius: 0 0.3rem 0 0" type="button" th:onclick="printDiv('printableArea')" value="Print">
+                                       style="width: 33% ; border-radius: 0 0.3rem 0 0" th:onclick="printDiv('printableArea')"
+                                       type="button" value="Print">
 
                             </div>
 
@@ -172,6 +175,13 @@
                             </div>
                         </div>
                     </div>
+
+<!--                    <div id="spinner" class="d-flex justify-content-center">-->
+<!--                        <div class="spinner-border " role="status">-->
+<!--                            <span class="visually-hidden">Loading...</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
                 </div>
             </div>
         </div>
@@ -185,12 +195,8 @@
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
         var originalContents = document.body.innerHTML;
-
         document.body.innerHTML = printContents;
-
         window.print();
-
         document.body.innerHTML = originalContents;
     }
-
 </script>

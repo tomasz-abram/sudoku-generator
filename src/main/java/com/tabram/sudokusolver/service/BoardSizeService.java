@@ -27,6 +27,8 @@ public class BoardSizeService {
         sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
     }
 
+
+//    This method generates a list of the divisors of the given number except one and the given number.
     public List<Integer> divisorsList(int n) {
         List<Integer> divisionList = new ArrayList<>();
         for (int i = 2; i <= n; i++) {
@@ -39,7 +41,7 @@ public class BoardSizeService {
         }
         return divisionList;
     }
-
+// This method finds the nearest divisors that can form a sudoku box with the shorter side always at the top.
     public Map<String, Integer> smallBoxSize(List<Integer> divisionList, int n) {
         int temp1 = 0;
         int temp2 = 0;
