@@ -96,11 +96,17 @@ header{
 
 }
 
-
-
-.but {
+.btn-bg-custom {
     background: #30363d; !important;
 }
-.butl{
+.btn-bg-custom-light{
     background: #5e5e5e; !important;
+}
+
+.modal-custom-background {
+    --bs-modal-bg: #5e5e5e !important;
+}
+
+.custom-dark-background {
+    background-color: #21262d !important;
 }

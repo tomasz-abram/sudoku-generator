@@ -2,10 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Sudoku solver</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
 
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
           integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" rel="stylesheet">
-
     <link href="../static/css/main.css" rel="stylesheet" th:href="@{/css/main.css}"/>
 
 </head>
@@ -17,7 +18,7 @@
 
     <div class="row">
         <div class="col">
-
+            <!--Alert && message-->
             <div class="row align-content-center justify-content-center mt-3 p-0">
                 <div class="col">
                     <div class="alert alert-success w-100" th:errors="*{sudokuBoardObject.board}"
@@ -27,18 +28,24 @@
                             th:each="err : ${#fields.errors('sudokuBoardObject.*')}"
                             th:text="${err}"/>
                     </ul>
+
+                    <div th:if="${message}">
+                        <p class="alert alert-success" th:text="${message}"/>
+                    </div>
                 </div>
             </div>
 
-
+            <!--Sudoku board col------------------------------------------------------------------------------------>
             <div class="row align-content-center justify-content-center ">
-                <div class="col-sm butl align-content-center justify-content-center p-0" id="printableArea">
-                    <form action="#" class="p-0 m-0 butl" id="sudokuBoardObject" th:action="@{/solve-all}"
+                <div class="col-sm btn-bg-custom-light align-content-center justify-content-center p-0"
+                     id="printableArea">
+                    <form action="#" class="p-0 m-0 btn-bg-custom-light" id="sudokuBoardObject"
+                          th:action="@{/solve-all}"
                           th:method="POST"
                           th:object="${sudokuBoardObject}">
-                        <input th:type="hidden" id="boxesHeight" th:field="*{quantityBoxesHeight}">
-                        <input th:type="hidden" id="boxesWidth" th:field="*{quantityBoxesWidth}">
-                        <input th:type="hidden" id="size" th:field="*{sudokuSize}">
+                        <input id="boxesHeight" th:field="*{quantityBoxesHeight}" th:type="hidden">
+                        <input id="boxesWidth" th:field="*{quantityBoxesWidth}" th:type="hidden">
+                        <input id="size" th:field="*{sudokuSize}" th:type="hidden">
 
                         <table class=" m-3 d-flex align-content-center justify-content-center">
                             <tr th:each="row: *{board}">
@@ -50,7 +57,9 @@
                                                 onfocus="value='' "
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
-                                                th:if="${item == null || item == 0}"  th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}" type="text">
+                                                th:if="${item == null || item == 0}"
+                                                th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                                type="text">
 
                                         <input
                                                 inputmode="numeric"
@@ -75,85 +84,142 @@
                         </table>
                     </form>
                 </div>
-                <!--        ------------------------------------------------------------------------------------------------------------->
-                <div class="col-sm text-center butl"
+                <!--MENU--------------------------------MENU----------------------------------------MENU-------------->
+                <div class="col-sm text-center btn-bg-custom-light"
                      style="border-top-right-radius: 0.4rem; border-bottom-right-radius: 0.4rem">
 
-                    <div class="w-100 mt-2 mb-2">
-                        <h5> MENU </h5>
+                    <div class="w-100 mt-2 mb-2 text-center">
+                        <h4 class="fw-bold" style="letter-spacing: 20px">MENU</h4>
                         <hr class="m-auto">
                     </div>
-
-                    <div class="mt-3">
+                    <!--Solving section ------------------------------------------------------------------------------>
+                    <div class="mt-2">
                         <h6 style="letter-spacing: 11px">SOLVING</h6>
                         <div aria-label="Basic example" class="btn-group w-100" role="group">
-                            <button class="btn btn-sm btn-dark but  border-left border-white text-white fs-6"
+                            <button class="btn btn-sm btn-dark btn-bg-custom  border-left border-white text-white fs-6"
                                     type="button"> Solve cell
                             </button>
-                            <button class="btn btn-sm btn btn-dark but border-right border-white text-white fs-6"
+                            <button class="btn btn-sm btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
                                     form="sudokuBoardObject" type="submit"> Solve all
                             </button>
 
                         </div>
                     </div>
-
+                    <!--Puzzle section ------------------------------------------------------------------------------->
                     <div class="w-100 mt-3 text-center">
                         <h6 style="letter-spacing: 15px">PUZZLE</h6>
-                        <div class="btn-group-vertical w-100">
-                            <div aria-label="Basic example" class="btn-group w-100" role="group">
+                        <div class=" w-auto">
 
-                                <button class="btn btn-sm btn-outline-dark fs-6 but text-white"
-                                        style="width: 33% ; border-radius: 0.3rem 0 0 0" type="file">Load
+                            <!--3/6 buttons----------------------------------->
+
+                            <div aria-label="3/6-buttons" class="btn-group w-100" role="group">
+
+                                <!--Upload button-->
+                                <button class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
+                                        data-bs-target="#exampleModal" data-bs-toggle="modal"
+                                        style="width: 33% ; border-radius: 0.3rem 0 0 0; border-bottom-width: 0"
+                                        type="button">Upload
                                 </button>
+                                <!-- Upload modal -->
+                                <div aria-hidden="true" aria-labelledby="exampleModalLabel"
+                                     class="modal modal-custom-background fade"
+                                     id="exampleModal" tabindex="-1">
+                                    <div class="modal-dialog ">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-white" id="exampleModalLabel">Upload
+                                                    file</h5>
+                                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                                        type="button"></button>
+                                            </div>
+                                            <div class="modal-body">
 
-                                <a class="btn btn-sm btn-outline-dark fs-6 but text-white" style="width: 33%"
-                                        type="file" th:href="@{/save-file}">Save
+                                                <form enctype="multipart/form-data" id="uploadFile"
+                                                      th:action="@{/upload-file}"
+                                                      th:method="POST">
+                                                    <div class="input-group mb-3">
+                                                        <input class="form-control " id="inputGroupFile02" style=""
+                                                               th:name="file" type="file">
+                                                        <label class="input-group-text "
+                                                               for="inputGroupFile02">.json</label>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary custom-dark-background"
+                                                        data-bs-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+                                                <button class="btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
+                                                        form="uploadFile" type="submit">Upload
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Save button   -->
+                                <a class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
+                                   style="width: 33%; border-radius: 0 0 0 0; border-bottom-width: 0"
+                                   th:href="@{/download-file}" type="file">Download
                                 </a>
-                                <input class="btn btn-sm btn-outline-dark fs-6 but text-white"
-                                       style="width: 33% ; border-radius: 0 0.3rem 0 0" th:onclick="printDiv('printableArea')"
+
+                                <!-- Print button-->
+                                <input class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
+                                       style="width: 33% ; border-radius: 0 0.3rem 0 0;border-bottom-width: 0"
+                                       th:onclick="printDiv('printableArea')"
                                        type="button" value="Print">
-
                             </div>
-
-                            <div aria-label="Basic 2" class="btn-group w-100" role="group">
-                                <button class="btn btn-sm btn-outline-dark but text-white fs-6" style="width: 33%"
-                                        type="button">Seed
+                            <!--6/6 buttons --------------------------->
+                            <div aria-label="6/6-buttons" class="btn-group w-100" role="group">
+                                <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
+                                        style="width: 33% ; border-radius: 0 0 0 0.375rem;"
+                                        type="button">Save
                                 </button>
 
                                 <form class="visually-hidden" id="clearSudokuBoard" th:action="@{/clear}"
                                       th:method="DELETE">
                                 </form>
-                                <button class="btn btn-sm btn-outline-dark but text-white fs-6" form="clearSudokuBoard"
-                                        style="width: 33%" type="submit">Clear
+                                <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
+                                        form="clearSudokuBoard"
+                                        style="width: 33%; border-radius: 0 0 0 0;" type="submit">Clear
                                 </button>
 
 
-                                <button class="btn btn-sm btn-dark but border-white text-white fs-6" style="width: 33%"
+                                <button class="btn btn-sm btn-dark btn-bg-custom border-white text-white fs-6"
+                                        style="width: 33%; border-radius: 0 0 0.375rem 0;"
                                         type="button">Undo
                                 </button>
                             </div>
                         </div>
                     </div>
-
+                    <!--Generate games ------------------------------------------------------------------------------->
                     <div class="mt-3">
                         <h6 style="letter-spacing: 10px">GENERATE</h6>
 
-                        <div aria-label="Basic example" class="btn-group w-100 " role="group">
-                            <button class="btn btn-sm btn-outline-dark but text-white fs-6" type="button">Easy</button>
-                            <button class="btn btn-sm btn-outline-dark but text-white  fs-6" type="button">Medium
+                        <div aria-label="Basic example" class="btn-group w-100" role="group">
+                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                                Easy
                             </button>
-                            <button class="btn btn-sm btn-outline-dark but text-white fs-6" type="button">Hard</button>
+                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                                Medium
+                            </button>
+                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                                Hard
+                            </button>
                         </div>
 
                         <div class="mt-3 mb-3">
-                            <h6 style="letter-spacing: 7px">BOARD SIZE</h6>
 
+                            <!--Board size ---------------------------------------------------------------------------->
+                            <h6 style="letter-spacing: 7px">BOARD SIZE</h6>
                             <div class="btn-group w-100">
                                 <form class="btn-group w-100" th:action="@{/change-board-size}" th:method="PUT">
-                                    <label class="btn btn-sm btn-outline-dark but text-white fs-6 but border-white"
+                                    <label class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 btn-bg-custom border-white"
                                            for="changeBoardSize"
                                            th:text="${sudokuBoardObject.sudokuSize + ' x ' + sudokuBoardObject.sudokuSize}">Options</label>
-                                    <select class="btn btn-sm btn-outline-dark but text-white fs-6 m-0 p-0"
+                                    <select class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 m-0 p-0"
                                             id="changeBoardSize" name="changeBoardSize">
                                         <option selected>Choose</option>
                                         <option th:value="4">4x4</option>
@@ -168,19 +234,13 @@
                                         <option th:value="18">18x18</option>
 
                                     </select>
-                                    <button class="btn btn-sm btn-dark but text-white fs-6" type="submit">Change
+                                    <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6" type="submit">
+                                        Change
                                     </button>
                                 </form>
                             </div>
                         </div>
                     </div>
-
-<!--                    <div id="spinner" class="d-flex justify-content-center">-->
-<!--                        <div class="spinner-border " role="status">-->
-<!--                            <span class="visually-hidden">Loading...</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                 </div>
             </div>
         </div>
@@ -190,6 +250,9 @@
 </body>
 
 </html>
+<script crossorigin="anonymous"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
