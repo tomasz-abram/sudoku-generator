@@ -36,11 +36,9 @@
                     <form action="#" class="p-0 m-0 butl" id="sudokuBoardObject" th:action="@{/solve-all}"
                           th:method="POST"
                           th:object="${sudokuBoardObject}">
-                        <input class="invisible overflow-hidden visually-hidden" id="boxesHeight"
-                               th:field="*{quantityBoxesHeight}">
-                        <input class="invisible overflow-hidden visually-hidden" id="boxesWidth"
-                               th:field="*{quantityBoxesWidth}">
-                        <input class="invisible overflow-hidden visually-hidden" id="size" th:field="*{sudokuSize}">
+                        <input th:type="hidden" id="boxesHeight" th:field="*{quantityBoxesHeight}">
+                        <input th:type="hidden" id="boxesWidth" th:field="*{quantityBoxesWidth}">
+                        <input th:type="hidden" id="size" th:field="*{sudokuSize}">
 
                         <table class=" m-3 d-flex align-content-center justify-content-center">
                             <tr th:each="row: *{board}">
@@ -49,10 +47,10 @@
 
                                         <input
                                                 inputmode="numeric" maxlength="3"
-                                                onfocus="value=''"
+                                                onfocus="value='' "
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
-                                                th:if="${item == null || item == 0}" th:value="0" type="text">
+                                                th:if="${item == null || item == 0}"  th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}" type="text">
 
                                         <input
                                                 inputmode="numeric"
@@ -60,7 +58,7 @@
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-warning p-0 fs-5' : 'sudoku-cell2 form-control bg-warning p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-warning p-0 fs-5' : 'sudoku-cell4 form-control bg-warning p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 th:if="${item > 0 && item <= sudokuBoardObject.sudokuSize}"
-                                                th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+
                                                 type="text">
 
                                         <input
@@ -69,7 +67,6 @@
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-danger p-0 fs-5' : 'sudoku-cell2 form-control bg-danger p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-danger p-0 fs-5' : 'sudoku-cell4 form-control bg-danger p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 th:if="${item > sudokuBoardObject.sudokuSize || item < 0 && item != null}"
-                                                th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 type="text">
                                     </div>
                                 </td>
@@ -104,11 +101,13 @@
                         <h6 style="letter-spacing: 15px">PUZZLE</h6>
                         <div class="btn-group-vertical w-100">
                             <div aria-label="Basic example" class="btn-group w-100" role="group">
+
                                 <button class="btn btn-sm btn-outline-dark fs-6 but text-white"
-                                        style="width: 33% ; border-radius: 0.3rem 0 0 0" type="button">Load
+                                        style="width: 33% ; border-radius: 0.3rem 0 0 0" type="file">Load
                                 </button>
+
                                 <a class="btn btn-sm btn-outline-dark fs-6 but text-white" style="width: 33%"
-                                        type="button" th:href="@{/save-file}">Save
+                                        type="file" th:href="@{/save-file}">Save
                                 </a>
                                 <input class="btn btn-sm btn-outline-dark fs-6 but text-white"
                                        style="width: 33% ; border-radius: 0 0.3rem 0 0" th:onclick="printDiv('printableArea')"

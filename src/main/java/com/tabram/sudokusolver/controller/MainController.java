@@ -43,7 +43,7 @@ public class MainController {
     @GetMapping
     public ModelAndView home() {
         ModelAndView mav = new ModelAndView("home");
-        mav.addObject("sudokuBoardObject", sudokuBoardRepository.getSudokuBoardObject());
+        mav.addObject("sudokuBoardObject", boardValueManipulation.changeZeroToNullOnBoard(sudokuBoardRepository.getSudokuBoardObject()));
         return mav;
     }
 
@@ -52,7 +52,8 @@ public class MainController {
         if(result.hasErrors()){
             return "/home";
         }
-        sudokuBoardRepository.setSudokuBoardObject(boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject));
+        SudokuBoardObject sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject);
+        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectWithZero);
         sudokuSolveService.solveBoard();
         return HOME;
     }

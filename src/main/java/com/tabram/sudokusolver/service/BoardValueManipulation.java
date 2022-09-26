@@ -1,8 +1,6 @@
 package com.tabram.sudokusolver.service;
 
 import com.tabram.sudokusolver.model.SudokuBoardObject;
-import com.tabram.sudokusolver.repository.SudokuBoardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -10,24 +8,26 @@ import java.util.Objects;
 @Service
 public class BoardValueManipulation {
 
-    SudokuBoardRepository sudokuBoardRepository;
-
-    @Autowired
-    public BoardValueManipulation(SudokuBoardRepository sudokuBoardRepository) {
-        this.sudokuBoardRepository = sudokuBoardRepository;
-    }
-
-    public SudokuBoardObject changeNullToZeroOnBoard(SudokuBoardObject sudokuBoardObject) {
-        Integer[][] sudokuBoard = sudokuBoardObject.getBoard();
-        for (int row = 0; row < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); row++) {
-            for (int column = 0; column < sudokuBoardRepository.getSudokuBoardObject().getSudokuSize(); column++) {
-                if (Objects.equals(sudokuBoardObject.getValueFromArray(row,column), null)) {
-                    sudokuBoardObject.setValueToArray(row,column,0);
+    public SudokuBoardObject changeNullToZeroOnBoard(SudokuBoardObject boardObject) {
+        for (int row = 0; row < boardObject.getSudokuSize(); row++) {
+            for (int column = 0; column < boardObject.getSudokuSize(); column++) {
+                if (Objects.equals(boardObject.getValueFromArray(row, column), null)) {
+                    boardObject.setValueToArray(row, column, 0);
                 }
             }
         }
-        sudokuBoardObject.setBoard(sudokuBoard);
-        return sudokuBoardObject;
+        return boardObject;
+    }
+
+    public SudokuBoardObject changeZeroToNullOnBoard(SudokuBoardObject boardObject) {
+        for (int row = 0; row < boardObject.getSudokuSize(); row++) {
+            for (int column = 0; column < boardObject.getSudokuSize(); column++) {
+                if (Objects.equals(boardObject.getValueFromArray(row, column), 0)) {
+                    boardObject.setValueToArray(row, column, null);
+                }
+            }
+        }
+        return boardObject;
     }
 }
 
