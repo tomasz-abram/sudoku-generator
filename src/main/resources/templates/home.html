@@ -21,230 +21,231 @@
             <!--Alert && message-->
             <div class="row align-content-center justify-content-center mt-3 p-0">
                 <div class="col">
-                    <div class="alert alert-success w-100" th:errors="*{sudokuBoardObject.board}"
-                         th:if="${#fields.hasErrors('${sudokuBoardObject.board}')}"></div>
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled"   th:if="${#fields.hasErrors('${sudokuBoardObject}')}">
                         <li class=" list-unstyled alert alert-danger"
                             th:each="err : ${#fields.errors('sudokuBoardObject.*')}"
                             th:text="${err}"/>
                     </ul>
 
-                    <div th:if="${message}">
-                        <p class="alert alert-success" th:text="${message}"/>
-                    </div>
+                    <ul class="list-unstyled"   th:if="${#fields.hasErrors('${fileBucket}')}">
+                        <li class=" list-unstyled alert alert-danger"
+                            th:each="err : ${#fields.errors('fileBucket.*')}"
+                            th:text="${err}"/>
+                    </ul>
                 </div>
             </div>
 
-            <!--Sudoku board col------------------------------------------------------------------------------------>
-            <div class="row align-content-center justify-content-center ">
-                <div class="col-sm btn-bg-custom-light align-content-center justify-content-center p-0"
-                     id="printableArea">
-                    <form action="#" class="p-0 m-0 btn-bg-custom-light" id="sudokuBoardObject"
-                          th:action="@{/solve-all}"
-                          th:method="POST"
-                          th:object="${sudokuBoardObject}">
-                        <input id="boxesHeight" th:field="*{quantityBoxesHeight}" th:type="hidden">
-                        <input id="boxesWidth" th:field="*{quantityBoxesWidth}" th:type="hidden">
-                        <input id="size" th:field="*{sudokuSize}" th:type="hidden">
+        <!--Sudoku board col------------------------------------------------------------------------------------>
+        <div class="row align-content-center justify-content-center ">
+            <div class="col-sm btn-bg-custom-light align-content-center justify-content-center p-0"
+                 id="printableArea">
+                <form action="#" class="p-0 m-0 btn-bg-custom-light" id="sudokuBoardObject"
+                      th:action="@{/solve-all}"
+                      th:method="POST"
+                      th:object="${sudokuBoardObject}">
+                    <input id="boxesHeight" th:field="*{quantityBoxesHeight}" th:type="hidden">
+                    <input id="boxesWidth" th:field="*{quantityBoxesWidth}" th:type="hidden">
+                    <input id="size" th:field="*{sudokuSize}" th:type="hidden">
 
-                        <table class=" m-3 d-flex align-content-center justify-content-center">
-                            <tr th:each="row: *{board}">
-                                <td class="p-0 m-0" th:each="item: ${row}">
-                                    <div th:with="divRow=${rowStat.index % sudokuBoardObject.getQuantityBoxesWidth() == 0 && rowStat.index != 0}, divCol=${itemStat.index % sudokuBoardObject.getQuantityBoxesHeight() == 0 && itemStat.index != 0}">
+                    <table class=" m-3 d-flex align-content-center justify-content-center">
+                        <tr th:each="row: *{board}">
+                            <td class="p-0 m-0" th:each="item: ${row}">
+                                <div th:with="divRow=${rowStat.index % sudokuBoardObject.getQuantityBoxesWidth() == 0 && rowStat.index != 0}, divCol=${itemStat.index % sudokuBoardObject.getQuantityBoxesHeight() == 0 && itemStat.index != 0}">
 
-                                        <input
-                                                inputmode="numeric" maxlength="3"
-                                                onfocus="value='' "
-                                                th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
-                                                th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
-                                                th:if="${item == null || item == 0}"
-                                                th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
-                                                type="text">
+                                    <input
+                                            inputmode="numeric" maxlength="3"
+                                            onfocus="value='' "
+                                            th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
+                                            th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                            th:if="${item == null || item == 0}"
+                                            th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                            type="text">
 
-                                        <input
-                                                inputmode="numeric"
-                                                maxlength="3"
-                                                th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-warning p-0 fs-5' : 'sudoku-cell2 form-control bg-warning p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-warning p-0 fs-5' : 'sudoku-cell4 form-control bg-warning p-0 fs-5')"
-                                                th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
-                                                th:if="${item > 0 && item <= sudokuBoardObject.sudokuSize}"
+                                    <input
+                                            inputmode="numeric"
+                                            maxlength="3"
+                                            th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-warning p-0 fs-5' : 'sudoku-cell2 form-control bg-warning p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-warning p-0 fs-5' : 'sudoku-cell4 form-control bg-warning p-0 fs-5')"
+                                            th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                            th:if="${item > 0 && item <= sudokuBoardObject.sudokuSize}"
 
-                                                type="text">
+                                            type="text">
 
-                                        <input
-                                                inputmode="numeric"
-                                                maxlength="3"
-                                                th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-danger p-0 fs-5' : 'sudoku-cell2 form-control bg-danger p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-danger p-0 fs-5' : 'sudoku-cell4 form-control bg-danger p-0 fs-5')"
-                                                th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
-                                                th:if="${item > sudokuBoardObject.sudokuSize || item < 0 && item != null}"
-                                                type="text">
-                                    </div>
-                                </td>
-                            </tr>
+                                    <input
+                                            inputmode="numeric"
+                                            maxlength="3"
+                                            th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-danger p-0 fs-5' : 'sudoku-cell2 form-control bg-danger p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-danger p-0 fs-5' : 'sudoku-cell4 form-control bg-danger p-0 fs-5')"
+                                            th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                            th:if="${item > sudokuBoardObject.sudokuSize || item < 0 && item != null}"
+                                            type="text">
+                                </div>
+                            </td>
+                        </tr>
 
-                        </table>
-                    </form>
+                    </table>
+                </form>
+            </div>
+            <!--MENU--------------------------------MENU----------------------------------------MENU-------------->
+            <div class="col-sm text-center btn-bg-custom-light"
+                 style="border-top-right-radius: 0.4rem; border-bottom-right-radius: 0.4rem">
+
+                <div class="w-100 mt-2 mb-2 text-center">
+                    <h4 class="fw-bold" style="letter-spacing: 20px">MENU</h4>
+                    <hr class="m-auto">
                 </div>
-                <!--MENU--------------------------------MENU----------------------------------------MENU-------------->
-                <div class="col-sm text-center btn-bg-custom-light"
-                     style="border-top-right-radius: 0.4rem; border-bottom-right-radius: 0.4rem">
+                <!--Solving section ------------------------------------------------------------------------------>
+                <div class="mt-2">
+                    <h6 style="letter-spacing: 11px">SOLVING</h6>
+                    <div aria-label="Basic example" class="btn-group w-100" role="group">
+                        <button class="btn btn-sm btn-dark btn-bg-custom  border-left border-white text-white fs-6"
+                                type="button"> Solve cell
+                        </button>
+                        <button class="btn btn-sm btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
+                                form="sudokuBoardObject" type="submit"> Solve all
+                        </button>
 
-                    <div class="w-100 mt-2 mb-2 text-center">
-                        <h4 class="fw-bold" style="letter-spacing: 20px">MENU</h4>
-                        <hr class="m-auto">
                     </div>
-                    <!--Solving section ------------------------------------------------------------------------------>
-                    <div class="mt-2">
-                        <h6 style="letter-spacing: 11px">SOLVING</h6>
-                        <div aria-label="Basic example" class="btn-group w-100" role="group">
-                            <button class="btn btn-sm btn-dark btn-bg-custom  border-left border-white text-white fs-6"
-                                    type="button"> Solve cell
+                </div>
+                <!--Puzzle section ------------------------------------------------------------------------------->
+                <div class="w-100 mt-3 text-center">
+                    <h6 style="letter-spacing: 15px">PUZZLE</h6>
+                    <div class=" w-auto">
+
+                        <!--3/6 buttons----------------------------------->
+
+                        <div aria-label="3/6-buttons" class="btn-group w-100" role="group">
+
+                            <!--Upload button-->
+                            <button class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
+                                    data-bs-target="#exampleModal" data-bs-toggle="modal"
+                                    style="width: 33% ; border-radius: 0.3rem 0 0 0; border-bottom-width: 0"
+                                    type="button">Upload
                             </button>
-                            <button class="btn btn-sm btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
-                                    form="sudokuBoardObject" type="submit"> Solve all
-                            </button>
+                            <!-- Upload modal -->
+                            <div aria-hidden="true" aria-labelledby="exampleModalLabel"
+                                 class="modal modal-custom-background fade"
+                                 id="exampleModal" tabindex="-1">
+                                <div class="modal-dialog ">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-white" id="exampleModalLabel">Upload
+                                                file</h5>
+                                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                                    type="button"></button>
+                                        </div>
+                                        <div class="modal-body">
 
-                        </div>
-                    </div>
-                    <!--Puzzle section ------------------------------------------------------------------------------->
-                    <div class="w-100 mt-3 text-center">
-                        <h6 style="letter-spacing: 15px">PUZZLE</h6>
-                        <div class=" w-auto">
+                                            <form enctype="multipart/form-data" th:id="uploadFile"
+                                                  action="#"
+                                                  th:action="@{/upload-file}"
+                                                  th:object="${fileBucket}"
+                                                  th:method="POST"
+                                                  th:modelAttribute="fileBucket">
+                                                <div class="input-group mb-3">
+                                                    <input class="form-control"  id="inputGroupFile02" th:field="*{file}" th:name="file" type="file">
+                                                    <label class="input-group-text" for="inputGroupFile02">.json</label>
+                                                </div>
+                                            </form>
 
-                            <!--3/6 buttons----------------------------------->
-
-                            <div aria-label="3/6-buttons" class="btn-group w-100" role="group">
-
-                                <!--Upload button-->
-                                <button class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
-                                        data-bs-target="#exampleModal" data-bs-toggle="modal"
-                                        style="width: 33% ; border-radius: 0.3rem 0 0 0; border-bottom-width: 0"
-                                        type="button">Upload
-                                </button>
-                                <!-- Upload modal -->
-                                <div aria-hidden="true" aria-labelledby="exampleModalLabel"
-                                     class="modal modal-custom-background fade"
-                                     id="exampleModal" tabindex="-1">
-                                    <div class="modal-dialog ">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-white" id="exampleModalLabel">Upload
-                                                    file</h5>
-                                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
-                                                        type="button"></button>
-                                            </div>
-                                            <div class="modal-body">
-
-                                                <form enctype="multipart/form-data" id="uploadFile"
-                                                      th:action="@{/upload-file}"
-                                                      th:method="POST">
-                                                    <div class="input-group mb-3">
-                                                        <input class="form-control " id="inputGroupFile02" style=""
-                                                               th:name="file" type="file">
-                                                        <label class="input-group-text "
-                                                               for="inputGroupFile02">.json</label>
-                                                    </div>
-                                                </form>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-secondary custom-dark-background"
-                                                        data-bs-dismiss="modal" type="button">
-                                                    Close
-                                                </button>
-                                                <button class="btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
-                                                        form="uploadFile" type="submit">Upload
-                                                </button>
-                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary custom-dark-background"
+                                                    data-bs-dismiss="modal" type="button">
+                                                Close
+                                            </button>
+                                            <button class="btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
+                                                    th:form="uploadFile" type="submit">Upload
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!--Save button   -->
-                                <a class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
-                                   style="width: 33%; border-radius: 0 0 0 0; border-bottom-width: 0"
-                                   th:href="@{/download-file}" type="file">Download
-                                </a>
-
-                                <!-- Print button-->
-                                <input class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
-                                       style="width: 33% ; border-radius: 0 0.3rem 0 0;border-bottom-width: 0"
-                                       th:onclick="printDiv('printableArea')"
-                                       type="button" value="Print">
                             </div>
-                            <!--6/6 buttons --------------------------->
-                            <div aria-label="6/6-buttons" class="btn-group w-100" role="group">
-                                <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
-                                        style="width: 33% ; border-radius: 0 0 0 0.375rem;"
-                                        type="button">Save
-                                </button>
 
-                                <form class="visually-hidden" id="clearSudokuBoard" th:action="@{/clear}"
-                                      th:method="DELETE">
-                                </form>
-                                <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
-                                        form="clearSudokuBoard"
-                                        style="width: 33%; border-radius: 0 0 0 0;" type="submit">Clear
-                                </button>
+                            <!--Save button   -->
+                            <a class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
+                               style="width: 33%; border-radius: 0 0 0 0; border-bottom-width: 0"
+                               th:href="@{/download-file}" type="file">Download
+                            </a>
+
+                            <!-- Print button-->
+                            <input class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
+                                   style="width: 33% ; border-radius: 0 0.3rem 0 0;border-bottom-width: 0"
+                                   th:onclick="printDiv('printableArea')"
+                                   type="button" value="Print">
+                        </div>
+                        <!--6/6 buttons --------------------------->
+                        <div aria-label="6/6-buttons" class="btn-group w-100" role="group">
+                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
+                                    style="width: 33% ; border-radius: 0 0 0 0.375rem;"
+                                    type="button">Save
+                            </button>
+
+                            <form class="visually-hidden" id="clearSudokuBoard" th:action="@{/clear}"
+                                  th:method="DELETE">
+                            </form>
+                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
+                                    form="clearSudokuBoard"
+                                    style="width: 33%; border-radius: 0 0 0 0;" type="submit">Clear
+                            </button>
 
 
-                                <button class="btn btn-sm btn-dark btn-bg-custom border-white text-white fs-6"
-                                        style="width: 33%; border-radius: 0 0 0.375rem 0;"
-                                        type="button">Undo
-                                </button>
-                            </div>
+                            <button class="btn btn-sm btn-dark btn-bg-custom border-white text-white fs-6"
+                                    style="width: 33%; border-radius: 0 0 0.375rem 0;"
+                                    type="button">Undo
+                            </button>
                         </div>
                     </div>
-                    <!--Generate games ------------------------------------------------------------------------------->
-                    <div class="mt-3">
-                        <h6 style="letter-spacing: 10px">GENERATE</h6>
+                </div>
+                <!--Generate games ------------------------------------------------------------------------------->
+                <div class="mt-3">
+                    <h6 style="letter-spacing: 10px">GENERATE</h6>
 
-                        <div aria-label="Basic example" class="btn-group w-100" role="group">
-                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
-                                Easy
-                            </button>
-                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
-                                Medium
-                            </button>
-                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
-                                Hard
-                            </button>
-                        </div>
+                    <div aria-label="Basic example" class="btn-group w-100" role="group">
+                        <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                            Easy
+                        </button>
+                        <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                            Medium
+                        </button>
+                        <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                            Hard
+                        </button>
+                    </div>
 
-                        <div class="mt-3 mb-3">
+                    <div class="mt-3 mb-3">
 
-                            <!--Board size ---------------------------------------------------------------------------->
-                            <h6 style="letter-spacing: 7px">BOARD SIZE</h6>
-                            <div class="btn-group w-100">
-                                <form class="btn-group w-100" th:action="@{/change-board-size}" th:method="PUT">
-                                    <label class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 btn-bg-custom border-white"
-                                           for="changeBoardSize"
-                                           th:text="${sudokuBoardObject.sudokuSize + ' x ' + sudokuBoardObject.sudokuSize}">Options</label>
-                                    <select class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 m-0 p-0"
-                                            id="changeBoardSize" name="changeBoardSize">
-                                        <option selected>Choose</option>
-                                        <option th:value="4">4x4</option>
-                                        <option th:value="6">6x6</option>
-                                        <option th:value="8">8x8</option>
-                                        <option th:value="9">9x9</option>
-                                        <option th:value="10">10x10</option>
-                                        <option th:value="12">12x12</option>
-                                        <option th:value="14">14x14</option>
-                                        <option th:value="15">15x15</option>
-                                        <option th:value="16">16x16</option>
-                                        <option th:value="18">18x18</option>
+                        <!--Board size ---------------------------------------------------------------------------->
+                        <h6 style="letter-spacing: 7px">BOARD SIZE</h6>
+                        <div class="btn-group w-100">
+                            <form class="btn-group w-100" th:action="@{/change-board-size}" th:method="PUT">
+                                <label class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 btn-bg-custom border-white"
+                                       for="changeBoardSize"
+                                       th:text="${sudokuBoardObject.sudokuSize + ' x ' + sudokuBoardObject.sudokuSize}">Options</label>
+                                <select class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 m-0 p-0"
+                                        id="changeBoardSize" name="changeBoardSize">
+                                    <option selected>Choose</option>
+                                    <option th:value="4">4x4</option>
+                                    <option th:value="6">6x6</option>
+                                    <option th:value="8">8x8</option>
+                                    <option th:value="9">9x9</option>
+                                    <option th:value="10">10x10</option>
+                                    <option th:value="12">12x12</option>
+                                    <option th:value="14">14x14</option>
+                                    <option th:value="15">15x15</option>
+                                    <option th:value="16">16x16</option>
+                                    <option th:value="18">18x18</option>
 
-                                    </select>
-                                    <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6" type="submit">
-                                        Change
-                                    </button>
-                                </form>
-                            </div>
+                                </select>
+                                <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6" type="submit">
+                                    Change
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 </body>

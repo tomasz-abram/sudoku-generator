@@ -35,7 +35,7 @@ public class FileIOService {
             Gson gson = new Gson();
             Reader reader = new InputStreamReader(file.getInputStream());
             sudokuBoardObject = gson.fromJson(reader, SudokuBoardObject.class);
-
+            reader.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
