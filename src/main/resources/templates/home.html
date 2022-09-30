@@ -43,13 +43,13 @@
                      id="printableArea">
                     <form action="#" class="p-0 m-0 btn-bg-custom-light" id="sudokuBoardObject"
                           th:action="@{/solve-all}"
-                          th:method="POST"
+                          th:method="PUT"
                           th:object="${sudokuBoardObject}">
-                        <label hidden for="boxesHeight" ></label>
+                        <label for="boxesHeight" hidden></label>
                         <input id="boxesHeight" th:field="*{quantityBoxesHeight}" th:type="hidden">
-                        <label hidden for="boxesWidth" ></label>
+                        <label for="boxesWidth" hidden></label>
                         <input id="boxesWidth" th:field="*{quantityBoxesWidth}" th:type="hidden">
-                        <label hidden class="" for="size" ></label>
+                        <label class="" for="size" hidden></label>
                         <input id="size" th:field="*{sudokuSize}" th:type="hidden">
 
                         <table class=" m-3 d-flex align-content-center justify-content-center">
@@ -58,30 +58,33 @@
                                     <div th:with="divRow=${rowStat.index % sudokuBoardObject.getQuantityBoxesWidth() == 0 && rowStat.index != 0}, divCol=${itemStat.index % sudokuBoardObject.getQuantityBoxesHeight() == 0 && itemStat.index != 0}">
 
                                         <input
-                                                inputmode="numeric" maxlength="3"
-                                                onfocus="value='' "
+                                                inputmode="numeric"
+                                                onClick="getElementId();"
+                                                maxlength="3" onfocus="value='' "
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control p-0 fs-5' : 'sudoku-cell2 form-control p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control p-0 fs-5' : 'sudoku-cell4 form-control p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                                th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
                                                 th:if="${item == null || item == 0}"
                                                 th:value="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
-                                                type="text">
+                                                type="number">
 
                                         <input
                                                 inputmode="numeric"
                                                 maxlength="3"
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-warning p-0 fs-5' : 'sudoku-cell2 form-control bg-warning p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-warning p-0 fs-5' : 'sudoku-cell4 form-control bg-warning p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                                th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
                                                 th:if="${item > 0 && item <= sudokuBoardObject.sudokuSize}"
-
-                                                type="text">
+                                                type="number">
 
                                         <input
                                                 inputmode="numeric"
                                                 maxlength="3"
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-danger p-0 fs-5' : 'sudoku-cell2 form-control bg-danger p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-danger p-0 fs-5' : 'sudoku-cell4 form-control bg-danger p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
+                                                th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
                                                 th:if="${item > sudokuBoardObject.sudokuSize || item < 0 && item != null}"
-                                                type="text">
+                                                type="number">
                                     </div>
                                 </td>
                             </tr>
@@ -100,10 +103,18 @@
                     <!--Solving section ------------------------------------------------------------------------------>
                     <div class="mt-2">
                         <h6 style="letter-spacing: 11px">SOLVING</h6>
+
                         <div aria-label="Basic example" class="btn-group w-100" role="group">
-                            <button class="btn btn-sm btn-dark btn-bg-custom  border-left border-white text-white fs-6"
-                                    type="button"> Solve cell
+
+                            <form hidden id="solveCellForm" th:action="@{/solve-cell}" th:method="POST">
+                                <input id="solveCell" name="solveCell" type="text" value="SolveCellId">
+                            </form>
+                            <button id="buttonSolveCell"  class="btn btn-sm btn-dark btn-bg-custom  border-left border-white text-white fs-6"
+                                    th:form="solveCellForm"
+                                    type="submit"> Solve cell
                             </button>
+
+
                             <button class="btn btn-sm btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
                                     th:form="sudokuBoardObject" th:formaction="@{/solve-all}" type="submit"> Solve all
                             </button>
@@ -146,7 +157,7 @@
                                                       th:modelAttribute="fileBucket">
                                                     <div class="input-group mb-3">
                                                         <input class="form-control" id="inputGroupFile02"
-                                                                th:name="file" type="file">
+                                                               th:name="file" type="file">
                                                         <label class="input-group-text"
                                                                for="inputGroupFile02">.json</label>
                                                     </div>
@@ -183,9 +194,9 @@
 
 
                                 <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6"
+                                        style="width: 33% ; border-radius: 0 0 0 0.375rem;"
                                         th:form="sudokuBoardObject"
                                         th:formaction="@{/save}"
-                                        style="width: 33% ; border-radius: 0 0 0 0.375rem;"
                                         type="submit">Save
                                 </button>
 
@@ -200,8 +211,8 @@
 
                                 <button
                                         class="btn btn-sm btn-outline-dark btn-bg-custom border-white text-white fs-6"
-                                        style="width: 33%; border-radius: 0 0 0.375rem 0;"
-                                        type="button" onmouseup="Undo()" value="Undo">Undo
+                                        onmouseup="Undo()"
+                                        style="width: 33%; border-radius: 0 0 0.375rem 0;" type="button" value="Undo">Undo
                                 </button>
                             </div>
                         </div>
@@ -274,6 +285,13 @@
         document.body.innerHTML = originalContents;
     }
 
-        function Undo() { document.execCommand("undo", false, null); }
+    function Undo() {
+        document.execCommand("undo", false, null);
+    }
+
+    function getElementId(){
+        var x = document.activeElement;
+        document.getElementById("solveCell").setAttribute('value', x.id);
+    }
 
 </script>

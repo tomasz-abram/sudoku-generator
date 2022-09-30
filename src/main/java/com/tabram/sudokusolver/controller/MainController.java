@@ -3,15 +3,19 @@ package com.tabram.sudokusolver.controller;
 import com.tabram.sudokusolver.dto.FileBucket;
 import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
-import com.tabram.sudokusolver.service.*;
+import com.tabram.sudokusolver.service.BoardSizeService;
+import com.tabram.sudokusolver.service.BoardValueManipulation;
+import com.tabram.sudokusolver.service.ClearBoardService;
+import com.tabram.sudokusolver.service.SudokuSolveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping({"/", "/home"})
@@ -47,7 +51,7 @@ public class MainController {
         return "home";
     }
 
-    @PostMapping("/solve-all")
+    @PutMapping("/solve-all")
     public String solveAll(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result) {
         if (result.hasErrors()) {
             return "/home";
@@ -59,12 +63,22 @@ public class MainController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result){
+    public String save(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result) {
         if (result.hasErrors()) {
             return "/home";
         }
         SudokuBoardObject sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject);
         sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectWithZero);
+        return HOME;
+    }
+
+    @PostMapping("/solve-cell")
+    public String solveCell(@RequestParam("solveCell") String cellId) {
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(cellId);
+        while (matcher.find()) {
+            System.out.println(matcher.group());
+        }
         return HOME;
     }
 
