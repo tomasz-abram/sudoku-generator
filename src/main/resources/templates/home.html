@@ -105,7 +105,7 @@
                                     type="button"> Solve cell
                             </button>
                             <button class="btn btn-sm btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
-                                    form="sudokuBoardObject" type="submit"> Solve all
+                                    th:form="sudokuBoardObject" th:formaction="@{/solve-all}" type="submit"> Solve all
                             </button>
 
                         </div>
@@ -143,11 +143,10 @@
                                                       th:action="@{/upload-file}"
                                                       th:id="uploadFile"
                                                       th:method="POST"
-                                                      th:modelAttribute="fileBucket"
-                                                      th:object="${fileBucket}">
+                                                      th:modelAttribute="fileBucket">
                                                     <div class="input-group mb-3">
                                                         <input class="form-control" id="inputGroupFile02"
-                                                               th:field="*{file}" th:name="file" type="file">
+                                                                th:name="file" type="file">
                                                         <label class="input-group-text"
                                                                for="inputGroupFile02">.json</label>
                                                     </div>
@@ -184,8 +183,10 @@
 
 
                                 <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6"
+                                        th:form="sudokuBoardObject"
+                                        th:formaction="@{/save}"
                                         style="width: 33% ; border-radius: 0 0 0 0.375rem;"
-                                        type="button">Save
+                                        type="submit">Save
                                 </button>
 
                                 <form class="visually-hidden" id="clearSudokuBoard" th:action="@{/clear}"

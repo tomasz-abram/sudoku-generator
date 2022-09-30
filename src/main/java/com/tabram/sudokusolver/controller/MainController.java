@@ -48,13 +48,23 @@ public class MainController {
     }
 
     @PostMapping("/solve-all")
-    public String solveAll(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String solveAll(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result) {
         if (result.hasErrors()) {
             return "/home";
         }
         SudokuBoardObject sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject);
         sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectWithZero);
         sudokuSolveService.solveBoard();
+        return HOME;
+    }
+
+    @PostMapping("/save")
+    public String save(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result){
+        if (result.hasErrors()) {
+            return "/home";
+        }
+        SudokuBoardObject sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject);
+        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectWithZero);
         return HOME;
     }
 
@@ -69,5 +79,7 @@ public class MainController {
         boardSizeService.generateNewBoard(boardSize);
         return HOME;
     }
+
+
 }
 
