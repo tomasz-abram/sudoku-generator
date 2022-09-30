@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = NumberInTheRangeValidation.class)
 public @interface NumberInTheRange {
-    String message() default "Invalid number in the board matrix.";
+    String message() default "{number.invalid.range}";
 
     Class<?>[] groups() default {};
 

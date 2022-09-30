@@ -3,14 +3,14 @@ package com.tabram.sudokusolver.dto;
 import com.tabram.sudokusolver.validation.FileValid;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-
+@NotNull
 @FileValid
 public class FileBucket {
 
     MultipartFile file;
-
 
     public FileBucket(MultipartFile file) {
         this.file = file;

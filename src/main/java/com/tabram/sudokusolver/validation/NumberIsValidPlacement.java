@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = NumberIsValidPlacementValidation.class)
 public @interface NumberIsValidPlacement {
 
-    String message() default "Duplicate number in a row or column or box";
+    String message() default "{number.invalid.placement}";
 
     Class<?>[] groups() default {};
 
