@@ -5,12 +5,9 @@ Features:
 - Generating different sizes of the board
 - Clear the board
 - Print sudoku
-- Download board to file
-- Upload file 
-- File Validation 
-- 
+- Save to file
+
 In development:
-- Save board to print or export 
-- Undo
+- Load from file
 - Solve cell
 - Generate sudoku game
