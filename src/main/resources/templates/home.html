@@ -181,7 +181,9 @@
                             </div>
                             <!--6/6 buttons --------------------------->
                             <div aria-label="6/6-buttons" class="btn-group w-100" role="group">
-                                <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
+
+
+                                <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6"
                                         style="width: 33% ; border-radius: 0 0 0 0.375rem;"
                                         type="button">Save
                                 </button>
@@ -195,9 +197,10 @@
                                 </button>
 
 
-                                <button class="btn btn-sm btn-dark btn-bg-custom border-white text-white fs-6"
+                                <button
+                                        class="btn btn-sm btn-outline-dark btn-bg-custom border-white text-white fs-6"
                                         style="width: 33%; border-radius: 0 0 0.375rem 0;"
-                                        type="button">Undo
+                                        type="button" onmouseup="Undo()" value="Undo">Undo
                                 </button>
                             </div>
                         </div>
@@ -269,4 +272,7 @@
         window.print();
         document.body.innerHTML = originalContents;
     }
+
+        function Undo() { document.execCommand("undo", false, null); }
+
 </script>
