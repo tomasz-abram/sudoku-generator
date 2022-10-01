@@ -1,12 +1,12 @@
 package com.tabram.sudokusolver.validation;
 
-import com.tabram.sudokusolver.model.SudokuBoardObject;
+import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-public class NumberIsValidPlacementValidation implements ConstraintValidator<NumberIsValidPlacement, SudokuBoardObject> {
+public class NumberIsValidPlacementValidation implements ConstraintValidator<NumberIsValidPlacement, SudokuBoardObjectDto> {
 
 
     @Override
@@ -15,7 +15,7 @@ public class NumberIsValidPlacementValidation implements ConstraintValidator<Num
     }
 
     @Override
-    public boolean isValid(SudokuBoardObject sudokuBoardObject, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(SudokuBoardObjectDto sudokuBoardObject, ConstraintValidatorContext constraintValidatorContext) {
         int sudokuSize = sudokuBoardObject.getSudokuSize();
         int boxesWidth = sudokuBoardObject.getQuantityBoxesWidth();
         int boxesHeight = sudokuBoardObject.getQuantityBoxesHeight();

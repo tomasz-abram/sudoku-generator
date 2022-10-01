@@ -1,12 +1,12 @@
 package com.tabram.sudokusolver.validation;
 
-import com.tabram.sudokusolver.model.SudokuBoardObject;
+import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-public class NumberInTheRangeValidation implements ConstraintValidator<NumberInTheRange, SudokuBoardObject> {
+public class NumberInTheRangeValidation implements ConstraintValidator<NumberInTheRange, SudokuBoardObjectDto> {
 
     @Override
     public void initialize(NumberInTheRange constraintAnnotation) {
@@ -14,7 +14,7 @@ public class NumberInTheRangeValidation implements ConstraintValidator<NumberInT
     }
 
     @Override
-    public boolean isValid(SudokuBoardObject sudokuBoardObject, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(SudokuBoardObjectDto sudokuBoardObject, ConstraintValidatorContext constraintValidatorContext) {
         int boardSize = sudokuBoardObject.getSudokuSize();
 
         for (int row = 0; row < boardSize; row++) {

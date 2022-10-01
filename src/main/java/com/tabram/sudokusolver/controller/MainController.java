@@ -1,12 +1,10 @@
 package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.dto.FileBucket;
+import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
 import com.tabram.sudokusolver.model.SudokuBoardObject;
 import com.tabram.sudokusolver.repository.SudokuBoardRepository;
-import com.tabram.sudokusolver.service.BoardSizeService;
-import com.tabram.sudokusolver.service.BoardValueManipulation;
-import com.tabram.sudokusolver.service.ClearBoardService;
-import com.tabram.sudokusolver.service.SudokuSolveService;
+import com.tabram.sudokusolver.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,21 +25,22 @@ public class MainController {
     private final ClearBoardService clearBoardService;
     private final BoardValueManipulation boardValueManipulation;
     private final BoardSizeService boardSizeService;
+    private final MapperService mapperService;
 
     @Autowired
-    public MainController(SudokuBoardRepository sudokuBoardRepository, SudokuSolveService sudokuSolveService, ClearBoardService clearBoardService, BoardValueManipulation boardValueManipulation, BoardSizeService boardSizeService) {
+    public MainController(SudokuBoardRepository sudokuBoardRepository, SudokuSolveService sudokuSolveService, ClearBoardService clearBoardService, BoardValueManipulation boardValueManipulation, BoardSizeService boardSizeService, MapperService mapperService) {
         this.sudokuBoardRepository = sudokuBoardRepository;
         this.sudokuSolveService = sudokuSolveService;
         this.clearBoardService = clearBoardService;
         this.boardValueManipulation = boardValueManipulation;
         this.boardSizeService = boardSizeService;
-
+        this.mapperService = mapperService;
     }
 
 
     @ModelAttribute("sudokuBoardObject")
-    public SudokuBoardObject sudokuBoardDto() {
-        return new SudokuBoardObject();
+    public SudokuBoardObjectDto sudokuBoardDto() {
+        return new SudokuBoardObjectDto();
     }
 
     @GetMapping
@@ -52,23 +51,23 @@ public class MainController {
     }
 
     @PutMapping("/solve-all")
-    public String solveAll(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result) {
+    public String solveAll(@ModelAttribute("sudokuBoardObject") @Valid SudokuBoardObjectDto sudokuBoardObjectDto, BindingResult result) {
         if (result.hasErrors()) {
             return "/home";
         }
-        SudokuBoardObject sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject);
-        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectWithZero);
+        SudokuBoardObjectDto sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObjectDto);
+        sudokuBoardRepository.setSudokuBoardObject(mapperService.mapperToSudokuBoardObject(sudokuBoardObjectWithZero));
         sudokuSolveService.solveBoard();
         return HOME;
     }
 
     @PostMapping("/save")
-    public String save(@Valid SudokuBoardObject sudokuBoardObject, BindingResult result) {
+    public String save(@ModelAttribute("sudokuBoardObject") @Valid SudokuBoardObjectDto sudokuBoardObjectDto, BindingResult result) {
         if (result.hasErrors()) {
             return "/home";
         }
-        SudokuBoardObject sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObject);
-        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObjectWithZero);
+        SudokuBoardObjectDto sudokuBoardObjectWithZero = boardValueManipulation.changeNullToZeroOnBoard(sudokuBoardObjectDto);
+        sudokuBoardRepository.setSudokuBoardObject(mapperService.mapperToSudokuBoardObject(sudokuBoardObjectWithZero));
         return HOME;
     }
 
@@ -84,7 +83,8 @@ public class MainController {
 
     @DeleteMapping("/clear")
     public String clearBoard() {
-        clearBoardService.clearBoard();
+        SudokuBoardObject sudokuBoardObject = clearBoardService.clearBoard(sudokuBoardRepository.getSudokuBoardObject());
+        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
         return HOME;
     }
 
