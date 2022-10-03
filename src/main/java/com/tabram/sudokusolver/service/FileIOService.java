@@ -1,8 +1,8 @@
 package com.tabram.sudokusolver.service;
 
 import com.google.gson.Gson;
-import com.tabram.sudokusolver.model.SudokuBoardObject;
-import com.tabram.sudokusolver.repository.SudokuBoardRepository;
+import com.tabram.sudokusolver.model.SudokuObject;
+import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,17 +11,17 @@ import java.io.Reader;
 
 @Service
 public class FileIOService {
-    private final SudokuBoardRepository sudokuBoardRepository;
+    private final SudokuObjectRepository sudokuObjectRepository;
 
-    public FileIOService(SudokuBoardRepository sudokuBoardRepository) {
-        this.sudokuBoardRepository = sudokuBoardRepository;
+    public FileIOService(SudokuObjectRepository sudokuObjectRepository) {
+        this.sudokuObjectRepository = sudokuObjectRepository;
     }
 
-    public String exportBoard(SudokuBoardObject sudokuBoardObject) {
+    public String exportBoard(SudokuObject sudokuObject) {
         String jsonBoard = null;
         try {
             Gson gson = new Gson();
-            jsonBoard = gson.toJson(sudokuBoardObject);
+            jsonBoard = gson.toJson(sudokuObject);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -29,17 +29,17 @@ public class FileIOService {
     }
 
     public void importBoard(MultipartFile file) {
-        SudokuBoardObject sudokuBoardObject = new SudokuBoardObject();
+        SudokuObject sudokuObject = new SudokuObject();
 
         try {
             Gson gson = new Gson();
             Reader reader = new InputStreamReader(file.getInputStream());
-            sudokuBoardObject = gson.fromJson(reader, SudokuBoardObject.class);
+            sudokuObject = gson.fromJson(reader, SudokuObject.class);
             reader.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
+        sudokuObjectRepository.setSudokuObject(sudokuObject);
     }
 
 }

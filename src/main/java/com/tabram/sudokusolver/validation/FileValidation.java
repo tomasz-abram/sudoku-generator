@@ -2,7 +2,7 @@ package com.tabram.sudokusolver.validation;
 
 import com.google.gson.Gson;
 import com.tabram.sudokusolver.dto.FileBucket;
-import com.tabram.sudokusolver.model.SudokuBoardObject;
+import com.tabram.sudokusolver.model.SudokuObject;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -36,20 +36,20 @@ public class FileValidation implements ConstraintValidator<FileValid, FileBucket
             return false;
         }
 
-        SudokuBoardObject sudokuBoardObject = new SudokuBoardObject();
+        SudokuObject sudokuObject = new SudokuObject();
         try {
             Gson gson = new Gson();
             Reader reader = new InputStreamReader(fileBucket.getFile().getInputStream());
-            sudokuBoardObject = gson.fromJson(reader, SudokuBoardObject.class);
+            sudokuObject = gson.fromJson(reader, SudokuObject.class);
             reader.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        int size = sudokuBoardObject.getSudokuSize();
-        Integer boxesHeight = sudokuBoardObject.getQuantityBoxesHeight();
-        Integer boxesWidth = sudokuBoardObject.getQuantityBoxesWidth();
-        Integer[][] board = sudokuBoardObject.getBoard();
+        int size = sudokuObject.getSudokuSize();
+        Integer boxesHeight = sudokuObject.getQuantityBoxesHeight();
+        Integer boxesWidth = sudokuObject.getQuantityBoxesWidth();
+        Integer[][] board = sudokuObject.getBoard();
 
         if (Objects.equals(size, 0) || Objects.equals(boxesHeight, 0) || Objects.equals(boxesWidth, 0) || Objects.equals(board, null)) {
             constraintValidatorContext.buildConstraintViolationWithTemplate("{file.corrupted}").addConstraintViolation();

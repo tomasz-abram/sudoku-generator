@@ -21,9 +21,9 @@
             <!--Alert && message-->
             <div class="row align-content-center justify-content-center w-auto mt-3 p-0">
                 <div class="col">
-                    <ul class="list-unstyled" th:if="${#fields.hasErrors('${sudokuBoardObject}')}">
+                    <ul class="list-unstyled" th:if="${#fields.hasErrors('${sudokuObject}')}">
                         <li class=" list-unstyled alert alert-danger"
-                            th:each="err : ${#fields.errors('sudokuBoardObject.*')}"
+                            th:each="err : ${#fields.errors('sudokuObject.*')}"
                             th:text="${err}"/>
                     </ul>
 
@@ -41,21 +41,21 @@
             <div class="row align-content-center justify-content-center ">
                 <div class="col-sm btn-bg-custom-light align-content-center justify-content-center p-0"
                      id="printableArea">
-                    <form action="#" class="p-0 m-0 btn-bg-custom-light" id="sudokuBoardObject"
+                    <form action="#" class="p-0 m-0 btn-bg-custom-light" id="sudokuObject"
                           th:action="@{/solve-all}"
                           th:method="PUT"
-                          th:object="${sudokuBoardObject}">
+                          th:object="${sudokuObject}">
                         <label for="boxesHeight" hidden></label>
                         <input id="boxesHeight" th:field="*{quantityBoxesHeight}" th:type="hidden">
                         <label for="boxesWidth" hidden></label>
                         <input id="boxesWidth" th:field="*{quantityBoxesWidth}" th:type="hidden">
                         <label class="" for="size" hidden></label>
                         <input id="size" th:field="*{sudokuSize}" th:type="hidden">
-
+                        <input id="solveCell" name="solveCell" type="text" value="notSelected" hidden>
                         <table class=" m-3 d-flex align-content-center justify-content-center">
                             <tr th:each="row: *{board}">
                                 <td class="p-0 m-0" th:each="item: ${row}">
-                                    <div th:with="divRow=${rowStat.index % sudokuBoardObject.getQuantityBoxesWidth() == 0 && rowStat.index != 0}, divCol=${itemStat.index % sudokuBoardObject.getQuantityBoxesHeight() == 0 && itemStat.index != 0}">
+                                    <div th:with="divRow=${rowStat.index % sudokuObject.getQuantityBoxesWidth() == 0 && rowStat.index != 0}, divCol=${itemStat.index % sudokuObject.getQuantityBoxesHeight() == 0 && itemStat.index != 0}">
 
                                         <input
                                                 inputmode="numeric"
@@ -74,7 +74,7 @@
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-warning p-0 fs-5' : 'sudoku-cell2 form-control bg-warning p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-warning p-0 fs-5' : 'sudoku-cell4 form-control bg-warning p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
-                                                th:if="${item > 0 && item <= sudokuBoardObject.sudokuSize}"
+                                                th:if="${item > 0 && item <= sudokuObject.sudokuSize}"
                                                 type="number">
 
                                         <input
@@ -83,7 +83,7 @@
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-danger p-0 fs-5' : 'sudoku-cell2 form-control bg-danger p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-danger p-0 fs-5' : 'sudoku-cell4 form-control bg-danger p-0 fs-5')"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
-                                                th:if="${item > sudokuBoardObject.sudokuSize || item < 0 && item != null}"
+                                                th:if="${item > sudokuObject.sudokuSize || item < 0 && item != null}"
                                                 type="number">
                                     </div>
                                 </td>
@@ -105,20 +105,14 @@
                         <h6 style="letter-spacing: 11px">SOLVING</h6>
 
                         <div aria-label="Basic example" class="btn-group w-100" role="group">
-
-                            <form hidden id="solveCellForm" th:action="@{/solve-cell}" th:method="PUT">
-                                <input id="solveCell" name="solveCell" type="text" value="SolveCellId">
-                            </form>
                             <button id="buttonSolveCell"  class="btn btn-sm btn-dark btn-bg-custom  border-left border-white text-white fs-6"
-                                    th:form="solveCellForm"
+                                    th:form="sudokuObject" th:formaction="@{/solve-cell}"
                                     type="submit"> Solve cell
                             </button>
 
-
                             <button class="btn btn-sm btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
-                                    th:form="sudokuBoardObject" th:formaction="@{/solve-all}" type="submit"> Solve all
+                                    th:form="sudokuObject" th:formaction="@{/solve-all}" type="submit"> Solve all
                             </button>
-
                         </div>
                     </div>
                     <!--Puzzle section ------------------------------------------------------------------------------->
@@ -195,7 +189,7 @@
 
                                 <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6"
                                         style="width: 33% ; border-radius: 0 0 0 0.375rem;"
-                                        th:form="sudokuBoardObject"
+                                        th:form="sudokuObject"
                                         th:formaction="@{/save}"
                                         type="submit">Save
                                 </button>
@@ -241,7 +235,7 @@
                                 <form class="btn-group w-100" th:action="@{/change-board-size}" th:method="PUT">
                                     <label class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 btn-bg-custom border-white"
                                            for="changeBoardSize"
-                                           th:text="${sudokuBoardObject.sudokuSize + ' x ' + sudokuBoardObject.sudokuSize}">Options</label>
+                                           th:text="${sudokuObject.sudokuSize + ' x ' + sudokuObject.sudokuSize}">Options</label>
                                     <select class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6 m-0 p-0"
                                             id="changeBoardSize" name="changeBoardSize">
                                         <option selected>Choose</option>

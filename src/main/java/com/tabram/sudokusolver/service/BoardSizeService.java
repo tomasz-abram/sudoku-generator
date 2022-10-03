@@ -1,7 +1,7 @@
 package com.tabram.sudokusolver.service;
 
-import com.tabram.sudokusolver.model.SudokuBoardObject;
-import com.tabram.sudokusolver.repository.SudokuBoardRepository;
+import com.tabram.sudokusolver.model.SudokuObject;
+import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +13,18 @@ import java.util.Map;
 @Service
 public class BoardSizeService {
 
-    private final SudokuBoardRepository sudokuBoardRepository;
+    private final SudokuObjectRepository sudokuObjectRepository;
 
     @Autowired
-    public BoardSizeService(SudokuBoardRepository sudokuBoardRepository) {
-        this.sudokuBoardRepository = sudokuBoardRepository;
+    public BoardSizeService(SudokuObjectRepository sudokuObjectRepository) {
+        this.sudokuObjectRepository = sudokuObjectRepository;
     }
 
     public void generateNewBoard(int size) {
         Integer[][] newBoard = new Integer[size][size];
         Map<String, Integer> dim = smallBoxSize(divisorsList(size), size);
-        SudokuBoardObject sudokuBoardObject = new SudokuBoardObject(newBoard, size, dim.get("height"), dim.get("width"));
-        sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
+        SudokuObject sudokuObject = new SudokuObject(newBoard, size, dim.get("height"), dim.get("width"));
+        sudokuObjectRepository.setSudokuObject(sudokuObject);
     }
 
 

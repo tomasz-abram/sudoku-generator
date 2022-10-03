@@ -1,8 +1,8 @@
 package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.dto.FileBucket;
-import com.tabram.sudokusolver.model.SudokuBoardObject;
-import com.tabram.sudokusolver.repository.SudokuBoardRepository;
+import com.tabram.sudokusolver.model.SudokuObject;
+import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import com.tabram.sudokusolver.service.FileIOService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -27,21 +27,21 @@ public class FileIOController {
 
     private final FileIOService fileIOService;
 
-    private final SudokuBoardRepository sudokuBoardRepository;
+    private final SudokuObjectRepository sudokuObjectRepository;
 
-    public FileIOController(FileIOService fileIOService, SudokuBoardRepository sudokuBoardRepository) {
+    public FileIOController(FileIOService fileIOService, SudokuObjectRepository sudokuObjectRepository) {
         this.fileIOService = fileIOService;
-        this.sudokuBoardRepository = sudokuBoardRepository;
+        this.sudokuObjectRepository = sudokuObjectRepository;
     }
 
     @GetMapping("/download-file")
     public ResponseEntity<byte[]> downloadFile() {
-        SudokuBoardObject sudokuBoardObject = sudokuBoardRepository.getSudokuBoardObject();
-        String sudokuJsonString = fileIOService.exportBoard(sudokuBoardObject);
+        SudokuObject sudokuObject = sudokuObjectRepository.getSudokuObject();
+        String sudokuJsonString = fileIOService.exportBoard(sudokuObject);
         byte[] sudokuJsonBytes = sudokuJsonString.getBytes();
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=sudokuBoard.json")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=sudokuObject.json")
                 .contentType(MediaType.APPLICATION_JSON)
                 .contentLength(sudokuJsonBytes.length)
                 .body(sudokuJsonBytes);

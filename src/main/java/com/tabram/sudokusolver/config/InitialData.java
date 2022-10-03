@@ -1,7 +1,7 @@
 package com.tabram.sudokusolver.config;
 
-import com.tabram.sudokusolver.model.SudokuBoardObject;
-import com.tabram.sudokusolver.repository.SudokuBoardRepository;
+import com.tabram.sudokusolver.model.SudokuObject;
+import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ public class InitialData {
 
 
     @Bean
-    CommandLineRunner sudokuCommandLineRunner(SudokuBoardRepository sudokuBoardRepository) {
+    CommandLineRunner sudokuCommandLineRunner(SudokuObjectRepository sudokuObjectRepository) {
         return args -> {
             Integer[][] board = {
                     {0, 0, 4, 0, 6, 0, 0, 0, 2},
@@ -24,8 +24,8 @@ public class InitialData {
                     {2, 0, 0, 9, 0, 0, 0, 0, 3},
                     {0, 1, 0, 6, 0, 0, 0, 2, 0}
             };
-            SudokuBoardObject sudokuBoardObject = new SudokuBoardObject(board, 9, 3, 3);
-            sudokuBoardRepository.setSudokuBoardObject(sudokuBoardObject);
+            SudokuObject sudokuObject = new SudokuObject(board, 9, 3, 3);
+            sudokuObjectRepository.setSudokuObject(sudokuObject);
         };
     }
 }

@@ -1,26 +1,25 @@
 package com.tabram.sudokusolver.service;
 
-import com.tabram.sudokusolver.model.SudokuBoardObjectAbstract;
-import com.tabram.sudokusolver.repository.SudokuBoardRepository;
+import com.tabram.sudokusolver.model.SudokuObjectAbstract;
+import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClearBoardService {
-    SudokuBoardRepository sudokuBoardRepository;
+    SudokuObjectRepository sudokuObjectRepository;
 
     @Autowired
-    public ClearBoardService(SudokuBoardRepository sudokuBoardRepository) {
-        this.sudokuBoardRepository = sudokuBoardRepository;
+    public ClearBoardService(SudokuObjectRepository sudokuObjectRepository) {
+        this.sudokuObjectRepository = sudokuObjectRepository;
     }
 
-    public <T extends SudokuBoardObjectAbstract> T clearBoard(T sudokuBoardObject) {
-        int boardSize = sudokuBoardObject.getSudokuSize();
+    public <T extends SudokuObjectAbstract> void clearBoard(T sudokuObject) {
+        int boardSize = sudokuObject.getSudokuSize();
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
-                sudokuBoardObject.setValueToArray(row, column, null);
+                sudokuObject.setValueToArray(row, column, null);
             }
         }
-        return sudokuBoardObject;
     }
 }

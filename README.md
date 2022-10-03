@@ -10,7 +10,7 @@ Features:
 - File Validation
 - Save board to print or export
 - Undo
+- Solve cell
 
 In development:
-- Solve cell
 - Generate sudoku game

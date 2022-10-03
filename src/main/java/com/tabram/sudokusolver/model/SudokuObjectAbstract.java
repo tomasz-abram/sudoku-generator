@@ -3,16 +3,16 @@ package com.tabram.sudokusolver.model;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class SudokuBoardObjectAbstract {
+public class SudokuObjectAbstract {
     Integer[][] board;
     int sudokuSize;
     int quantityBoxesHeight;
     int quantityBoxesWidth;
 
-    public SudokuBoardObjectAbstract() {
+    public SudokuObjectAbstract() {
     }
 
-    public SudokuBoardObjectAbstract(Integer[][] board, int sudokuSize, int quantityBoxesHeight, int quantityBoxesWidth) {
+    public SudokuObjectAbstract(Integer[][] board, int sudokuSize, int quantityBoxesHeight, int quantityBoxesWidth) {
         this.board = board;
         this.sudokuSize = sudokuSize;
         this.quantityBoxesHeight = quantityBoxesHeight;
@@ -72,7 +72,7 @@ public class SudokuBoardObjectAbstract {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SudokuBoardObjectAbstract that = (SudokuBoardObjectAbstract) o;
+        SudokuObjectAbstract that = (SudokuObjectAbstract) o;
         return sudokuSize == that.sudokuSize && quantityBoxesHeight == that.quantityBoxesHeight && quantityBoxesWidth == that.quantityBoxesWidth && Arrays.equals(board, that.board);
     }
 

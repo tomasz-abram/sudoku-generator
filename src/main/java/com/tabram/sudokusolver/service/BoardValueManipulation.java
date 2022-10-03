@@ -1,6 +1,6 @@
 package com.tabram.sudokusolver.service;
 
-import com.tabram.sudokusolver.model.SudokuBoardObjectAbstract;
+import com.tabram.sudokusolver.model.SudokuObjectAbstract;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -8,26 +8,26 @@ import java.util.Objects;
 @Service
 public class BoardValueManipulation {
 
-    public <T extends SudokuBoardObjectAbstract> T changeNullToZeroOnBoard(T boardObject) {
-        for (int row = 0; row < boardObject.getSudokuSize(); row++) {
-            for (int column = 0; column < boardObject.getSudokuSize(); column++) {
-                if (Objects.equals(boardObject.getValueFromArray(row, column), null)) {
-                    boardObject.setValueToArray(row, column, 0);
+    public <T extends SudokuObjectAbstract> T changeNullToZeroOnBoard(T sudokuObject) {
+        for (int row = 0; row < sudokuObject.getSudokuSize(); row++) {
+            for (int column = 0; column < sudokuObject.getSudokuSize(); column++) {
+                if (Objects.equals(sudokuObject.getValueFromArray(row, column), null)) {
+                    sudokuObject.setValueToArray(row, column, 0);
                 }
             }
         }
-        return boardObject;
+        return sudokuObject;
     }
 
-    public <T extends SudokuBoardObjectAbstract> T changeZeroToNullOnBoard(T boardObject) {
-        for (int row = 0; row < boardObject.getSudokuSize(); row++) {
-            for (int column = 0; column < boardObject.getSudokuSize(); column++) {
-                if (Objects.equals(boardObject.getValueFromArray(row, column), 0)) {
-                    boardObject.setValueToArray(row, column, null);
+    public <T extends SudokuObjectAbstract> T changeZeroToNullOnBoard(T sudokuObject) {
+        for (int row = 0; row < sudokuObject.getSudokuSize(); row++) {
+            for (int column = 0; column < sudokuObject.getSudokuSize(); column++) {
+                if (Objects.equals(sudokuObject.getValueFromArray(row, column), 0)) {
+                    sudokuObject.setValueToArray(row, column, null);
                 }
             }
         }
-        return boardObject;
+        return sudokuObject;
     }
 }
 

@@ -1,12 +1,12 @@
 package com.tabram.sudokusolver.validation;
 
-import com.tabram.sudokusolver.dto.SudokuBoardObjectDto;
+import com.tabram.sudokusolver.dto.SudokuObjectDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-public class NumberIsValidPlacementValidation implements ConstraintValidator<NumberIsValidPlacement, SudokuBoardObjectDto> {
+public class NumberIsValidPlacementValidation implements ConstraintValidator<NumberIsValidPlacement, SudokuObjectDto> {
 
 
     @Override
@@ -15,15 +15,15 @@ public class NumberIsValidPlacementValidation implements ConstraintValidator<Num
     }
 
     @Override
-    public boolean isValid(SudokuBoardObjectDto sudokuBoardObject, ConstraintValidatorContext constraintValidatorContext) {
-        int sudokuSize = sudokuBoardObject.getSudokuSize();
-        int boxesWidth = sudokuBoardObject.getQuantityBoxesWidth();
-        int boxesHeight = sudokuBoardObject.getQuantityBoxesHeight();
-        Integer[][] board = sudokuBoardObject.getBoard();
+    public boolean isValid(SudokuObjectDto sudokuObject, ConstraintValidatorContext constraintValidatorContext) {
+        int sudokuSize = sudokuObject.getSudokuSize();
+        int boxesWidth = sudokuObject.getQuantityBoxesWidth();
+        int boxesHeight = sudokuObject.getQuantityBoxesHeight();
+        Integer[][] board = sudokuObject.getBoard();
         for (int row = 0; row < sudokuSize; row++) {
             for (int column = 0; column < sudokuSize; column++) {
-                if (sudokuBoardObject.getBoard()[row][column] != null && !Objects.equals(sudokuBoardObject.getBoard()[row][column], 0)) {
-                    if (!isValidPlacement(board, sudokuBoardObject.getBoard()[row][column], row, column, sudokuSize, boxesWidth, boxesHeight)) {
+                if (sudokuObject.getBoard()[row][column] != null && !Objects.equals(sudokuObject.getBoard()[row][column], 0)) {
+                    if (!isValidPlacement(board, sudokuObject.getBoard()[row][column], row, column, sudokuSize, boxesWidth, boxesHeight)) {
                         return false;
                     }
                 }
