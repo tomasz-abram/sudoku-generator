@@ -71,7 +71,8 @@
                                         <input
                                                 inputmode="numeric"
                                                 maxlength="3"
-                                                th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-warning p-0 fs-5' : 'sudoku-cell2 form-control bg-warning p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-warning p-0 fs-5' : 'sudoku-cell4 form-control bg-warning p-0 fs-5')"
+                                                th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-light bg-gradient p-0 fs-5' : 'sudoku-cell2 form-control bg-light bg-gradient p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-light bg-gradient p-0 fs-5' : 'sudoku-cell4 form-control bg-light bg-gradient p-0 fs-5')"
+                                                style="--bs-bg-opacity: .75;"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
                                                 th:if="${item > 0 && item <= sudokuObject.sudokuSize}"
@@ -81,6 +82,7 @@
                                                 inputmode="numeric"
                                                 maxlength="3"
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-danger p-0 fs-5' : 'sudoku-cell2 form-control bg-danger p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-danger p-0 fs-5' : 'sudoku-cell4 form-control bg-danger p-0 fs-5')"
+                                                style="--bs-bg-opacity: .5;"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
                                                 th:if="${item > sudokuObject.sudokuSize || item < 0 && item != null}"
@@ -104,8 +106,14 @@
                     <div class="mt-2">
                         <h6 style="letter-spacing: 11px">SOLVING</h6>
 
-                        <div aria-label="Basic example" class="btn-group w-100" role="group">
-                            <button id="buttonSolveCell"  class="btn btn-sm btn-dark btn-bg-custom  border-left border-white text-white fs-6"
+                        <div class="btn-group w-100" role="group">
+
+                            <button  class="btn btn-light bg-gradient btn-sm border-left border-white fw-bold fs-6"
+                                    th:form="sudokuObject" th:formaction="@{/save}"
+                                    type="submit">Check
+                            </button>
+
+                            <button id="buttonSolveCell"  class="btn btn-sm btn-dark btn-bg-custom border-left border-white text-white fs-6"
                                     th:form="sudokuObject" th:formaction="@{/solve-cell}"
                                     type="submit"> Solve cell
                             </button>
@@ -205,7 +213,7 @@
 
                                 <button
                                         class="btn btn-sm btn-outline-dark btn-bg-custom border-white text-white fs-6"
-                                        onmouseup="Undo()"
+                                        onclick="window.history.back()"
                                         style="width: 33%; border-radius: 0 0 0.375rem 0;" type="button" value="Undo">Undo
                                 </button>
                             </div>

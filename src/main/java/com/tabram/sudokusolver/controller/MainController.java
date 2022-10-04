@@ -68,5 +68,15 @@ public class MainController {
         boardSizeService.generateNewBoard(boardSize);
         return HOME;
     }
+
+    @PutMapping("/check")
+    public String check(@ModelAttribute("sudokuObject") @Valid SudokuObjectDto sudokuObjectDto, BindingResult result){
+        if (result.hasErrors()) {
+            return "/home";
+        }
+        boardValueManipulation.changeNullToZeroOnBoard(sudokuObjectDto);
+        sudokuObjectRepository.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
+        return HOME;
+    }
 }
 
