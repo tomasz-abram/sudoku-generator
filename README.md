@@ -11,6 +11,5 @@ Features:
 - Save board to print or export
 - Undo
 - Solve cell
-
-In development:
 - Generate sudoku game
+
