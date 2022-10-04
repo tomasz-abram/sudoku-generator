@@ -216,15 +216,15 @@
                         <h6 style="letter-spacing: 10px">GENERATE</h6>
 
                         <div aria-label="Basic example" class="btn-group w-100" role="group">
-                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                            <a class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Easy')}"  type="button">
                                 Easy
-                            </button>
-                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                            </a>
+                            <a class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Medium')}" type="button">
                                 Medium
-                            </button>
-                            <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" type="button">
+                            </a>
+                            <a class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Hard')}" type="button">
                                 Hard
-                            </button>
+                            </a>
                         </div>
 
                         <div class="mt-3 mb-3">

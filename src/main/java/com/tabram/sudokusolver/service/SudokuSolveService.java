@@ -29,7 +29,7 @@ public class SudokuSolveService {
     }
 
     //Check grid box
-    private <T extends SudokuObjectAbstract> boolean isNumberInBox(T sudokuObject, Integer number, int row, int column) {
+    public <T extends SudokuObjectAbstract> boolean isNumberInBox(T sudokuObject, Integer number, int row, int column) {
         int boxesWidth = sudokuObject.getQuantityBoxesWidth();
         int boxesHeight = sudokuObject.getQuantityBoxesHeight();
         int homeBoxRow = row - row % boxesWidth;
