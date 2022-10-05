@@ -13,13 +13,11 @@
 
 <body>
 
-
-<div class="container d-flex align-content-center justify-content-center">
-
+<div class="container d-flex align-content-center justify-content-center mt-5">
     <div class="row">
         <div class="col">
             <!--Alert && message-->
-            <div class="row align-content-center justify-content-center w-auto mt-3 p-0">
+            <div class="row align-content-center justify-content-center w-auto ">
                 <div class="col">
                     <ul class="list-unstyled" th:if="${#fields.hasErrors('${sudokuObject}')}">
                         <li class=" list-unstyled alert alert-danger"
@@ -36,7 +34,6 @@
 
                 </div>
             </div>
-
             <!--Sudoku board col------------------------------------------------------------------------------------>
             <div class="row align-content-center justify-content-center ">
                 <div class="col-sm btn-bg-custom-light align-content-center justify-content-center p-0"
@@ -82,7 +79,7 @@
                                                 inputmode="numeric"
                                                 maxlength="3"
                                                 th:class="${divCol}? (${divRow}? 'sudoku-cell1 form-control bg-danger p-0 fs-5' : 'sudoku-cell2 form-control bg-danger p-0 fs-5') : (${divRow}? 'sudoku-cell3 form-control bg-danger p-0 fs-5' : 'sudoku-cell4 form-control bg-danger p-0 fs-5')"
-                                                style="--bs-bg-opacity: .5;"
+                                                style="--bs-bg-opacity: .60;"
                                                 th:field="*{board[__${rowStat.index}__][__${itemStat.index}__]}"
                                                 th:id="${'cell[' + rowStat.index + '][' + itemStat.index + ']'}"
                                                 th:if="${item > sudokuObject.sudokuSize || item < 0 && item != null}"
@@ -109,17 +106,17 @@
                         <div class="btn-group w-100" role="group">
 
                             <button  class="btn btn-light bg-gradient btn-sm border-left border-white fw-bold fs-6"
-                                    th:form="sudokuObject" th:formaction="@{/save}"
+                                    th:form="sudokuObject" id="checkBtn" th:formaction="@{/save}"
                                     type="submit">Check
                             </button>
 
-                            <button id="buttonSolveCell"  class="btn btn-sm btn-dark btn-bg-custom border-left border-white text-white fs-6"
-                                    th:form="sudokuObject" th:formaction="@{/solve-cell}"
+                            <button   class="btn btn-sm btn-dark btn-bg-custom border-left border-white text-white fs-6"
+                                    th:form="sudokuObject" id="buttonSolveCell" th:formaction="@{/solve-cell}"
                                     type="submit"> Solve cell
                             </button>
 
                             <button class="btn btn-sm btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
-                                    th:form="sudokuObject" th:formaction="@{/solve-all}" type="submit"> Solve all
+                                    th:form="sudokuObject" id="saveAllBtn" th:formaction="@{/solve-all}" type="submit"> Solve all
                             </button>
                         </div>
                     </div>
@@ -142,41 +139,7 @@
                                 <div aria-hidden="true" aria-labelledby="exampleModalLabel"
                                      class="modal modal-custom-background fade"
                                      id="exampleModal" tabindex="-1">
-                                    <div class="modal-dialog ">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-white" id="exampleModalLabel">Upload
-                                                    file</h5>
-                                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
-                                                        type="button"></button>
-                                            </div>
-                                            <div class="modal-body">
 
-                                                <form action="#" enctype="multipart/form-data"
-                                                      th:action="@{/upload-file}"
-                                                      th:id="uploadFile"
-                                                      th:method="POST"
-                                                      th:modelAttribute="fileBucket">
-                                                    <div class="input-group mb-3">
-                                                        <input class="form-control" id="inputGroupFile02"
-                                                               th:name="file" type="file">
-                                                        <label class="input-group-text"
-                                                               for="inputGroupFile02">.json</label>
-                                                    </div>
-                                                </form>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-secondary custom-dark-background"
-                                                        data-bs-dismiss="modal" type="button">
-                                                    Close
-                                                </button>
-                                                <button class="btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
-                                                        th:form="uploadFile" type="submit">Upload
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <!--Save button   -->
@@ -206,7 +169,7 @@
                                       th:method="DELETE">
                                 </form>
                                 <button class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6"
-                                        form="clearSudokuBoard"
+                                        form="clearSudokuBoard" id="clearBtn"
                                         style="width: 33%; border-radius: 0 0 0 0;" type="submit">Clear
                                 </button>
 
@@ -224,13 +187,13 @@
                         <h6 style="letter-spacing: 10px">GENERATE</h6>
 
                         <div aria-label="Basic example" class="btn-group w-100" role="group">
-                            <a class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Easy')}"  type="button">
+                            <a id="easyBtn" class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Easy')}" type="button">
                                 Easy
                             </a>
-                            <a class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Medium')}" type="button">
+                            <a id="mediumBtn" class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Medium')}" type="button">
                                 Medium
                             </a>
-                            <a class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Hard')}" type="button">
+                            <a id="hardBtn" class="btn btn-sm btn-outline-dark btn-bg-custom text-white fs-6" th:href="@{/generate-easy-game(level='Hard')}" type="button">
                                 Hard
                             </a>
                         </div>
@@ -259,7 +222,7 @@
                                         <option th:value="18">18x18</option>
 
                                     </select>
-                                    <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6" type="submit">
+                                    <button class="btn btn-sm btn-dark btn-bg-custom text-white fs-6" id="changeBtn" type="submit">
                                         Change
                                     </button>
                                 </form>
@@ -272,12 +235,24 @@
     </div>
 </div>
 
-</body>
 
+
+
+        <div id="loadingFade" class="modal modal-custom-background" style="display: flex;" >
+            <span id="loading">
+                <span id="loading-inner"></span>
+            </span>
+        </div>
+
+
+
+</body>
 </html>
 <script crossorigin="anonymous"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
@@ -294,6 +269,63 @@
     function getElementId(){
         var x = document.activeElement;
         document.getElementById("solveCell").setAttribute('value', x.id);
+    }
+
+    // $(window).on("load",function(){
+    //     $(".loader-wrapper").fadeOut("slow");
+    // });
+
+    // $().on("load",function(){
+    //     $(".loader-wrapper").fadeOut("slow");
+    // });
+
+
+    //solution by Vaishnav https://codepen.io/vaishnav21/pen/ExgVNXY
+    // selecting dom element
+    const btn = document.querySelector("#saveAllBtn");
+    const btn2 = document.querySelector("#buttonSolveCell");
+    const btn3 = document.querySelector("#checkBtn");
+    const btn4 = document.querySelector("#clearBtn");
+    const btn5 = document.querySelector("#easyBtn");
+    const btn6 = document.querySelector("#mediumBtn");
+    const btn7 = document.querySelector("#hardBtn");
+    const btn8 = document.querySelector("#changeBtn");
+
+    // adding event listener to button
+    btn.addEventListener("click", fetchHandler);
+    btn2.addEventListener("click", fetchHandler);
+    btn3.addEventListener("click", fetchHandler);
+    btn4.addEventListener("click", fetchHandler);
+    btn5.addEventListener("click", fetchHandler);
+    btn6.addEventListener("click", fetchHandler);
+    btn7.addEventListener("click", fetchHandler);
+    btn8.addEventListener("click", fetchHandler);
+
+    // selecting loading div
+    const loader = document.querySelector("#loading");
+    const loader2 = document.querySelector("#loading-inner");
+    const loader3 = document.querySelector("#loadingFade");
+
+    // showing loading
+    function displayLoading() {
+        loader.classList.add("display");
+        loader2.classList.add("display");
+        loader3.classList.add("display");
+        // to stop loading after some time
+        setTimeout(() => {
+            loader.classList.remove("display");
+            loader2.classList.remove("display");
+            loader3.classList.remove("display");
+        }, 10000);
+    }
+
+    // hiding loading
+    function hideLoading() {
+        loader.classList.remove("display");
+    }
+
+    function fetchHandler(event) {
+        displayLoading()
     }
 
 </script>
