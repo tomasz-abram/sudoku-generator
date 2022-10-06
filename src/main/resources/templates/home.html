@@ -139,8 +139,43 @@
                                 <div aria-hidden="true" aria-labelledby="exampleModalLabel"
                                      class="modal modal-custom-background fade"
                                      id="exampleModal" tabindex="-1">
+                                    <div class="modal-dialog ">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-white" id="exampleModalLabel">Upload
+                                                    file</h5>
+                                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                                        type="button"></button>
+                                            </div>
+                                            <div class="modal-body">
 
+                                                <form action="#" enctype="multipart/form-data"
+                                                      th:action="@{/upload-file}"
+                                                      th:id="uploadFile"
+                                                      th:method="POST"
+                                                      th:modelAttribute="fileBucket">
+                                                    <div class="input-group mb-3">
+                                                        <input class="form-control" id="inputGroupFile02"
+                                                               th:name="file" type="file">
+                                                        <label class="input-group-text"
+                                                               for="inputGroupFile02">.json</label>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary custom-dark-background"
+                                                        data-bs-dismiss="modal" type="button">
+                                                    Close
+                                                </button>
+                                                <button class="btn btn-dark btn-bg-custom border-right border-white text-white fs-6"
+                                                        th:form="uploadFile" type="submit">Upload
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
 
                                 <!--Save button   -->
                                 <a class="btn btn-sm btn-outline-dark fs-6 btn-bg-custom text-white"
