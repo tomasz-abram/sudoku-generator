@@ -24,9 +24,7 @@ import java.util.stream.Collectors;
 public class FileIOController {
 
     private static final String HOME = "redirect:/";
-
     private final FileIOService fileIOService;
-
     private final SudokuObjectRepository sudokuObjectRepository;
 
     public FileIOController(FileIOService fileIOService, SudokuObjectRepository sudokuObjectRepository) {

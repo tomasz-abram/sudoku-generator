@@ -2,6 +2,7 @@ package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.dto.FileBucket;
 import com.tabram.sudokusolver.dto.SudokuObjectDto;
+import com.tabram.sudokusolver.model.SudokuObject;
 import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import com.tabram.sudokusolver.service.BoardSizeService;
 import com.tabram.sudokusolver.service.BoardValueManipulation;
@@ -19,15 +20,16 @@ import javax.validation.Valid;
 @RequestMapping({"/", "/home"})
 public class MainController {
 
-    private static final String HOME = "redirect:/";
+    private static final String REDIRECT = "redirect:/";
+    private static final String HOME = "/home";
     private final SudokuObjectRepository sudokuObjectRepository;
     private final ClearBoardService clearBoardService;
-    private final BoardValueManipulation boardValueManipulation;
+    private final BoardValueManipulation<com.tabram.sudokusolver.model.SudokuObjectAbstract> boardValueManipulation;
     private final BoardSizeService boardSizeService;
     private final MapperService mapperService;
 
     @Autowired
-    public MainController(SudokuObjectRepository sudokuObjectRepository, ClearBoardService clearBoardService, BoardValueManipulation boardValueManipulation, BoardSizeService boardSizeService, MapperService mapperService) {
+    public MainController(SudokuObjectRepository sudokuObjectRepository, ClearBoardService clearBoardService, BoardValueManipulation<com.tabram.sudokusolver.model.SudokuObjectAbstract> boardValueManipulation, BoardSizeService boardSizeService, MapperService mapperService) {
         this.sudokuObjectRepository = sudokuObjectRepository;
         this.clearBoardService = clearBoardService;
         this.boardValueManipulation = boardValueManipulation;
@@ -44,39 +46,40 @@ public class MainController {
     public String home(Model model) {
         model.addAttribute("sudokuObject", boardValueManipulation.changeZeroToNullOnBoard(sudokuObjectRepository.getSudokuObject()));
         model.addAttribute("fileBucket", new FileBucket());
-        return "home";
+        return HOME;
     }
 
     @PutMapping("/save")
     public String save(@ModelAttribute("sudokuObject") @Valid SudokuObjectDto sudokuObjectDto, BindingResult result) {
         if (result.hasErrors()) {
-            return "/home";
+            return HOME;
         }
         boardValueManipulation.changeNullToZeroOnBoard(sudokuObjectDto);
         sudokuObjectRepository.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
-        return HOME;
+        return REDIRECT;
     }
 
     @DeleteMapping("/clear")
     public String clearBoard() {
         clearBoardService.clearBoard(sudokuObjectRepository.getSudokuObject());
-        return HOME;
+        return REDIRECT;
     }
 
     @PutMapping("/change-board-size")
     public String changeBoardSize(@RequestParam("changeBoardSize") Integer boardSize) {
-        boardSizeService.generateNewBoard(boardSize);
-        return HOME;
+        SudokuObject sudokuObject = boardSizeService.generateNewBoard(boardSize);
+        sudokuObjectRepository.setSudokuObject(sudokuObject);
+        return REDIRECT;
     }
 
     @PutMapping("/check")
     public String check(@ModelAttribute("sudokuObject") @Valid SudokuObjectDto sudokuObjectDto, BindingResult result){
         if (result.hasErrors()) {
-            return "/home";
+            return HOME;
         }
         boardValueManipulation.changeNullToZeroOnBoard(sudokuObjectDto);
         sudokuObjectRepository.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
-        return HOME;
+        return REDIRECT;
     }
 }
 

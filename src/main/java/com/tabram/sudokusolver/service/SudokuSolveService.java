@@ -4,11 +4,11 @@ import com.tabram.sudokusolver.model.SudokuObjectAbstract;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SudokuSolveService {
+public class SudokuSolveService<T extends SudokuObjectAbstract> {
 
 
     //Check row
-    private <T extends SudokuObjectAbstract> boolean isNumberInRow(T sudokuObject, Integer number, int row) {
+    private boolean isNumberInRow(T sudokuObject, Integer number, int row) {
         int sudokuSize = sudokuObject.getSudokuSize();
         for (int i = 0; i < sudokuSize; i++) {
             if (sudokuObject.getValueFromArray(row, i).equals(number)) {
@@ -19,7 +19,7 @@ public class SudokuSolveService {
     }
 
     //Check colum
-    private <T extends SudokuObjectAbstract> boolean isNumberInColum(T sudokuObject, Integer number, int column) {
+    private boolean isNumberInColum(T sudokuObject, Integer number, int column) {
         for (int j = 0; j < sudokuObject.getSudokuSize(); j++) {
             if (sudokuObject.getValueFromArray(j, column).equals(number)) {
                 return true;
@@ -29,7 +29,7 @@ public class SudokuSolveService {
     }
 
     //Check grid box
-    public <T extends SudokuObjectAbstract> boolean isNumberInBox(T sudokuObject, Integer number, int row, int column) {
+    public boolean isNumberInBox(T sudokuObject, Integer number, int row, int column) {
         int boxesWidth = sudokuObject.getQuantityBoxesWidth();
         int boxesHeight = sudokuObject.getQuantityBoxesHeight();
         int homeBoxRow = row - row % boxesWidth;
@@ -45,11 +45,11 @@ public class SudokuSolveService {
     }
 
     //This method check all three row/column/box methods
-    public <T extends SudokuObjectAbstract> boolean isValidPlacement(T sudokuObject, Integer number, int row, int column) {
+    public boolean isValidPlacement(T sudokuObject, Integer number, int row, int column) {
         return !isNumberInRow(sudokuObject, number, row) && !isNumberInColum(sudokuObject, number, column) && !isNumberInBox(sudokuObject, number, row, column);
     }
 
-    public <T extends SudokuObjectAbstract> boolean solveBoard(T sudokuObject) {
+    public boolean solveBoard(T sudokuObject) {
 
         for (int row = 0; row < sudokuObject.getSudokuSize(); row++) {
             for (int column = 0; column < sudokuObject.getSudokuSize(); column++) {

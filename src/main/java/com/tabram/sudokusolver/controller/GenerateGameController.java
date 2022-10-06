@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class GenerateGameController {
     private static final String HOME = "redirect:/";
-    private final GenerateSudokuGameService generateSudokuGameService;
+    private final GenerateSudokuGameService<SudokuObject> generateSudokuGameService;
     private final ClearBoardService clearBoardService;
     private final SudokuObjectRepository sudokuObjectRepository;
-    private final BoardValueManipulation boardValueManipulation;
-    private final SudokuSolveService sudokuSolveService;
+    private final BoardValueManipulation<SudokuObject> boardValueManipulation;
+    private final SudokuSolveService<com.tabram.sudokusolver.model.SudokuObjectAbstract> sudokuSolveService;
     private final CopyObjectService copyObjectService;
     private final TempSudokuObject tempSudokuObject;
 
-    public GenerateGameController(GenerateSudokuGameService generateSudokuGameService, ClearBoardService clearBoardService, SudokuObjectRepository sudokuObjectRepository, BoardValueManipulation boardValueManipulation, SudokuSolveService sudokuSolveService, CopyObjectService copyObjectService, TempSudokuObject tempSudokuObject) {
+    public GenerateGameController(GenerateSudokuGameService<SudokuObject> generateSudokuGameService, ClearBoardService clearBoardService, SudokuObjectRepository sudokuObjectRepository, BoardValueManipulation<SudokuObject> boardValueManipulation, SudokuSolveService<com.tabram.sudokusolver.model.SudokuObjectAbstract> sudokuSolveService, CopyObjectService copyObjectService, TempSudokuObject tempSudokuObject) {
         this.generateSudokuGameService = generateSudokuGameService;
         this.clearBoardService = clearBoardService;
         this.sudokuObjectRepository = sudokuObjectRepository;
@@ -30,7 +30,7 @@ public class GenerateGameController {
     }
 
 
-    @GetMapping("/generate-easy-game")
+    @GetMapping("/generate-game")
     public String generateGame(@RequestParam String level) {
         int percent;
         switch (level) {

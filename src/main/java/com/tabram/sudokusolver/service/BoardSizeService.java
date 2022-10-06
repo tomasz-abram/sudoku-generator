@@ -1,8 +1,6 @@
 package com.tabram.sudokusolver.service;
 
 import com.tabram.sudokusolver.model.SudokuObject;
-import com.tabram.sudokusolver.repository.SudokuObjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,22 +11,14 @@ import java.util.Map;
 @Service
 public class BoardSizeService {
 
-    private final SudokuObjectRepository sudokuObjectRepository;
-
-    @Autowired
-    public BoardSizeService(SudokuObjectRepository sudokuObjectRepository) {
-        this.sudokuObjectRepository = sudokuObjectRepository;
-    }
-
-    public void generateNewBoard(int size) {
+    public SudokuObject generateNewBoard(int size) {
         Integer[][] newBoard = new Integer[size][size];
         Map<String, Integer> dim = smallBoxSize(divisorsList(size), size);
-        SudokuObject sudokuObject = new SudokuObject(newBoard, size, dim.get("height"), dim.get("width"));
-        sudokuObjectRepository.setSudokuObject(sudokuObject);
+        return new SudokuObject(newBoard, size, dim.get("height"), dim.get("width"));
     }
 
 
-//    This method generates a list of the divisors of the given number except one and the given number.
+    //    This method generates a list of the divisors of the given number except one and the given number.
     public List<Integer> divisorsList(int n) {
         List<Integer> divisionList = new ArrayList<>();
         for (int i = 2; i <= n; i++) {
@@ -41,7 +31,8 @@ public class BoardSizeService {
         }
         return divisionList;
     }
-// This method finds the nearest divisors that can form a sudoku box with the shorter side always at the top.
+
+    // This method finds the nearest divisors that can form a sudoku box with the shorter side always at the top.
     public Map<String, Integer> smallBoxSize(List<Integer> divisionList, int n) {
         int temp1 = 0;
         int temp2 = 0;

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class BoardValueManipulation {
+public class BoardValueManipulation <T extends SudokuObjectAbstract> {
 
-    public <T extends SudokuObjectAbstract> T changeNullToZeroOnBoard(T sudokuObject) {
+    public void changeNullToZeroOnBoard(T sudokuObject) {
         for (int row = 0; row < sudokuObject.getSudokuSize(); row++) {
             for (int column = 0; column < sudokuObject.getSudokuSize(); column++) {
                 if (Objects.equals(sudokuObject.getValueFromArray(row, column), null)) {
@@ -16,10 +16,9 @@ public class BoardValueManipulation {
                 }
             }
         }
-        return sudokuObject;
     }
 
-    public <T extends SudokuObjectAbstract> T changeZeroToNullOnBoard(T sudokuObject) {
+    public T changeZeroToNullOnBoard(T sudokuObject) {
         for (int row = 0; row < sudokuObject.getSudokuSize(); row++) {
             for (int column = 0; column < sudokuObject.getSudokuSize(); column++) {
                 if (Objects.equals(sudokuObject.getValueFromArray(row, column), 0)) {

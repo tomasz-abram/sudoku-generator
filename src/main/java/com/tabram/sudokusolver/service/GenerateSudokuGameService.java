@@ -7,22 +7,20 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public class GenerateSudokuGameService {
+public class GenerateSudokuGameService<T extends SudokuObjectAbstract> {
 
-
-    private final SudokuSolveService sudokuSolveService;
-
+    private final SudokuSolveService<T> sudokuSolveService;
+    private final Random random = new Random();
 
     @Autowired
-    public GenerateSudokuGameService(SudokuSolveService sudokuSolveService) {
+    public GenerateSudokuGameService(SudokuSolveService<T> sudokuSolveService) {
 
         this.sudokuSolveService = sudokuSolveService;
     }
 
-    public <T extends SudokuObjectAbstract> void generate(T sudokuObject) {
+    public void generate(T sudokuObject) {
         int boxWidth = sudokuObject.getQuantityBoxesWidth();
         int boxHeight = sudokuObject.getQuantityBoxesHeight();
-        Random random = new Random();
 
         for (int boxW = 0; boxW < boxWidth; boxW++) {
 
@@ -42,10 +40,9 @@ public class GenerateSudokuGameService {
         }
     }
 
-    public <T extends SudokuObjectAbstract> void randomCleanBoard(T sudokuObject, int percent) {
+    public void randomCleanBoard(T sudokuObject, int percent) {
         int sudokuSize = sudokuObject.getSudokuSize();
-        Random random = new Random();
-        Double emptyCells = Math.pow(sudokuSize, 2) * percent / 100;
+        double emptyCells = Math.pow(sudokuSize, 2) * percent / 100;
         int j = 0;
         while (j < emptyCells) {
             int iRandom = random.nextInt(sudokuObject.getSudokuSize());

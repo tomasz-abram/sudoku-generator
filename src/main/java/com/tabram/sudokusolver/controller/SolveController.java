@@ -27,13 +27,13 @@ public class SolveController {
 
     private static final String HOME = "redirect:/";
     private final SudokuObjectRepository sudokuObjectRepository;
-    private final SudokuSolveService sudokuSolveService;
-    private final BoardValueManipulation boardValueManipulation;
+    private final SudokuSolveService<SudokuObjectDto> sudokuSolveService;
+    private final BoardValueManipulation<SudokuObjectDto> boardValueManipulation;
     private final MapperService mapperService;
     private final TempSudokuObject tempSudokuObject;
     private final CompereWithTempSudokuBoard compereWithTempSudokuBoard;
 
-    public SolveController(SudokuObjectRepository sudokuObjectRepository, SudokuSolveService sudokuSolveService, BoardValueManipulation boardValueManipulation, MapperService mapperService, TempSudokuObject tempSudokuObject, CompereWithTempSudokuBoard compereWithTempSudokuBoard) {
+    public SolveController(SudokuObjectRepository sudokuObjectRepository, SudokuSolveService<SudokuObjectDto> sudokuSolveService, BoardValueManipulation<SudokuObjectDto> boardValueManipulation, MapperService mapperService, TempSudokuObject tempSudokuObject, CompereWithTempSudokuBoard compereWithTempSudokuBoard) {
         this.sudokuObjectRepository = sudokuObjectRepository;
         this.sudokuSolveService = sudokuSolveService;
         this.boardValueManipulation = boardValueManipulation;
