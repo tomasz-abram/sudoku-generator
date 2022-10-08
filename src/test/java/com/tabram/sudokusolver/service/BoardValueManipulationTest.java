@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,8 +54,8 @@ class BoardValueManipulationTest {
             assertAll(
                     () -> assertEquals(9, testSudokuObjectNull.getSudokuSize()),
                     () -> assertEquals(3, testSudokuObjectNull.getQuantityBoxesHeight()),
-                    () -> assertEquals(3, testSudokuObjectNull.getQuantityBoxesWidth()));
-            assertThat(testBoardZero).isDeepEqualTo(testSudokuObjectNull.getBoard());
+                    () -> assertEquals(3, testSudokuObjectNull.getQuantityBoxesWidth()),
+                    () -> assertThat(testBoardZero).isDeepEqualTo(testSudokuObjectNull.getBoard()));
         }
     }
 
@@ -92,8 +91,8 @@ class BoardValueManipulationTest {
             assertAll(
                     () -> assertEquals(testSudokuObjectZero.getSudokuSize(), sudokuActual.getSudokuSize()),
                     () -> assertEquals(testSudokuObjectZero.getQuantityBoxesHeight(), sudokuActual.getQuantityBoxesHeight()),
-                    () -> assertEquals(testSudokuObjectZero.getQuantityBoxesWidth(), sudokuActual.getQuantityBoxesWidth()));
-            assertThat(testBoardNull).isDeepEqualTo(sudokuActual.getBoard());
+                    () -> assertEquals(testSudokuObjectZero.getQuantityBoxesWidth(), sudokuActual.getQuantityBoxesWidth()),
+                    () -> assertThat(testBoardNull).isDeepEqualTo(sudokuActual.getBoard()));
         }
     }
 }

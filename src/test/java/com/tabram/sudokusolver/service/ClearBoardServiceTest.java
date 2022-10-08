@@ -55,10 +55,10 @@ class ClearBoardServiceTest {
             };
             underTest.clearBoard(testSudokuObject);
             assertAll(
-                    () -> assertEquals(9,testSudokuObject.getSudokuSize()),
-                    () -> assertEquals(3,testSudokuObject.getQuantityBoxesHeight()),
-                    () -> assertEquals(3,testSudokuObject.getQuantityBoxesWidth()));
-            assertThat(testBoardNull).isDeepEqualTo(testSudokuObject.getBoard());
+                    () -> assertEquals(9, testSudokuObject.getSudokuSize()),
+                    () -> assertEquals(3, testSudokuObject.getQuantityBoxesHeight()),
+                    () -> assertEquals(3, testSudokuObject.getQuantityBoxesWidth()),
+                    () -> assertThat(testBoardNull).isDeepEqualTo(testSudokuObject.getBoard()));
         }
     }
 }

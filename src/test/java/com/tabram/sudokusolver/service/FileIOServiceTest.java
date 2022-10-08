@@ -61,7 +61,7 @@ class FileIOServiceTest {
         assertAll(
                 () -> assertEquals(testSudokuObject.getSudokuSize(), capturedSudoku.getSudokuSize()),
                 () -> assertEquals(testSudokuObject.getQuantityBoxesHeight(), capturedSudoku.getQuantityBoxesHeight()),
-                () -> assertEquals(testSudokuObject.getQuantityBoxesWidth(), capturedSudoku.getQuantityBoxesWidth()));
-        assertThat(testSudokuObject.getBoard()).isDeepEqualTo(capturedSudoku.getBoard());
+                () -> assertEquals(testSudokuObject.getQuantityBoxesWidth(), capturedSudoku.getQuantityBoxesWidth()),
+                () -> assertThat(testSudokuObject.getBoard()).isDeepEqualTo(capturedSudoku.getBoard()));
     }
 }

@@ -40,9 +40,8 @@ class BoardSizeServiceTest {
         assertAll(
                 () -> assertEquals(sudokuSize, sudokuActual.getSudokuSize()),
                 () -> assertEquals(6, sudokuActual.getQuantityBoxesHeight()),
-                () -> assertEquals(3, sudokuActual.getQuantityBoxesWidth()));
-        Assertions.assertThat(testBoard).isDeepEqualTo(sudokuActual.getBoard());
-
+                () -> assertEquals(3, sudokuActual.getQuantityBoxesWidth()),
+                () -> assertThat(testBoard).isDeepEqualTo(sudokuActual.getBoard()));
     }
 
     @Test
@@ -58,7 +57,7 @@ class BoardSizeServiceTest {
         Map<String, Integer> actualMap = underTest.smallBoxSize(testList, testN);
         //then
         assertAll(
-                () -> assertEquals(3,  actualMap.get("width")),
+                () -> assertEquals(3, actualMap.get("width")),
                 () -> assertEquals(6, actualMap.get("height")));
     }
 

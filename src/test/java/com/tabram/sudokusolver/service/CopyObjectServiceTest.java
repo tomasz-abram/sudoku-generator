@@ -45,8 +45,8 @@ class CopyObjectServiceTest {
             assertAll(
                     () -> assertEquals(testSudokuObject.getSudokuSize(), sudokuActual.getSudokuSize()),
                     () -> assertEquals(testSudokuObject.getQuantityBoxesHeight(), sudokuActual.getQuantityBoxesHeight()),
-                    () -> assertEquals(testSudokuObject.getQuantityBoxesWidth(), sudokuActual.getQuantityBoxesWidth()));
-            assertThat(testSudokuObject.getBoard()).isDeepEqualTo(sudokuActual.getBoard());
+                    () -> assertEquals(testSudokuObject.getQuantityBoxesWidth(), sudokuActual.getQuantityBoxesWidth()),
+                    () -> assertThat(testSudokuObject.getBoard()).isDeepEqualTo(sudokuActual.getBoard()));
         }
     }
 }

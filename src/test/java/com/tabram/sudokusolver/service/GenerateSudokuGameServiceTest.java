@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -44,26 +45,26 @@ class GenerateSudokuGameServiceTest {
             SudokuObject sudokuObject = new SudokuObject(board, 9, 3, 3);
             when(sudokuSolveService.isValidPlacement(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
             underTest.generateNumbersInDiagonalBoxes(sudokuObject);
+            assertAll(
+                    () -> assertThat(sudokuObject.getValueFromArray(0, 0)).isLessThan(10).isNotZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(0, 0)).isLessThan(10).isNotZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(0, 2)).isLessThan(10).isNotZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(2, 2)).isLessThan(10).isNotZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(0, 3)).isZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(2, 3)).isZero(),
 
-            assertThat(sudokuObject.getValueFromArray(0, 0)).isLessThan(10).isNotZero();
-            assertThat(sudokuObject.getValueFromArray(0, 0)).isLessThan(10).isNotZero();
-            assertThat(sudokuObject.getValueFromArray(0, 2)).isLessThan(10).isNotZero();
-            assertThat(sudokuObject.getValueFromArray(2, 2)).isLessThan(10).isNotZero();
-            assertThat(sudokuObject.getValueFromArray(0, 3)).isZero();
-            assertThat(sudokuObject.getValueFromArray(2, 3)).isZero();
+                    () -> assertThat(sudokuObject.getValueFromArray(3, 3)).isLessThan(10).isNotZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(3, 5)).isLessThan(10).isNotZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(5, 5)).isLessThan(10).isNotZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(3, 2)).isZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(5, 6)).isZero(),
 
-            assertThat(sudokuObject.getValueFromArray(3, 3)).isLessThan(10).isNotZero();
-            assertThat(sudokuObject.getValueFromArray(3, 5)).isLessThan(10).isNotZero();
-            assertThat(sudokuObject.getValueFromArray(5, 5)).isLessThan(10).isNotZero();
-            assertThat(sudokuObject.getValueFromArray(3, 2)).isZero();
-            assertThat(sudokuObject.getValueFromArray(5, 6)).isZero();
-
-            assertThat(sudokuObject.getValueFromArray(6, 6)).isLessThan(10).isPositive();
-            assertThat(sudokuObject.getValueFromArray(6, 8)).isLessThan(10).isPositive();
-            assertThat(sudokuObject.getValueFromArray(8, 8)).isLessThan(10).isPositive();
-            assertThat(sudokuObject.getValueFromArray(3, 2)).isZero();
-            assertThat(sudokuObject.getValueFromArray(5, 6)).isZero();
-
+                    () -> assertThat(sudokuObject.getValueFromArray(6, 6)).isLessThan(10).isPositive(),
+                    () -> assertThat(sudokuObject.getValueFromArray(6, 8)).isLessThan(10).isPositive(),
+                    () -> assertThat(sudokuObject.getValueFromArray(8, 8)).isLessThan(10).isPositive(),
+                    () -> assertThat(sudokuObject.getValueFromArray(3, 2)).isZero(),
+                    () -> assertThat(sudokuObject.getValueFromArray(5, 6)).isZero()
+                    );
         }
     }
 
