@@ -49,7 +49,7 @@ public class GenerateGameController {
         SudokuObject sudokuObject = sudokuObjectRepository.getSudokuObject();
         clearBoardService.clearBoard(sudokuObject);
         boardValueManipulation.changeNullToZeroOnBoard(sudokuObject);
-        generateSudokuGameService.generate(sudokuObject);
+        generateSudokuGameService.generateNumbersInDiagonalBoxes(sudokuObject);
         sudokuSolveService.solveBoard(sudokuObject);
         tempSudokuObject.setSudokuObject(copyObjectService.deepCopy(sudokuObject));
         generateSudokuGameService.randomCleanBoard(sudokuObject, percent);

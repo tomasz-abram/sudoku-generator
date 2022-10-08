@@ -18,7 +18,7 @@ public class GenerateSudokuGameService<T extends SudokuObjectAbstract> {
         this.sudokuSolveService = sudokuSolveService;
     }
 
-    public void generate(T sudokuObject) {
+    public void generateNumbersInDiagonalBoxes(T sudokuObject) {
         int boxWidth = sudokuObject.getQuantityBoxesWidth();
         int boxHeight = sudokuObject.getQuantityBoxesHeight();
 
