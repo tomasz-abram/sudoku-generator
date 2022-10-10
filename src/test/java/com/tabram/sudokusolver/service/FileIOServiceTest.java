@@ -32,7 +32,7 @@ class FileIOServiceTest {
     void exportBoard() {
         SudokuObject testSudoku = new SudokuObject(new Integer[4][4], 4, 2, 2);
         String response = "{\"board\":[[null,null,null,null],[null,null,null,null],[null,null,null,null],[null,null,null,null]],\"sudokuSize\":4,\"quantityBoxesHeight\":2,\"quantityBoxesWidth\":2}";
-        String actualJson = underTest.exportBoard(testSudoku);
+        String actualJson = underTest.exportSudokuObject(testSudoku);
         assertEquals(response, actualJson);
     }
 
@@ -53,7 +53,7 @@ class FileIOServiceTest {
         SudokuObject testSudokuObject = new SudokuObject(board, 9, 3, 3);
         MockMultipartFile testFile = new MockMultipartFile("file", "sudoku.json", MediaType.APPLICATION_JSON_VALUE, "{\"board\":[[null,null,4,null,6,null,null,null,2],[3,null,null,5,null,null,null,null,7],[null,null,null,null,null,null,null,null,null],[1,null,null,null,8,null,null,null,null],[null,3,null,null,4,null,7,null,8],[5,null,null,null,7,null,null,null,6],[null,null,null,null,null,null,1,8,null],[2,null,null,9,null,null,null,null,3],[null,1,null,6,null,null,null,2,null]],\"sudokuSize\":9,\"quantityBoxesHeight\":3,\"quantityBoxesWidth\":3}".getBytes());
 
-        underTest.importBoard(testFile);
+        underTest.importSudokuObject(testFile);
 
         ArgumentCaptor<SudokuObject> argumentCaptor = ArgumentCaptor.forClass(SudokuObject.class);
         verify(sudokuObjectRepository).setSudokuObject(argumentCaptor.capture());
