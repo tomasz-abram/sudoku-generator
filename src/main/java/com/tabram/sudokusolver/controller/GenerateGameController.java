@@ -44,7 +44,7 @@ public class GenerateGameController {
                 percent = 72;
                 break;
             default:
-                percent = 0;
+                return HOME;
         }
         SudokuObject sudokuObject = sudokuObjectRepository.getSudokuObject();
         clearBoardService.clearBoard(sudokuObject);

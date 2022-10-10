@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class CompereWithTempSudokuBoard {
+public class CompareWithTempSudokuBoard {
 
     private final TempSudokuObject tempSudokuObject;
 
     @Autowired
-    public CompereWithTempSudokuBoard(TempSudokuObject tempSudokuObject) {
+    public CompareWithTempSudokuBoard(TempSudokuObject tempSudokuObject) {
         this.tempSudokuObject = tempSudokuObject;
     }
 
-    public <T extends SudokuObjectAbstract> boolean compere(T inSudokuObject) {
+    public <T extends SudokuObjectAbstract> boolean compare(T inSudokuObject) {
         SudokuObject tempBoardObject = tempSudokuObject.getSudokuObject();
         int zeroOnBoard = 0;
 

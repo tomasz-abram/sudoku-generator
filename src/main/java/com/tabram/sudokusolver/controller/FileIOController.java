@@ -35,7 +35,7 @@ public class FileIOController {
     @GetMapping("/download-file")
     public ResponseEntity<byte[]> downloadFile() {
         SudokuObject sudokuObject = sudokuObjectRepository.getSudokuObject();
-        String sudokuJsonString = fileIOService.exportBoard(sudokuObject);
+        String sudokuJsonString = fileIOService.exportSudokuObject(sudokuObject);
         byte[] sudokuJsonBytes = sudokuJsonString.getBytes();
         return ResponseEntity
                 .ok()
@@ -54,7 +54,7 @@ public class FileIOController {
                     .collect(Collectors.toList()));
         } else {
             MultipartFile file = fileBucket.getFile();
-            fileIOService.importBoard(file);
+            fileIOService.importSudokuObject(file);
             redirectAttributes.addFlashAttribute("messages", "You successfully uploaded " + file.getOriginalFilename() + "!");
         }
         return HOME;

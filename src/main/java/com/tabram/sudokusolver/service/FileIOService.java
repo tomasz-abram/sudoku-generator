@@ -17,7 +17,7 @@ public class FileIOService {
         this.sudokuObjectRepository = sudokuObjectRepository;
     }
 
-    public String exportBoard(SudokuObject sudokuObject) {
+    public String exportSudokuObject(SudokuObject sudokuObject) {
         String jsonBoard = null;
         try {
             Gson gson = new Gson();
@@ -28,7 +28,7 @@ public class FileIOService {
         return jsonBoard;
     }
 
-    public void importBoard(MultipartFile file) {
+    public void importSudokuObject(MultipartFile file) {
         SudokuObject sudokuObject = new SudokuObject();
 
         try {

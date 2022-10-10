@@ -7,7 +7,7 @@ import com.tabram.sudokusolver.repository.TempSudokuObject;
 import com.tabram.sudokusolver.service.BoardValueManipulation;
 import com.tabram.sudokusolver.service.MapperService;
 import com.tabram.sudokusolver.service.SudokuSolveService;
-import com.tabram.sudokusolver.validation.CompereWithTempSudokuBoard;
+import com.tabram.sudokusolver.validation.CompareWithTempSudokuBoard;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,15 +31,15 @@ public class SolveController {
     private final BoardValueManipulation<SudokuObjectDto> boardValueManipulation;
     private final MapperService mapperService;
     private final TempSudokuObject tempSudokuObject;
-    private final CompereWithTempSudokuBoard compereWithTempSudokuBoard;
+    private final CompareWithTempSudokuBoard compareWithTempSudokuBoard;
 
-    public SolveController(SudokuObjectRepository sudokuObjectRepository, SudokuSolveService<SudokuObjectDto> sudokuSolveService, BoardValueManipulation<SudokuObjectDto> boardValueManipulation, MapperService mapperService, TempSudokuObject tempSudokuObject, CompereWithTempSudokuBoard compereWithTempSudokuBoard) {
+    public SolveController(SudokuObjectRepository sudokuObjectRepository, SudokuSolveService<SudokuObjectDto> sudokuSolveService, BoardValueManipulation<SudokuObjectDto> boardValueManipulation, MapperService mapperService, TempSudokuObject tempSudokuObject, CompareWithTempSudokuBoard compareWithTempSudokuBoard) {
         this.sudokuObjectRepository = sudokuObjectRepository;
         this.sudokuSolveService = sudokuSolveService;
         this.boardValueManipulation = boardValueManipulation;
         this.mapperService = mapperService;
         this.tempSudokuObject = tempSudokuObject;
-        this.compereWithTempSudokuBoard = compereWithTempSudokuBoard;
+        this.compareWithTempSudokuBoard = compareWithTempSudokuBoard;
     }
 
     @PutMapping("/solve-all")
@@ -52,7 +52,7 @@ public class SolveController {
           It checks if the resolved table is in the tempSudokuObject, if so, it gets the solution from tempSudokuObject,
           otherwise it resolves the table.
          */
-        if (compereWithTempSudokuBoard.compere(sudokuObjectDto)) {
+        if (compareWithTempSudokuBoard.compare(sudokuObjectDto)) {
             SudokuObject sudokuObject = tempSudokuObject.getSudokuObject();
             sudokuObjectRepository.setSudokuObject(sudokuObject);
             tempSudokuObject.setSudokuObject(null);
@@ -60,7 +60,6 @@ public class SolveController {
             sudokuSolveService.solveBoard(sudokuObjectDto);
             sudokuObjectRepository.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
         }
-
         return HOME;
     }
 
@@ -86,13 +85,12 @@ public class SolveController {
         int j = Integer.parseInt(list.get(1));
 
         boardValueManipulation.changeNullToZeroOnBoard(sudokuObjectDto);
-
         /*
          * This checks if there is already a solution in TempSudokuObject, if solution exists, it gets a value from TempSudokuObject.
          * Otherwise, to get a single cell solution it has to solve the table.
          * After the table is resolved, the table is stored at TempSudokuObject.
          */
-        if (compereWithTempSudokuBoard.compere(sudokuObjectDto)) {
+        if (compareWithTempSudokuBoard.compare(sudokuObjectDto)) {
             Integer solveCell = tempSudokuObject.getSudokuObject().getValueFromArray(i, j);
             sudokuObjectRepository.getSudokuObject().setValueToArray(i, j, solveCell);
         } else {
