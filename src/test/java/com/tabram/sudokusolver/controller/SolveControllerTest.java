@@ -150,7 +150,6 @@ class SolveControllerTest {
                             .flashAttr("sudokuObject", sudokuObjectDto))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(1))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 
@@ -185,7 +184,6 @@ class SolveControllerTest {
                             .flashAttr("sudokuObject", sudokuObjectDto))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(2))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 
@@ -333,7 +331,6 @@ class SolveControllerTest {
                             .param("solveCell", "cell[1][2]"))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(1))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 
@@ -370,7 +367,6 @@ class SolveControllerTest {
                             .param("solveCell", "cell[1][2]"))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(2))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 

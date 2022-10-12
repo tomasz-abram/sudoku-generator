@@ -115,7 +115,6 @@ class MainControllerTest {
                             .flashAttr("sudokuObject", sudokuObjectDto))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(1))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 
@@ -149,7 +148,6 @@ class MainControllerTest {
                             .flashAttr("sudokuObject", sudokuObjectDto))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(2))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 
@@ -237,7 +235,6 @@ class MainControllerTest {
                             .flashAttr("sudokuObject", sudokuObjectDto))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(1))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 
@@ -271,7 +268,6 @@ class MainControllerTest {
                             .flashAttr("sudokuObject", sudokuObjectDto))
                     .andExpect(model().attributeHasErrors("sudokuObject"))
                     .andExpect(model().errorCount(2))
-                    .andExpect(view().name("/home"))
                     .andExpect(status().isOk())
                     .andDo(print());
 
