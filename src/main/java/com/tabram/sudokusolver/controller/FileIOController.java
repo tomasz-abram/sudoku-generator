@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping({"/", "/home"})
 public class FileIOController {
 
-    private static final String HOME = "redirect:/";
+    private static final String REDIRECT = "redirect:/";
     private final FileIOService fileIOService;
     private final SudokuObjectRepository sudokuObjectRepository;
 
@@ -57,7 +57,7 @@ public class FileIOController {
             fileIOService.importSudokuObject(file);
             redirectAttributes.addFlashAttribute("messages", "You successfully uploaded " + file.getOriginalFilename() + "!");
         }
-        return HOME;
+        return REDIRECT;
     }
 
 }

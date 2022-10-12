@@ -21,7 +21,7 @@ import javax.validation.Valid;
 public class MainController {
 
     private static final String REDIRECT = "redirect:/";
-    private static final String HOME = "/home";
+    private static final String HOME = "home";
     private final SudokuObjectRepository sudokuObjectRepository;
     private final ClearBoardService clearBoardService;
     private final BoardValueManipulation<com.tabram.sudokusolver.model.SudokuObjectAbstract> boardValueManipulation;
@@ -46,7 +46,7 @@ public class MainController {
     public String home(Model model) {
         model.addAttribute("sudokuObject", boardValueManipulation.changeZeroToNullOnBoard(sudokuObjectRepository.getSudokuObject()));
         model.addAttribute("fileBucket", new FileBucket());
-        return HOME;
+        return "home";
     }
 
     @PutMapping("/save")
@@ -73,7 +73,7 @@ public class MainController {
     }
 
     @PutMapping("/check")
-    public String check(@ModelAttribute("sudokuObject") @Valid SudokuObjectDto sudokuObjectDto, BindingResult result){
+    public String check(@ModelAttribute("sudokuObject") @Valid SudokuObjectDto sudokuObjectDto, BindingResult result) {
         if (result.hasErrors()) {
             return HOME;
         }

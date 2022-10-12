@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class GenerateGameController {
-    private static final String HOME = "redirect:/";
+    private static final String REDIRECT = "redirect:/";
     private final GenerateSudokuGameService<SudokuObject> generateSudokuGameService;
     private final ClearBoardService clearBoardService;
     private final SudokuObjectRepository sudokuObjectRepository;
@@ -44,7 +44,7 @@ public class GenerateGameController {
                 percent = 72;
                 break;
             default:
-                return HOME;
+                return REDIRECT;
         }
         SudokuObject sudokuObject = sudokuObjectRepository.getSudokuObject();
         clearBoardService.clearBoard(sudokuObject);
@@ -53,6 +53,6 @@ public class GenerateGameController {
         sudokuSolveService.solveBoard(sudokuObject);
         tempSudokuObject.setSudokuObject(copyObjectService.deepCopy(sudokuObject));
         generateSudokuGameService.randomCleanBoard(sudokuObject, percent);
-        return HOME;
+        return REDIRECT;
     }
 }

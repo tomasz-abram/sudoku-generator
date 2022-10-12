@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 @Controller
 public class SolveController {
 
-    private static final String HOME = "redirect:/";
+    private static final String REDIRECT = "redirect:/";
     private final SudokuObjectRepository sudokuObjectRepository;
     private final SudokuSolveService<SudokuObjectDto> sudokuSolveService;
     private final BoardValueManipulation<SudokuObjectDto> boardValueManipulation;
@@ -45,7 +45,7 @@ public class SolveController {
     @PutMapping("/solve-all")
     public String solveAll(@ModelAttribute("sudokuObject") @Valid SudokuObjectDto sudokuObjectDto, BindingResult result) {
         if (result.hasErrors()) {
-            return "/home";
+            return "home";
         }
         boardValueManipulation.changeNullToZeroOnBoard(sudokuObjectDto);
        /*
@@ -60,17 +60,17 @@ public class SolveController {
             sudokuSolveService.solveBoard(sudokuObjectDto);
             sudokuObjectRepository.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
         }
-        return HOME;
+        return REDIRECT;
     }
 
     @PutMapping("/solve-cell")
     public String solveCell(@ModelAttribute("sudokuObject") @Valid SudokuObjectDto sudokuObjectDto, BindingResult result, @RequestParam("solveCell") String cellId, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "/home";
+            return "home";
         }
         if (Objects.equals(cellId, "notSelected")) {
             redirectAttributes.addFlashAttribute("errors", "The cell has not been selected! Please select a blank cell to solve");
-            return HOME;
+            return REDIRECT;
         }
         /*
           This gets information about the selected cell.
@@ -100,7 +100,7 @@ public class SolveController {
             Integer solveCell = tempSudokuObject.getSudokuObject().getValueFromArray(i, j);
             sudokuObjectRepository.getSudokuObject().setValueToArray(i, j, solveCell);
         }
-        return HOME;
+        return REDIRECT;
     }
 
 }
