@@ -2,24 +2,24 @@ package com.tabram.sudokusolver.validation;
 
 import com.tabram.sudokusolver.model.SudokuObject;
 import com.tabram.sudokusolver.model.SudokuObjectAbstract;
-import com.tabram.sudokusolver.repository.TempSudokuObject;
+import com.tabram.sudokusolver.repository.TempSudokuObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
-public class CompareWithTempSudokuBoard {
+public class CompareWithTempSudokuBoardValidation {
 
-    private final TempSudokuObject tempSudokuObject;
+    private final TempSudokuObjectRepository tempSudokuObjectRepository;
 
     @Autowired
-    public CompareWithTempSudokuBoard(TempSudokuObject tempSudokuObject) {
-        this.tempSudokuObject = tempSudokuObject;
+    public CompareWithTempSudokuBoardValidation(TempSudokuObjectRepository tempSudokuObjectRepository) {
+        this.tempSudokuObjectRepository = tempSudokuObjectRepository;
     }
 
     public <T extends SudokuObjectAbstract> boolean compare(T inSudokuObject) {
-        SudokuObject tempBoardObject = tempSudokuObject.getSudokuObject();
+        SudokuObject tempBoardObject = tempSudokuObjectRepository.getSudokuObject();
         int zeroOnBoard = 0;
 
         if (tempBoardObject == null ||

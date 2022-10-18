@@ -2,12 +2,8 @@ package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.dto.SudokuObjectDto;
 import com.tabram.sudokusolver.model.SudokuObject;
-import com.tabram.sudokusolver.repository.SudokuObjectRepository;
-import com.tabram.sudokusolver.repository.TempSudokuObject;
-import com.tabram.sudokusolver.service.BoardValueManipulation;
-import com.tabram.sudokusolver.service.MapperService;
-import com.tabram.sudokusolver.service.SudokuSolveService;
-import com.tabram.sudokusolver.validation.CompareWithTempSudokuBoard;
+import com.tabram.sudokusolver.service.*;
+import com.tabram.sudokusolver.validation.CompareWithTempSudokuBoardValidation;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +24,17 @@ class SolveControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private SudokuObjectRepository sudokuObjectRepository;
+    private SudokuObjectService sudokuObjectService;
     @MockBean
     private SudokuSolveService<SudokuObjectDto> sudokuSolveService;
     @MockBean
-    private BoardValueManipulation<SudokuObjectDto> boardValueManipulation;
+    private BoardValueManipulationService<SudokuObjectDto> boardValueManipulationService;
     @MockBean
     private MapperService mapperService;
     @MockBean
-    private TempSudokuObject tempSudokuObject;
+    private TempSudokuObjectService tempSudokuObjectService;
     @MockBean
-    private CompareWithTempSudokuBoard compareWithTempSudokuBoard;
+    private CompareWithTempSudokuBoardValidation compareWithTempSudokuBoardValidation;
 
     @Nested
     class SolveAll {
@@ -72,8 +68,8 @@ class SolveControllerTest {
                     {7, 1, 3, 6, 5, 8, 4, 2, 9}
             };
             SudokuObject sudokuObjectTest = new SudokuObject(boardZero, 9, 3, 3);
-            when(tempSudokuObject.getSudokuObject()).thenReturn(sudokuObjectTest);
-            when(compareWithTempSudokuBoard.compare(sudokuObjectDtoTest)).thenReturn(true);
+            when(tempSudokuObjectService.getSudokuObject()).thenReturn(sudokuObjectTest);
+            when(compareWithTempSudokuBoardValidation.compare(sudokuObjectDtoTest)).thenReturn(true);
 
             mockMvc.perform(put("/solve-all")
                             .contentType(MediaType.TEXT_HTML)
@@ -83,11 +79,11 @@ class SolveControllerTest {
                     .andExpect(status().is3xxRedirection())
                     .andDo(print());
 
-            verify(boardValueManipulation, times(1)).changeNullToZeroOnBoard(sudokuObjectDtoTest);
-            verify(sudokuObjectRepository, times(1)).setSudokuObject(sudokuObjectTest);
-            verify(tempSudokuObject, times(1)).setSudokuObject(null);
+            verify(boardValueManipulationService, times(1)).changeNullToZeroOnBoard(sudokuObjectDtoTest);
+            verify(sudokuObjectService, times(1)).setSudokuObject(sudokuObjectTest);
+            verify(tempSudokuObjectService, times(1)).setSudokuObject(null);
             verify(sudokuSolveService, never()).solveBoard(sudokuObjectDtoTest);
-            verify(sudokuObjectRepository, never()).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDtoTest));
+            verify(sudokuObjectService, never()).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDtoTest));
         }
 
         @Test
@@ -108,7 +104,7 @@ class SolveControllerTest {
             sudokuObjectDtoTest.setSudokuSize(9);
             sudokuObjectDtoTest.setQuantityBoxesWidth(3);
             sudokuObjectDtoTest.setQuantityBoxesHeight(3);
-            when(compareWithTempSudokuBoard.compare(sudokuObjectDtoTest)).thenReturn(false);
+            when(compareWithTempSudokuBoardValidation.compare(sudokuObjectDtoTest)).thenReturn(false);
 
             mockMvc.perform(put("/solve-all")
                             .contentType(MediaType.TEXT_HTML)
@@ -118,11 +114,11 @@ class SolveControllerTest {
                     .andExpect(status().is3xxRedirection())
                     .andDo(print());
 
-            verify(boardValueManipulation, times(1)).changeNullToZeroOnBoard(sudokuObjectDtoTest);
-            verify(tempSudokuObject, never()).getSudokuObject();
-            verify(tempSudokuObject, never()).setSudokuObject(null);
+            verify(boardValueManipulationService, times(1)).changeNullToZeroOnBoard(sudokuObjectDtoTest);
+            verify(tempSudokuObjectService, never()).getSudokuObject();
+            verify(tempSudokuObjectService, never()).setSudokuObject(null);
             verify(sudokuSolveService, times(1)).solveBoard(sudokuObjectDtoTest);
-            verify(sudokuObjectRepository, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDtoTest));
+            verify(sudokuObjectService, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDtoTest));
         }
 
         @Test
@@ -153,9 +149,9 @@ class SolveControllerTest {
                     .andExpect(status().isOk())
                     .andDo(print());
 
-            verify(tempSudokuObject, never()).getSudokuObject();
-            verify(sudokuObjectRepository, never()).setSudokuObject(any());
-            verify(tempSudokuObject, never()).setSudokuObject(any());
+            verify(tempSudokuObjectService, never()).getSudokuObject();
+            verify(sudokuObjectService, never()).setSudokuObject(any());
+            verify(tempSudokuObjectService, never()).setSudokuObject(any());
             verify(sudokuSolveService, never()).solveBoard(any());
         }
 
@@ -187,9 +183,9 @@ class SolveControllerTest {
                     .andExpect(status().isOk())
                     .andDo(print());
 
-            verify(tempSudokuObject, never()).getSudokuObject();
-            verify(sudokuObjectRepository, never()).setSudokuObject(any());
-            verify(tempSudokuObject, never()).setSudokuObject(any());
+            verify(tempSudokuObjectService, never()).getSudokuObject();
+            verify(sudokuObjectService, never()).setSudokuObject(any());
+            verify(tempSudokuObjectService, never()).setSudokuObject(any());
             verify(sudokuSolveService, never()).solveBoard(any());
         }
 
@@ -232,9 +228,9 @@ class SolveControllerTest {
             SudokuObject sudokuObjectTempTest = new SudokuObject(boardZero, 9, 3, 3);
             int i = 1;
             int j = 2;
-            when(compareWithTempSudokuBoard.compare(sudokuObjectDtoTest)).thenReturn(true);
-            when(tempSudokuObject.getSudokuObject()).thenReturn(sudokuObjectTempTest);
-            when(sudokuObjectRepository.getSudokuObject()).thenReturn(sudokuObjectRepoTest);
+            when(compareWithTempSudokuBoardValidation.compare(sudokuObjectDtoTest)).thenReturn(true);
+            when(tempSudokuObjectService.getSudokuObject()).thenReturn(sudokuObjectTempTest);
+            when(sudokuObjectService.getSudokuObject()).thenReturn(sudokuObjectRepoTest);
 
             mockMvc.perform(put("/solve-cell")
                             .contentType(MediaType.TEXT_HTML)
@@ -245,11 +241,11 @@ class SolveControllerTest {
                     .andExpect(status().is3xxRedirection())
                     .andDo(print());
 
-            verify(tempSudokuObject, times(1)).getSudokuObject();
-            verify(sudokuObjectRepository, times(1)).getSudokuObject();
+            verify(tempSudokuObjectService, times(1)).getSudokuObject();
+            verify(sudokuObjectService, times(1)).getSudokuObject();
             verify(sudokuSolveService, never()).solveBoard(sudokuObjectDtoTest);
             verify(mapperService, never()).mapperToSudokuBoardObject(sudokuObjectDtoTest);
-            verify(tempSudokuObject, never()).setSudokuObject(sudokuObjectTempTest);
+            verify(tempSudokuObjectService, never()).setSudokuObject(sudokuObjectTempTest);
         }
 
         @Test
@@ -285,9 +281,9 @@ class SolveControllerTest {
             SudokuObject sudokuObjectTempTest = new SudokuObject(boardZero, 9, 3, 3);
             int i = 1;
             int j = 2;
-            when(compareWithTempSudokuBoard.compare(sudokuObjectDtoTest)).thenReturn(false);
-            when(tempSudokuObject.getSudokuObject()).thenReturn(sudokuObjectTempTest);
-            when(sudokuObjectRepository.getSudokuObject()).thenReturn(sudokuObjectTempTest);
+            when(compareWithTempSudokuBoardValidation.compare(sudokuObjectDtoTest)).thenReturn(false);
+            when(tempSudokuObjectService.getSudokuObject()).thenReturn(sudokuObjectTempTest);
+            when(sudokuObjectService.getSudokuObject()).thenReturn(sudokuObjectTempTest);
 
             mockMvc.perform(put("/solve-cell")
                             .contentType(MediaType.TEXT_HTML)
@@ -300,9 +296,9 @@ class SolveControllerTest {
 
             verify(sudokuSolveService, times(1)).solveBoard(sudokuObjectDtoTest);
             verify(mapperService, times(1)).mapperToSudokuBoardObject(sudokuObjectDtoTest);
-            verify(tempSudokuObject, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDtoTest));
-            verify(tempSudokuObject, times(1)).getSudokuObject();
-            verify(sudokuObjectRepository, times(1)).getSudokuObject();
+            verify(tempSudokuObjectService, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDtoTest));
+            verify(tempSudokuObjectService, times(1)).getSudokuObject();
+            verify(sudokuObjectService, times(1)).getSudokuObject();
         }
 
         @Test
@@ -336,9 +332,9 @@ class SolveControllerTest {
 
             verify(sudokuSolveService, never()).solveBoard(any());
             verify(mapperService, never()).mapperToSudokuBoardObject(any());
-            verify(tempSudokuObject, never()).setSudokuObject(any());
-            verify(tempSudokuObject, never()).getSudokuObject();
-            verify(sudokuObjectRepository, never()).getSudokuObject();
+            verify(tempSudokuObjectService, never()).setSudokuObject(any());
+            verify(tempSudokuObjectService, never()).getSudokuObject();
+            verify(sudokuObjectService, never()).getSudokuObject();
         }
 
         @Test
@@ -372,9 +368,9 @@ class SolveControllerTest {
 
             verify(sudokuSolveService, never()).solveBoard(any());
             verify(mapperService, never()).mapperToSudokuBoardObject(any());
-            verify(tempSudokuObject, never()).setSudokuObject(any());
-            verify(tempSudokuObject, never()).getSudokuObject();
-            verify(sudokuObjectRepository, never()).getSudokuObject();
+            verify(tempSudokuObjectService, never()).setSudokuObject(any());
+            verify(tempSudokuObjectService, never()).getSudokuObject();
+            verify(sudokuObjectService, never()).getSudokuObject();
         }
 
         @Test
@@ -408,9 +404,9 @@ class SolveControllerTest {
 
             verify(sudokuSolveService, never()).solveBoard(any());
             verify(mapperService, never()).mapperToSudokuBoardObject(any());
-            verify(tempSudokuObject, never()).setSudokuObject(any());
-            verify(tempSudokuObject, never()).getSudokuObject();
-            verify(sudokuObjectRepository, never()).getSudokuObject();
+            verify(tempSudokuObjectService, never()).setSudokuObject(any());
+            verify(tempSudokuObjectService, never()).getSudokuObject();
+            verify(sudokuObjectService, never()).getSudokuObject();
         }
     }
 }

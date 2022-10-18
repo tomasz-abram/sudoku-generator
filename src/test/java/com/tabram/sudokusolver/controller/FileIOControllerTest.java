@@ -1,8 +1,8 @@
 package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.model.SudokuObject;
-import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import com.tabram.sudokusolver.service.FileIOService;
+import com.tabram.sudokusolver.service.SudokuObjectService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ class FileIOControllerTest {
     private FileIOService fileIOService;
 
     @MockBean
-    private SudokuObjectRepository sudokuObjectRepository;
+    private SudokuObjectService sudokuObjectService;
 
     @Nested
     class DownloadFile {
@@ -44,7 +44,7 @@ class FileIOControllerTest {
         void downloadFile_ThenReturnJsonFile() throws Exception {
             SudokuObject sudokuObjectTest = new SudokuObject(new Integer[9][9], 9, 3, 3);
             String sudokuJsonStringTest = "{\"board\":[[null,null,4,null,6,null,null,null,2],[3,null,null,5,null,null,null,null,7],[null,null,null,null,null,null,null,null,null],[1,null,null,null,8,null,null,null,null],[null,3,null,null,4,null,7,null,8],[5,null,null,null,7,null,null,null,6],[null,null,null,null,null,null,1,8,null],[2,null,null,9,null,null,null,null,3],[null,1,null,6,null,null,null,2,null]],\"sudokuSize\":9,\"quantityBoxesHeight\":3,\"quantityBoxesWidth\":3}";
-            when(sudokuObjectRepository.getSudokuObject()).thenReturn(sudokuObjectTest);
+            when(sudokuObjectService.getSudokuObject()).thenReturn(sudokuObjectTest);
             when(fileIOService.exportSudokuObject(sudokuObjectTest)).thenReturn(sudokuJsonStringTest);
 
             MvcResult mvcResult = mockMvc.perform(get("/download-file")

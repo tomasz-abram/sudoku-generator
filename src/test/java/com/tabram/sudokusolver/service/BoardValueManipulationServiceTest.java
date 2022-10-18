@@ -13,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-class BoardValueManipulationTest {
+class BoardValueManipulationServiceTest {
 
-    private BoardValueManipulation<SudokuObject> underTest;
+    private BoardValueManipulationService<SudokuObject> underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new BoardValueManipulation<>();
+        underTest = new BoardValueManipulationService<>();
     }
 
     @Nested

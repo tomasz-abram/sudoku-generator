@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class BoardValueManipulation <T extends SudokuObjectAbstract> {
+public class BoardValueManipulationService<T extends SudokuObjectAbstract> {
 
     public void changeNullToZeroOnBoard(T sudokuObject) {
         for (int row = 0; row < sudokuObject.getSudokuSize(); row++) {

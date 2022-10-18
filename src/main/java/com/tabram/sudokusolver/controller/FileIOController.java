@@ -2,8 +2,8 @@ package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.dto.FileBucket;
 import com.tabram.sudokusolver.model.SudokuObject;
-import com.tabram.sudokusolver.repository.SudokuObjectRepository;
 import com.tabram.sudokusolver.service.FileIOService;
+import com.tabram.sudokusolver.service.SudokuObjectService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,16 +25,17 @@ public class FileIOController {
 
     private static final String REDIRECT = "redirect:/";
     private final FileIOService fileIOService;
-    private final SudokuObjectRepository sudokuObjectRepository;
+    private final SudokuObjectService sudokuObjectService;
 
-    public FileIOController(FileIOService fileIOService, SudokuObjectRepository sudokuObjectRepository) {
+
+    public FileIOController(FileIOService fileIOService, SudokuObjectService sudokuObjectService) {
         this.fileIOService = fileIOService;
-        this.sudokuObjectRepository = sudokuObjectRepository;
+        this.sudokuObjectService = sudokuObjectService;
     }
 
     @GetMapping("/download-file")
     public ResponseEntity<byte[]> downloadFile() {
-        SudokuObject sudokuObject = sudokuObjectRepository.getSudokuObject();
+        SudokuObject sudokuObject = sudokuObjectService.getSudokuObject();
         String sudokuJsonString = fileIOService.exportSudokuObject(sudokuObject);
         byte[] sudokuJsonBytes = sudokuJsonString.getBytes();
         return ResponseEntity

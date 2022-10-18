@@ -4,7 +4,7 @@ import com.tabram.sudokusolver.model.SudokuObject;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class TempSudokuObject {
+public class TempSudokuObjectRepository {
 
     SudokuObject sudokuObject;
 

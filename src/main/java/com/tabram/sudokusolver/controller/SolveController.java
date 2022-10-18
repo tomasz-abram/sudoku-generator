@@ -2,12 +2,8 @@ package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.dto.SudokuObjectDto;
 import com.tabram.sudokusolver.model.SudokuObject;
-import com.tabram.sudokusolver.repository.SudokuObjectRepository;
-import com.tabram.sudokusolver.repository.TempSudokuObject;
-import com.tabram.sudokusolver.service.BoardValueManipulation;
-import com.tabram.sudokusolver.service.MapperService;
-import com.tabram.sudokusolver.service.SudokuSolveService;
-import com.tabram.sudokusolver.validation.CompareWithTempSudokuBoard;
+import com.tabram.sudokusolver.service.*;
+import com.tabram.sudokusolver.validation.CompareWithTempSudokuBoardValidation;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,20 +22,20 @@ import java.util.regex.Pattern;
 public class SolveController {
 
     private static final String REDIRECT = "redirect:/";
-    private final SudokuObjectRepository sudokuObjectRepository;
+    private final SudokuObjectService sudokuObjectService;
     private final SudokuSolveService<SudokuObjectDto> sudokuSolveService;
-    private final BoardValueManipulation<SudokuObjectDto> boardValueManipulation;
+    private final BoardValueManipulationService<SudokuObjectDto> boardValueManipulationService;
     private final MapperService mapperService;
-    private final TempSudokuObject tempSudokuObject;
-    private final CompareWithTempSudokuBoard compareWithTempSudokuBoard;
+    private final TempSudokuObjectService tempSudokuObjectService;
+    private final CompareWithTempSudokuBoardValidation compareWithTempSudokuBoardValidation;
 
-    public SolveController(SudokuObjectRepository sudokuObjectRepository, SudokuSolveService<SudokuObjectDto> sudokuSolveService, BoardValueManipulation<SudokuObjectDto> boardValueManipulation, MapperService mapperService, TempSudokuObject tempSudokuObject, CompareWithTempSudokuBoard compareWithTempSudokuBoard) {
-        this.sudokuObjectRepository = sudokuObjectRepository;
+    public SolveController(SudokuObjectService sudokuObjectService, SudokuSolveService<SudokuObjectDto> sudokuSolveService, BoardValueManipulationService<SudokuObjectDto> boardValueManipulationService, MapperService mapperService, TempSudokuObjectService tempSudokuObjectService, CompareWithTempSudokuBoardValidation compareWithTempSudokuBoardValidation) {
+        this.sudokuObjectService = sudokuObjectService;
         this.sudokuSolveService = sudokuSolveService;
-        this.boardValueManipulation = boardValueManipulation;
+        this.boardValueManipulationService = boardValueManipulationService;
         this.mapperService = mapperService;
-        this.tempSudokuObject = tempSudokuObject;
-        this.compareWithTempSudokuBoard = compareWithTempSudokuBoard;
+        this.tempSudokuObjectService = tempSudokuObjectService;
+        this.compareWithTempSudokuBoardValidation = compareWithTempSudokuBoardValidation;
     }
 
     @PutMapping("/solve-all")
@@ -47,18 +43,18 @@ public class SolveController {
         if (result.hasErrors()) {
             return "home";
         }
-        boardValueManipulation.changeNullToZeroOnBoard(sudokuObjectDto);
+        boardValueManipulationService.changeNullToZeroOnBoard(sudokuObjectDto);
        /*
           It checks if the resolved table is in the tempSudokuObject, if so, it gets the solution from tempSudokuObject,
           otherwise it resolves the table.
          */
-        if (compareWithTempSudokuBoard.compare(sudokuObjectDto)) {
-            SudokuObject sudokuObject = tempSudokuObject.getSudokuObject();
-            sudokuObjectRepository.setSudokuObject(sudokuObject);
-            tempSudokuObject.setSudokuObject(null);
+        if (compareWithTempSudokuBoardValidation.compare(sudokuObjectDto)) {
+            SudokuObject sudokuObject = tempSudokuObjectService.getSudokuObject();
+            sudokuObjectService.setSudokuObject(sudokuObject);
+            tempSudokuObjectService.setSudokuObject(null);
         } else {
             sudokuSolveService.solveBoard(sudokuObjectDto);
-            sudokuObjectRepository.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
+            sudokuObjectService.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
         }
         return REDIRECT;
     }
@@ -84,21 +80,21 @@ public class SolveController {
         int i = Integer.parseInt(list.get(0));
         int j = Integer.parseInt(list.get(1));
 
-        boardValueManipulation.changeNullToZeroOnBoard(sudokuObjectDto);
+        boardValueManipulationService.changeNullToZeroOnBoard(sudokuObjectDto);
         /*
          * This checks if there is already a solution in TempSudokuObject, if solution exists, it gets a value from TempSudokuObject.
          * Otherwise, to get a single cell solution it has to solve the table.
          * After the table is resolved, the table is stored at TempSudokuObject.
          */
-        if (compareWithTempSudokuBoard.compare(sudokuObjectDto)) {
-            Integer solveCell = tempSudokuObject.getSudokuObject().getValueFromArray(i, j);
-            sudokuObjectRepository.getSudokuObject().setValueToArray(i, j, solveCell);
+        if (compareWithTempSudokuBoardValidation.compare(sudokuObjectDto)) {
+            Integer solveCell = tempSudokuObjectService.getSudokuObject().getValueFromArray(i, j);
+            sudokuObjectService.getSudokuObject().setValueToArray(i, j, solveCell);
         } else {
             sudokuSolveService.solveBoard(sudokuObjectDto);
             SudokuObject tempBoardObject = mapperService.mapperToSudokuBoardObject(sudokuObjectDto);
-            tempSudokuObject.setSudokuObject(tempBoardObject);
-            Integer solveCell = tempSudokuObject.getSudokuObject().getValueFromArray(i, j);
-            sudokuObjectRepository.getSudokuObject().setValueToArray(i, j, solveCell);
+            tempSudokuObjectService.setSudokuObject(tempBoardObject);
+            Integer solveCell = tempSudokuObjectService.getSudokuObject().getValueFromArray(i, j);
+            sudokuObjectService.getSudokuObject().setValueToArray(i, j, solveCell);
         }
         return REDIRECT;
     }

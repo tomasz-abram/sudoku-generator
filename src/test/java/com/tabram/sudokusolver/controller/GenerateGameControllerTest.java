@@ -2,8 +2,6 @@ package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.model.SudokuObject;
 import com.tabram.sudokusolver.model.SudokuObjectAbstract;
-import com.tabram.sudokusolver.repository.SudokuObjectRepository;
-import com.tabram.sudokusolver.repository.TempSudokuObject;
 import com.tabram.sudokusolver.service.*;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,15 +28,15 @@ class GenerateGameControllerTest {
     @MockBean
     private ClearBoardService clearBoardService;
     @MockBean
-    private SudokuObjectRepository sudokuObjectRepository;
+    private SudokuObjectService sudokuObjectService;
     @MockBean
-    private BoardValueManipulation<SudokuObject> boardValueManipulation;
+    private BoardValueManipulationService<SudokuObject> boardValueManipulationService;
     @MockBean
     private SudokuSolveService<SudokuObjectAbstract> sudokuSolveService;
     @MockBean
     private CopyObjectService copyObjectService;
     @MockBean
-    private TempSudokuObject tempSudokuObject;
+    private TempSudokuObjectService tempSudokuObjectService;
 
     @Nested
     class GenerateGame {
@@ -46,7 +44,7 @@ class GenerateGameControllerTest {
         @ValueSource(strings = {"Easy", "Medium", "Hard"})
         void generateGame_Return302_WithNewGame(String input) throws Exception {
             SudokuObject testSudokuObject = new SudokuObject(new Integer[9][9], 9, 3, 3);
-            when(sudokuObjectRepository.getSudokuObject()).thenReturn(testSudokuObject);
+            when(sudokuObjectService.getSudokuObject()).thenReturn(testSudokuObject);
 
             mockMvc.perform(get("/generate-game")
                             .contentType(MediaType.TEXT_HTML)
@@ -56,12 +54,12 @@ class GenerateGameControllerTest {
                     .andExpect(status().is3xxRedirection())
                     .andDo(print());
 
-            verify(sudokuObjectRepository, times(1)).getSudokuObject();
+            verify(sudokuObjectService, times(1)).getSudokuObject();
             verify(clearBoardService, times(1)).clearBoard(testSudokuObject);
-            verify(boardValueManipulation, times(1)).changeNullToZeroOnBoard(testSudokuObject);
+            verify(boardValueManipulationService, times(1)).changeNullToZeroOnBoard(testSudokuObject);
             verify(generateSudokuGameService, times(1)).generateNumbersInDiagonalBoxes(testSudokuObject);
             verify(sudokuSolveService, times(1)).solveBoard(testSudokuObject);
-            verify(tempSudokuObject, times(1)).setSudokuObject(copyObjectService.deepCopy(testSudokuObject));
+            verify(tempSudokuObjectService, times(1)).setSudokuObject(copyObjectService.deepCopy(testSudokuObject));
             verify(generateSudokuGameService, times(1)).randomCleanBoard(eq(testSudokuObject), anyInt());
         }
 
@@ -76,12 +74,12 @@ class GenerateGameControllerTest {
                     .andExpect(status().is3xxRedirection())
                     .andDo(print());
 
-            verify(sudokuObjectRepository, never()).getSudokuObject();
+            verify(sudokuObjectService, never()).getSudokuObject();
             verify(clearBoardService, never()).clearBoard(any());
-            verify(boardValueManipulation, never()).changeNullToZeroOnBoard(any());
+            verify(boardValueManipulationService, never()).changeNullToZeroOnBoard(any());
             verify(generateSudokuGameService, never()).generateNumbersInDiagonalBoxes(any());
             verify(sudokuSolveService, never()).solveBoard(any());
-            verify(tempSudokuObject, never()).setSudokuObject(copyObjectService.deepCopy(any()));
+            verify(tempSudokuObjectService, never()).setSudokuObject(copyObjectService.deepCopy(any()));
             verify(generateSudokuGameService, never()).randomCleanBoard(any(SudokuObject.class), anyInt());
         }
     }

@@ -2,11 +2,8 @@ package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.dto.SudokuObjectDto;
 import com.tabram.sudokusolver.model.SudokuObject;
-import com.tabram.sudokusolver.repository.SudokuObjectRepository;
-import com.tabram.sudokusolver.service.BoardSizeService;
-import com.tabram.sudokusolver.service.BoardValueManipulation;
-import com.tabram.sudokusolver.service.ClearBoardService;
-import com.tabram.sudokusolver.service.MapperService;
+import com.tabram.sudokusolver.model.SudokuObjectAbstract;
+import com.tabram.sudokusolver.service.*;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +27,11 @@ class MainControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private SudokuObjectRepository sudokuObjectRepository;
+    private SudokuObjectService sudokuObjectService;
     @MockBean
     private ClearBoardService clearBoardService;
     @MockBean
-    private BoardValueManipulation<com.tabram.sudokusolver.model.SudokuObjectAbstract> boardValueManipulation;
+    private BoardValueManipulationService<SudokuObjectAbstract> boardValueManipulationService;
     @MockBean
     private BoardSizeService boardSizeService;
     @MockBean
@@ -57,7 +54,7 @@ class MainControllerTest {
                     {null, 1, null, 6, null, null, null, 2, null}
             };
             SudokuObject testSudokuObject = new SudokuObject(board, 9, 3, 3);
-            when(boardValueManipulation.changeZeroToNullOnBoard(sudokuObjectRepository.getSudokuObject())).thenReturn(testSudokuObject);
+            when(boardValueManipulationService.changeZeroToNullOnBoard(sudokuObjectService.getSudokuObject())).thenReturn(testSudokuObject);
 
             MvcResult mvcResult = mockMvc.perform(get("/")
                             .contentType(MediaType.APPLICATION_JSON))
@@ -87,7 +84,7 @@ class MainControllerTest {
                     .andExpect(status().is3xxRedirection());
 
             verify(mapperService, times(1)).mapperToSudokuBoardObject(sudokuObjectDto);
-            verify(sudokuObjectRepository, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
+            verify(sudokuObjectService, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
         }
 
         @Test
@@ -118,9 +115,9 @@ class MainControllerTest {
                     .andExpect(status().isOk())
                     .andDo(print());
 
-            verify(boardValueManipulation, never()).changeNullToZeroOnBoard(any());
+            verify(boardValueManipulationService, never()).changeNullToZeroOnBoard(any());
             verify(mapperService, never()).mapperToSudokuBoardObject(any());
-            verify(sudokuObjectRepository, never()).setSudokuObject(any());
+            verify(sudokuObjectService, never()).setSudokuObject(any());
         }
 
         @Test
@@ -151,9 +148,9 @@ class MainControllerTest {
                     .andExpect(status().isOk())
                     .andDo(print());
 
-            verify(boardValueManipulation, never()).changeNullToZeroOnBoard(any());
+            verify(boardValueManipulationService, never()).changeNullToZeroOnBoard(any());
             verify(mapperService, never()).mapperToSudokuBoardObject(any());
-            verify(sudokuObjectRepository, never()).setSudokuObject(any());
+            verify(sudokuObjectService, never()).setSudokuObject(any());
         }
     }
 
@@ -169,7 +166,7 @@ class MainControllerTest {
                     .andDo(print());
 
             verify(clearBoardService, times(1)).clearBoard(any());
-            verify(sudokuObjectRepository, times(1)).getSudokuObject();
+            verify(sudokuObjectService, times(1)).getSudokuObject();
         }
     }
 
@@ -187,7 +184,7 @@ class MainControllerTest {
                     .andDo(print());
 
             verify(boardSizeService, times(1)).generateNewBoard(25);
-            verify(sudokuObjectRepository, times(1)).setSudokuObject(any());
+            verify(sudokuObjectService, times(1)).setSudokuObject(any());
         }
     }
 
@@ -207,7 +204,7 @@ class MainControllerTest {
                     .andExpect(status().is3xxRedirection());
 
             verify(mapperService, times(1)).mapperToSudokuBoardObject(sudokuObjectDto);
-            verify(sudokuObjectRepository, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
+            verify(sudokuObjectService, times(1)).setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
         }
 
         @Test
@@ -238,9 +235,9 @@ class MainControllerTest {
                     .andExpect(status().isOk())
                     .andDo(print());
 
-            verify(boardValueManipulation, never()).changeNullToZeroOnBoard(any());
+            verify(boardValueManipulationService, never()).changeNullToZeroOnBoard(any());
             verify(mapperService, never()).mapperToSudokuBoardObject(any());
-            verify(sudokuObjectRepository, never()).setSudokuObject(any());
+            verify(sudokuObjectService, never()).setSudokuObject(any());
         }
 
         @Test
@@ -271,9 +268,9 @@ class MainControllerTest {
                     .andExpect(status().isOk())
                     .andDo(print());
 
-            verify(boardValueManipulation, never()).changeNullToZeroOnBoard(any());
+            verify(boardValueManipulationService, never()).changeNullToZeroOnBoard(any());
             verify(mapperService, never()).mapperToSudokuBoardObject(any());
-            verify(sudokuObjectRepository, never()).setSudokuObject(any());
+            verify(sudokuObjectService, never()).setSudokuObject(any());
         }
     }
 }
