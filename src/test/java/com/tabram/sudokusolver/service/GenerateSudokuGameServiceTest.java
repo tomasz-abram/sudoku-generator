@@ -1,30 +1,99 @@
 package com.tabram.sudokusolver.service;
 
 import com.tabram.sudokusolver.model.SudokuObject;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Objects;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GenerateSudokuGameServiceTest {
-    @Mock
-    SudokuSolveService<com.tabram.sudokusolver.model.SudokuObjectAbstract> sudokuSolveService;
-    private GenerateSudokuGameService<com.tabram.sudokusolver.model.SudokuObjectAbstract> underTest;
 
-    @BeforeEach
-    void setUp() {
-        underTest = new GenerateSudokuGameService<>(sudokuSolveService);
+    private final Random random = new Random();
+    @Mock
+    SudokuSolveService sudokuSolveService;
+    @Mock
+    private ClearBoardService clearBoardService;
+    @Mock
+    private SudokuObjectService sudokuObjectService;
+    @Spy
+    private BoardValueManipulationService<SudokuObject> boardValueManipulationService;
+    @Mock
+    private CopyObjectService copyObjectService;
+    @Mock
+    private TempSudokuObjectService tempSudokuObjectService;
+    @InjectMocks
+    private GenerateSudokuGameService underTest;
+
+    @Nested
+    class GenerateGame {
+        @ParameterizedTest
+        @ValueSource(strings = {"Easy", "Medium", "Hard"})
+        void thisShouldGenerateGameDependingOnTheChosenDifficultyLevel(String input) {
+            Integer[][] boardNull = {
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0}
+            };
+            SudokuObject testSudokuObject = new SudokuObject(boardNull, 9, 3, 3);
+            when(sudokuObjectService.getSudokuObject()).thenReturn(testSudokuObject);
+            when(sudokuSolveService.isValidPlacement(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
+            when(sudokuSolveService.solveBoard(testSudokuObject)).thenCallRealMethod();
+
+            underTest.generateGame(input);
+
+            verify(sudokuObjectService, times(1)).getSudokuObject();
+            verify(clearBoardService, times(1)).clearBoard(testSudokuObject);
+            verify(boardValueManipulationService, times(1)).changeNullToZeroOnBoard(testSudokuObject);
+            verify(tempSudokuObjectService, times(1)).setSudokuObject(copyObjectService.deepCopy(testSudokuObject));
+        }
+
+
+        @Test
+        void whenTheOptionsNotSelected_Return302() {
+            Integer[][] boardNull = {
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0}
+            };
+            SudokuObject testSudokuObject = new SudokuObject(boardNull, 9, 3, 3);
+            when(sudokuObjectService.getSudokuObject()).thenReturn(testSudokuObject);
+            when(sudokuSolveService.isValidPlacement(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
+            when(sudokuSolveService.solveBoard(testSudokuObject)).thenCallRealMethod();
+
+            underTest.generateGame("");
+
+            verify(sudokuObjectService, times(1)).getSudokuObject();
+            verify(clearBoardService, times(1)).clearBoard(testSudokuObject);
+            verify(boardValueManipulationService, times(1)).changeNullToZeroOnBoard(testSudokuObject);
+            verify(tempSudokuObjectService, times(1)).setSudokuObject(copyObjectService.deepCopy(testSudokuObject));
+        }
     }
 
     @Nested
@@ -64,7 +133,7 @@ class GenerateSudokuGameServiceTest {
                     () -> assertThat(sudokuObject.getValueFromArray(8, 8)).isLessThan(10).isPositive(),
                     () -> assertThat(sudokuObject.getValueFromArray(3, 2)).isZero(),
                     () -> assertThat(sudokuObject.getValueFromArray(5, 6)).isZero()
-                    );
+            );
         }
     }
 

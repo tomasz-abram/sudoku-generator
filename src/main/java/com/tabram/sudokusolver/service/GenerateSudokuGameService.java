@@ -1,5 +1,6 @@
 package com.tabram.sudokusolver.service;
 
+import com.tabram.sudokusolver.model.SudokuObject;
 import com.tabram.sudokusolver.model.SudokuObjectAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,18 +8,51 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public class GenerateSudokuGameService<T extends SudokuObjectAbstract> {
+public class GenerateSudokuGameService {
 
-    private final SudokuSolveService<T> sudokuSolveService;
+    private final SudokuSolveService sudokuSolveService;
+    private final ClearBoardService clearBoardService;
+    private final SudokuObjectService sudokuObjectService;
+    private final BoardValueManipulationService<SudokuObject> boardValueManipulationService;
+    private final CopyObjectService copyObjectService;
+    private final TempSudokuObjectService tempSudokuObjectService;
     private final Random random = new Random();
 
     @Autowired
-    public GenerateSudokuGameService(SudokuSolveService<T> sudokuSolveService) {
-
+    public GenerateSudokuGameService(SudokuSolveService sudokuSolveService, ClearBoardService clearBoardService, SudokuObjectService sudokuObjectService, BoardValueManipulationService<SudokuObject> boardValueManipulationService, CopyObjectService copyObjectService, TempSudokuObjectService tempSudokuObjectService) {
         this.sudokuSolveService = sudokuSolveService;
+        this.clearBoardService = clearBoardService;
+        this.sudokuObjectService = sudokuObjectService;
+        this.boardValueManipulationService = boardValueManipulationService;
+        this.copyObjectService = copyObjectService;
+        this.tempSudokuObjectService = tempSudokuObjectService;
     }
 
-    public void generateNumbersInDiagonalBoxes(T sudokuObject) {
+    public void generateGame(String level) {
+        int percent;
+        switch (level) {
+            case "Easy":
+                percent = 55;
+                break;
+            case "Medium":
+                percent = 63;
+                break;
+            case "Hard":
+                percent = 72;
+                break;
+            default:
+                percent = 0;
+        }
+        SudokuObject sudokuObject = sudokuObjectService.getSudokuObject();
+        clearBoardService.clearBoard(sudokuObject);
+        boardValueManipulationService.changeNullToZeroOnBoard(sudokuObject);
+        generateNumbersInDiagonalBoxes(sudokuObject);
+        sudokuSolveService.solveBoard(sudokuObject);
+        tempSudokuObjectService.setSudokuObject(copyObjectService.deepCopy(sudokuObject));
+        randomCleanBoard(sudokuObject, percent);
+    }
+
+    public <T extends SudokuObjectAbstract> void generateNumbersInDiagonalBoxes(T sudokuObject) {
         int boxWidth = sudokuObject.getQuantityBoxesWidth();
         int boxHeight = sudokuObject.getQuantityBoxesHeight();
 
@@ -40,7 +74,7 @@ public class GenerateSudokuGameService<T extends SudokuObjectAbstract> {
         }
     }
 
-    public void randomCleanBoard(T sudokuObject, int percent) {
+    public <T extends SudokuObjectAbstract> void randomCleanBoard(T sudokuObject, int percent) {
         int sudokuSize = sudokuObject.getSudokuSize();
         double emptyCells = Math.pow(sudokuSize, 2) * percent / 100;
         int j = 0;

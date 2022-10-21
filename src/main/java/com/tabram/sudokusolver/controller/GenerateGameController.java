@@ -1,57 +1,28 @@
 package com.tabram.sudokusolver.controller;
 
-import com.tabram.sudokusolver.model.SudokuObject;
-import com.tabram.sudokusolver.model.SudokuObjectAbstract;
-import com.tabram.sudokusolver.service.*;
+import com.tabram.sudokusolver.service.GenerateSudokuGameService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class GenerateGameController {
     private static final String REDIRECT = "redirect:/";
-    private final GenerateSudokuGameService<SudokuObject> generateSudokuGameService;
-    private final ClearBoardService clearBoardService;
-    private final SudokuObjectService sudokuObjectService;
-    private final BoardValueManipulationService<SudokuObject> boardValueManipulationService;
-    private final SudokuSolveService<com.tabram.sudokusolver.model.SudokuObjectAbstract> sudokuSolveService;
-    private final CopyObjectService copyObjectService;
-    private final TempSudokuObjectService tempSudokuObjectService;
+    private final GenerateSudokuGameService generateSudokuGameService;
 
-    public GenerateGameController(GenerateSudokuGameService<SudokuObject> generateSudokuGameService, ClearBoardService clearBoardService, SudokuObjectService sudokuObjectService, BoardValueManipulationService<SudokuObject> boardValueManipulationService, SudokuSolveService<SudokuObjectAbstract> sudokuSolveService, CopyObjectService copyObjectService, TempSudokuObjectService tempSudokuObjectService) {
+    public GenerateGameController(GenerateSudokuGameService generateSudokuGameService) {
         this.generateSudokuGameService = generateSudokuGameService;
-        this.clearBoardService = clearBoardService;
-        this.sudokuObjectService = sudokuObjectService;
-        this.boardValueManipulationService = boardValueManipulationService;
-        this.sudokuSolveService = sudokuSolveService;
-        this.copyObjectService = copyObjectService;
-        this.tempSudokuObjectService = tempSudokuObjectService;
+
     }
 
-
     @GetMapping("/generate-game")
-    public String generateGame(@RequestParam String level) {
-        int percent;
-        switch (level) {
-            case "Easy":
-                percent = 55;
-                break;
-            case "Medium":
-                percent = 63;
-                break;
-            case "Hard":
-                percent = 72;
-                break;
-            default:
-                return REDIRECT;
+    public String generateGame(@RequestParam String level, RedirectAttributes redirectAttributes) {
+        if (level.equals("Easy") || level.equals("Medium") || level.equals("Hard")) {
+            generateSudokuGameService.generateGame(level);
+        } else {
+            redirectAttributes.addFlashAttribute("errors", "The level has not been selected");
         }
-        SudokuObject sudokuObject = sudokuObjectService.getSudokuObject();
-        clearBoardService.clearBoard(sudokuObject);
-        boardValueManipulationService.changeNullToZeroOnBoard(sudokuObject);
-        generateSudokuGameService.generateNumbersInDiagonalBoxes(sudokuObject);
-        sudokuSolveService.solveBoard(sudokuObject);
-        tempSudokuObjectService.setSudokuObject(copyObjectService.deepCopy(sudokuObject));
-        generateSudokuGameService.randomCleanBoard(sudokuObject, percent);
         return REDIRECT;
     }
 }
