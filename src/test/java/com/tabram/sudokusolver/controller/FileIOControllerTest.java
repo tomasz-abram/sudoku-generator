@@ -2,7 +2,6 @@ package com.tabram.sudokusolver.controller;
 
 import com.tabram.sudokusolver.model.SudokuObject;
 import com.tabram.sudokusolver.service.FileIOService;
-import com.tabram.sudokusolver.service.SudokuObjectService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +34,14 @@ class FileIOControllerTest {
     @MockBean
     private FileIOService fileIOService;
 
-    @MockBean
-    private SudokuObjectService sudokuObjectService;
-
     @Nested
     class DownloadFile {
         @Test
         void downloadFile_ThenReturnJsonFile() throws Exception {
             SudokuObject sudokuObjectTest = new SudokuObject(new Integer[9][9], 9, 3, 3);
             String sudokuJsonStringTest = "{\"board\":[[null,null,4,null,6,null,null,null,2],[3,null,null,5,null,null,null,null,7],[null,null,null,null,null,null,null,null,null],[1,null,null,null,8,null,null,null,null],[null,3,null,null,4,null,7,null,8],[5,null,null,null,7,null,null,null,6],[null,null,null,null,null,null,1,8,null],[2,null,null,9,null,null,null,null,3],[null,1,null,6,null,null,null,2,null]],\"sudokuSize\":9,\"quantityBoxesHeight\":3,\"quantityBoxesWidth\":3}";
-            when(sudokuObjectService.getSudokuObject()).thenReturn(sudokuObjectTest);
             when(fileIOService.exportSudokuObject(sudokuObjectTest)).thenReturn(sudokuJsonStringTest);
+            when(fileIOService.downloadFile()).thenReturn(sudokuJsonStringTest.getBytes());
 
             MvcResult mvcResult = mockMvc.perform(get("/download-file")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -58,7 +54,7 @@ class FileIOControllerTest {
             assertThat(mvcResult.getResponse()).isNotNull();
             assertEquals(sudokuJsonStringTest, mvcResult.getResponse().getContentAsString());
             assertEquals(MediaType.APPLICATION_JSON_VALUE, mvcResult.getResponse().getContentType());
-            verify(fileIOService, times(1)).exportSudokuObject(sudokuObjectTest);
+            verify(fileIOService, times(2)).downloadFile();
         }
     }
 

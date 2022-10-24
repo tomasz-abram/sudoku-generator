@@ -12,10 +12,19 @@ import java.io.Reader;
 @Service
 public class FileIOService {
     private final SudokuObjectRepository sudokuObjectRepository;
+    private final SudokuObjectService sudokuObjectService;
 
-    public FileIOService(SudokuObjectRepository sudokuObjectRepository) {
+    public FileIOService(SudokuObjectRepository sudokuObjectRepository, SudokuObjectService sudokuObjectService) {
         this.sudokuObjectRepository = sudokuObjectRepository;
+        this.sudokuObjectService = sudokuObjectService;
     }
+
+    public byte[] downloadFile() {
+        SudokuObject sudokuObject = sudokuObjectService.getSudokuObject();
+        String sudokuJsonString = exportSudokuObject(sudokuObject);
+        return sudokuJsonString.getBytes();
+    }
+
 
     public String exportSudokuObject(SudokuObject sudokuObject) {
         String jsonBoard = null;
