@@ -1,14 +1,77 @@
 package com.tabram.sudokusolver.service;
 
+import com.tabram.sudokusolver.dto.SudokuObjectDto;
+import com.tabram.sudokusolver.model.SudokuObject;
 import com.tabram.sudokusolver.model.SudokuObjectAbstract;
+import com.tabram.sudokusolver.validation.CompareWithTempSudokuBoardValidation;
 import org.springframework.stereotype.Service;
 
-@Service
-public class SudokuSolveService<T extends SudokuObjectAbstract> {
+import java.util.List;
 
+@Service
+public class SudokuSolveService {
+
+    private final SudokuObjectService sudokuObjectService;
+    private final BoardValueManipulationService<SudokuObjectDto> boardValueManipulationService;
+    private final MapperService mapperService;
+    private final TempSudokuObjectService tempSudokuObjectService;
+    private final CompareWithTempSudokuBoardValidation compareWithTempSudokuBoardValidation;
+    private final MatcherService matcherService;
+
+    public SudokuSolveService(SudokuObjectService sudokuObjectService, BoardValueManipulationService<SudokuObjectDto> boardValueManipulationService, MapperService mapperService, TempSudokuObjectService tempSudokuObjectService, CompareWithTempSudokuBoardValidation compareWithTempSudokuBoardValidation, MatcherService matcherService) {
+        this.sudokuObjectService = sudokuObjectService;
+        this.boardValueManipulationService = boardValueManipulationService;
+        this.mapperService = mapperService;
+        this.tempSudokuObjectService = tempSudokuObjectService;
+        this.compareWithTempSudokuBoardValidation = compareWithTempSudokuBoardValidation;
+        this.matcherService = matcherService;
+    }
+
+
+    public void solveAll(SudokuObjectDto sudokuObjectDto) {
+        boardValueManipulationService.changeNullToZeroOnBoard(sudokuObjectDto);
+       /*
+          It checks if the resolved table is in the tempSudokuObject, if so, it gets the solution from tempSudokuObject,
+          otherwise it resolves the table.
+         */
+        if (compareWithTempSudokuBoardValidation.compare(sudokuObjectDto)) {
+            SudokuObject sudokuObject = tempSudokuObjectService.getSudokuObject();
+            sudokuObjectService.setSudokuObject(sudokuObject);
+            tempSudokuObjectService.setSudokuObject(null);
+        } else {
+            solveBoard(sudokuObjectDto);
+            sudokuObjectService.setSudokuObject(mapperService.mapperToSudokuBoardObject(sudokuObjectDto));
+        }
+    }
+
+    public void solveCell(SudokuObjectDto sudokuObjectDto, String cellId) {
+  /*
+          This gets information about the selected cell.
+         */
+        List<String> list = matcherService.cellIdMatcher(cellId);
+        int i = Integer.parseInt(list.get(0));
+        int j = Integer.parseInt(list.get(1));
+
+        boardValueManipulationService.changeNullToZeroOnBoard(sudokuObjectDto);
+        /*
+         * This checks if there is already a solution in TempSudokuObject, if solution exists, it gets a value from TempSudokuObject.
+         * Otherwise, to get a single cell solution it has to solve the table.
+         * After the table is resolved, the table is stored at TempSudokuObject.
+         */
+        if (compareWithTempSudokuBoardValidation.compare(sudokuObjectDto)) {
+            Integer solveCell = tempSudokuObjectService.getSudokuObject().getValueFromArray(i, j);
+            sudokuObjectService.getSudokuObject().setValueToArray(i, j, solveCell);
+        } else {
+            solveBoard(sudokuObjectDto);
+            SudokuObject tempBoardObject = mapperService.mapperToSudokuBoardObject(sudokuObjectDto);
+            tempSudokuObjectService.setSudokuObject(tempBoardObject);
+            Integer solveCell = tempSudokuObjectService.getSudokuObject().getValueFromArray(i, j);
+            sudokuObjectService.getSudokuObject().setValueToArray(i, j, solveCell);
+        }
+    }
 
     //Check row
-    private boolean isNumberInRow(T sudokuObject, Integer number, int row) {
+    private <T extends SudokuObjectAbstract> boolean isNumberInRow(T sudokuObject, Integer number, int row) {
         int sudokuSize = sudokuObject.getSudokuSize();
         for (int i = 0; i < sudokuSize; i++) {
             if (sudokuObject.getValueFromArray(row, i).equals(number)) {
@@ -19,7 +82,7 @@ public class SudokuSolveService<T extends SudokuObjectAbstract> {
     }
 
     //Check colum
-    private boolean isNumberInColum(T sudokuObject, Integer number, int column) {
+    private <T extends SudokuObjectAbstract> boolean isNumberInColum(T sudokuObject, Integer number, int column) {
         for (int j = 0; j < sudokuObject.getSudokuSize(); j++) {
             if (sudokuObject.getValueFromArray(j, column).equals(number)) {
                 return true;
@@ -29,7 +92,7 @@ public class SudokuSolveService<T extends SudokuObjectAbstract> {
     }
 
     //Check grid box
-    public boolean isNumberInBox(T sudokuObject, Integer number, int row, int column) {
+    public <T extends SudokuObjectAbstract> boolean isNumberInBox(T sudokuObject, Integer number, int row, int column) {
         int boxesWidth = sudokuObject.getQuantityBoxesWidth();
         int boxesHeight = sudokuObject.getQuantityBoxesHeight();
         int homeBoxRow = row - row % boxesWidth;
@@ -45,11 +108,11 @@ public class SudokuSolveService<T extends SudokuObjectAbstract> {
     }
 
     //This method check all three row/column/box methods
-    public boolean isValidPlacement(T sudokuObject, Integer number, int row, int column) {
+    public <T extends SudokuObjectAbstract> boolean isValidPlacement(T sudokuObject, Integer number, int row, int column) {
         return !isNumberInRow(sudokuObject, number, row) && !isNumberInColum(sudokuObject, number, column) && !isNumberInBox(sudokuObject, number, row, column);
     }
 
-    public boolean solveBoard(T sudokuObject) {
+    public <T extends SudokuObjectAbstract> boolean solveBoard(T sudokuObject) {
 
         for (int row = 0; row < sudokuObject.getSudokuSize(); row++) {
             for (int column = 0; column < sudokuObject.getSudokuSize(); column++) {
