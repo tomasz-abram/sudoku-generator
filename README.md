@@ -1,10 +1,6 @@
 # Sudoku-generator
 
-Sudoku solver is web application based on Spring Boot and Thymeleaf template engine. 
-
-This solver using the backtracking algorithm and Brute Force approach with a recursive method
-
-Sudoku solver app can generate sudoku puzzles of various difficulties it can solve, also supports custom board sizes up to 18x18.
+Sudoku game generator and sudoku solver with extra side features. Sudoku generator is a web application, based on Spring Boot and Thymeleaf template engine. The solver uses the backtracking algorithm and Brute Force approach with a recursive method. Sudoku generator app can generate sudoku puzzles of various difficulties it can solve, also supports custom board sizes up to 18x18.
 
 
 # Features:
