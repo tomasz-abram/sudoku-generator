@@ -20,5 +20,5 @@ Sudoku game generator and sudoku solver with extra side features. Sudoku generat
 # Docker image:
 
 <code>
-docker pull ghcr.io/tomasz-abram/sudoku-solver-app:latest
+docker pull ghcr.io/tomasz-abram/sudoku-generator-app:latest
 </code>

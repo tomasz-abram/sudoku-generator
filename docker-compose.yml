@@ -1,9 +1,9 @@
 version: '3'
 services:
-  sudoku-solver-app:
+  sudoku-generator-app:
     build:
       context: .
     container_name: sudoku-app
-    image: sudoku-solver
+    image: sudoku-generator
     ports:
       - "8080:8080"
