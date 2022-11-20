@@ -1,4 +1,4 @@
-# Sudoku-solver
+# Sudoku-generator
 
 Sudoku solver is web application based on Spring Boot and Thymeleaf template engine. 
 
@@ -8,6 +8,7 @@ Sudoku solver app can generate sudoku puzzles of various difficulties it can sol
 
 
 # Features:
+- Generating sudoku game
 - Solving sudoku
 - Solve cell
 - Input validation
@@ -19,8 +20,6 @@ Sudoku solver app can generate sudoku puzzles of various difficulties it can sol
 - Save board to print or export
 - Undo the last number entered
 - Generating different sizes of the board
-- Generating sudoku game
-
 
 # Docker image:
 
